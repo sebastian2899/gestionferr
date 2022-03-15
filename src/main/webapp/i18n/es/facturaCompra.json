@@ -1,0 +1,31 @@
+{
+  "gestionferrApp": {
+    "facturaCompra": {
+      "home": {
+        "title": "Factura Compras",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Crear nuevo Factura Compra",
+        "createOrEditLabel": "Crear o editar Factura Compra",
+        "notFound": "Ningún Factura Compras encontrado"
+      },
+      "created": "Un nuevo Factura Compra ha sido creado con el identificador {{ param }}",
+      "updated": "Un Factura Compra ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Factura Compra ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Factura Compra {{ id }}?"
+      },
+      "detail": {
+        "title": "Factura Compra"
+      },
+      "id": "ID",
+      "numeroFactura": "Numero Factura",
+      "fechaCreacion": "Fecha Creacion",
+      "infoCliente": "Informacion Proovedor",
+      "valorFactura": "Valor Factura",
+      "valorPagado": "Valor Pagado",
+      "valorDeuda": "Valor Deuda",
+      "tipoFactura": "Tipo Factura",
+      "idProovedor": "Id Proovedor"
+    }
+  }
+}

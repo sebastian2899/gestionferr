@@ -1,0 +1,60 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="facturaCompra">
+      <h2 data-cy="facturaCompraDetailsHeading"><span jhiTranslate="gestionferrApp.facturaCompra.detail.title">Factura Compra</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ facturaCompra.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="gestionferrApp.facturaCompra.numeroFactura">Numero Factura</span></dt>
+        <dd>
+          <span>{{ facturaCompra.numeroFactura }}</span>
+        </dd>
+        <dt><span jhiTranslate="gestionferrApp.facturaCompra.fechaCreacion">Fecha Creacion</span></dt>
+        <dd>
+          <span>{{ facturaCompra.fechaCreacion | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span jhiTranslate="gestionferrApp.facturaCompra.infoCliente">Info Cliente</span></dt>
+        <dd>
+          <span>{{ facturaCompra.infoCliente }}</span>
+        </dd>
+        <dt><span jhiTranslate="gestionferrApp.facturaCompra.valorFactura">Valor Factura</span></dt>
+        <dd>
+          <span>{{ facturaCompra.valorFactura }}</span>
+        </dd>
+        <dt><span jhiTranslate="gestionferrApp.facturaCompra.valorPagado">Valor Pagado</span></dt>
+        <dd>
+          <span>{{ facturaCompra.valorPagado }}</span>
+        </dd>
+        <dt><span jhiTranslate="gestionferrApp.facturaCompra.valorDeuda">Valor Deuda</span></dt>
+        <dd>
+          <span>{{ facturaCompra.valorDeuda }}</span>
+        </dd>
+        <dt><span jhiTranslate="gestionferrApp.facturaCompra.tipoFactura">Tipo Factura</span></dt>
+        <dd>
+          <span jhiTranslate="{{ 'gestionferrApp.TipoFacturaEnum.' + facturaCompra.tipoFactura }}">{{ facturaCompra.tipoFactura }}</span>
+        </dd>
+        <dt><span jhiTranslate="gestionferrApp.facturaCompra.idProovedor">Id Proovedor</span></dt>
+        <dd>
+          <span>{{ facturaCompra.idProovedor }}</span>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/factura-compra', facturaCompra.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

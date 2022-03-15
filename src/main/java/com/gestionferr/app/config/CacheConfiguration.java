@@ -48,6 +48,17 @@ public class CacheConfiguration {
             createCache(cm, com.gestionferr.app.domain.User.class.getName());
             createCache(cm, com.gestionferr.app.domain.Authority.class.getName());
             createCache(cm, com.gestionferr.app.domain.User.class.getName() + ".authorities");
+            createCache(cm, com.gestionferr.app.domain.Producto.class.getName());
+            createCache(cm, com.gestionferr.app.domain.FacturaVenta.class.getName());
+            createCache(cm, com.gestionferr.app.domain.FacturaCompra.class.getName());
+            createCache(cm, com.gestionferr.app.domain.Cliente.class.getName());
+            createCache(cm, com.gestionferr.app.domain.Proveedor.class.getName());
+            createCache(cm, com.gestionferr.app.domain.ItemFacturaCompra.class.getName());
+            createCache(cm, com.gestionferr.app.domain.ItemFacturaVenta.class.getName());
+            createCache(cm, com.gestionferr.app.domain.Caja.class.getName());
+            createCache(cm, com.gestionferr.app.domain.Abono.class.getName());
+            createCache(cm, com.gestionferr.app.domain.Egreso.class.getName());
+            createCache(cm, com.gestionferr.app.domain.Categoria.class.getName());
             // jhipster-needle-ehcache-add-entry
         };
     }

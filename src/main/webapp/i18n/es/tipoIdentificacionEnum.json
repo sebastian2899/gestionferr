@@ -1,0 +1,12 @@
+{
+  "gestionferrApp": {
+    "TipoIdentificacionEnum": {
+      "null": "",
+      "CC": "CC",
+      "NIT": "NIT",
+      "ROOT": "ROOT",
+      "CE": "CE",
+      "TI": "TI"
+    }
+  }
+}

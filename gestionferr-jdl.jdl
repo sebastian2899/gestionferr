@@ -1,0 +1,125 @@
+enum TipoProveedorEnum {
+	NATURAL,
+    JURIDICA
+}
+
+enum TipoIdentificacionEnum {
+	CC,
+    NIT,
+    ROOT,
+    CE,
+    TI
+}
+
+enum TipoFacturaEnum {
+	CREDITO,
+    DEBITO
+}
+
+enum TipoEstadoEnum{
+	PAGADA,
+    DEUDA,
+    CANCELADA
+}
+
+entity Producto {
+	nombre String
+    precio BigDecimal
+    cantidad BigDecimal
+    foto ImageBlob
+    descripcion String
+	idCategoria Long
+}
+ 	
+entity FacturaVenta  {
+	numeroFactura String
+    fechaCreacion Instant
+    infoCliente String
+    valorFactura BigDecimal
+    valorPagado BigDecimal
+    valorDeuda BigDecimal
+    tipoFactura TipoFacturaEnum
+	idCliente Long
+}
+
+entity FacturaCompra  {
+	numeroFactura String
+    fechaCreacion Instant
+    infoCliente String
+    valorFactura BigDecimal
+    valorPagado BigDecimal
+    valorDeuda BigDecimal
+    tipoFactura TipoFacturaEnum
+	idProovedor Long
+}
+
+entity Cliente {
+	nombre String
+    numeroContacto String
+    email String
+    tipoIdentificacion TipoIdentificacionEnum
+    numeroCC String
+}
+
+entity Proveedor {
+	nombre String
+    numeroContacto String
+    email String
+    tipoIdentificacion TipoIdentificacionEnum
+    numeroCC String
+    tipoProveedor TipoProveedorEnum
+}
+
+entity ItemFacturaCompra{
+	idFacturaCompra Long
+	idProducto Long
+	cantidad Long
+	precio BigDecimal
+}
+
+entity ItemFacturaVenta{
+	idFacturaVenta Long
+	idProducto Long
+	cantidad Long
+	precio BigDecimal
+}
+
+entity Caja {
+	fechaCreacion Instant
+    valorVentaDia BigDecimal
+    valorRegistradoDia BigDecimal
+    estado TipoEstadoEnum
+    diferencia BigDecimal
+}
+
+entity Abono {
+	idFactura Long
+	fechaCreacion Instant
+    valorAbono BigDecimal
+    tipoFactura String
+} 
+
+entity Egreso {
+	fechaCreacion Instant
+    descripcion String
+    valorEgreso BigDecimal
+    
+}
+
+entity Categoria{
+	categoriaProducto String
+    descripcion String
+}
+
+// Set pagination options
+//paginate JobHistory, Employee with infinite-scroll
+//paginate Job with pagination
+
+// Use Data Transfer Objects (DTO)
+ dto * with mapstruct
+
+// Set service options to all except few
+service all with serviceImpl
+
+// Set an angular suffix
+// angularSuffix * with mySuffix

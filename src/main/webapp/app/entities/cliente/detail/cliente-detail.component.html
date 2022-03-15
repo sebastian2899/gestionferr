@@ -1,0 +1,50 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="cliente">
+      <h2 data-cy="clienteDetailsHeading"><span jhiTranslate="gestionferrApp.cliente.detail.title">Cliente</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ cliente.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="gestionferrApp.cliente.nombre">Nombre</span></dt>
+        <dd>
+          <span>{{ cliente.nombre }}</span>
+        </dd>
+        <dt><span jhiTranslate="gestionferrApp.cliente.numeroContacto">Numero Contacto</span></dt>
+        <dd>
+          <span>{{ cliente.numeroContacto }}</span>
+        </dd>
+        <dt><span jhiTranslate="gestionferrApp.cliente.email">Email</span></dt>
+        <dd>
+          <span>{{ cliente.email }}</span>
+        </dd>
+        <dt><span jhiTranslate="gestionferrApp.cliente.tipoIdentificacion">Tipo Identificacion</span></dt>
+        <dd>
+          <span jhiTranslate="{{ 'gestionferrApp.TipoIdentificacionEnum.' + cliente.tipoIdentificacion }}">{{
+            cliente.tipoIdentificacion
+          }}</span>
+        </dd>
+        <dt><span jhiTranslate="gestionferrApp.cliente.numeroCC">Numero CC</span></dt>
+        <dd>
+          <span>{{ cliente.numeroCC }}</span>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/cliente', cliente.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

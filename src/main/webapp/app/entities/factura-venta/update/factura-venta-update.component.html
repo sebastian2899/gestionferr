@@ -1,0 +1,237 @@
+<div class="row justify-content-center">
+  <div class="col-12">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2
+        id="jhi-factura-venta-heading"
+        data-cy="FacturaVentaCreateUpdateHeading"
+        jhiTranslate="gestionferrApp.facturaVenta.home.createOrEditLabel"
+      >
+        Create or edit a Factura Venta
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <!-- <div class="row mb-3" [hidden]="editForm.get('id')!.value == null">
+          <label class="form-label" jhiTranslate="global.field.id" for="field_id">ID</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+        </div> -->
+        <!-- <div class="row mb-3">
+          <label class="form-label" jhiTranslate="gestionferrApp.facturaVenta.fechaCreacion" for="field_fechaCreacion"
+            >Fecha Creacion</label
+          >
+          <div class="d-flex">
+            <input
+              id="field_fechaCreacion"
+              data-cy="fechaCreacion"
+              type="datetime-local"
+              class="form-control"
+              name="fechaCreacion"
+              formControlName="fechaCreacion"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+        </div> -->
+
+        <div class="row mb-4">
+          <div class="col-md-5 form-group">
+            <label class="form-label" jhiTranslate="gestionferrApp.facturaVenta.numeroFactura" for="field_numeroFactura"
+              >Numero Factura</label
+            >
+            <input
+              required
+              type="text"
+              class="form-control"
+              name="numeroFactura"
+              id="field_numeroFactura"
+              data-cy="numeroFactura"
+              formControlName="numeroFactura"
+            />
+          </div>
+
+          <div *ngIf="clienteNoRegistrado" class="col-md-5 form-group">
+            <label for="idCliente" class="form-label">Cliente</label>
+            <select class="form-select" name="idCliente" formControlName="idCliente" id="field_idCliente" data-cy="idCliente">
+              <option [ngValue]="cliente.id" *ngFor="let cliente of clientes">{{ cliente.nombre }}</option>
+            </select>
+          </div>
+
+          <div *ngIf="clienteNoRegistrado" class="col-md-2">
+            <button class="btn btn-info" style="margin-top: 29px" type="button" (click)="validarClienteRegistrado()">
+              <span>No registrado</span>
+            </button>
+          </div>
+
+          <div *ngIf="!clienteNoRegistrado" class="col-md-6 form-group">
+            <label class="form-label" jhiTranslate="gestionferrApp.facturaVenta.infoCliente" for="field_infoCliente">Info Cliente</label>
+            <input
+              required
+              type="text"
+              class="form-control"
+              name="infoCliente"
+              id="field_infoCliente"
+              data-cy="infoCliente"
+              formControlName="infoCliente"
+            />
+          </div>
+        </div>
+
+        <div class="row mb-4 d-flex justify-content-center">
+          <div class="col-md-3">
+            <label for="producto" class="form-label">Producto</label>
+            <select class="form-select" name="producto" formControlName="producto" id="field_producto" data-cy="producto">
+              <option [ngValue]="producto.id" *ngFor="let producto of productos">{{ producto.nombre }}</option>
+            </select>
+          </div>
+
+          <div class="col-md-2">
+            <label for="cantidad" class="form-label">Cantidad</label>
+            <input type="number" class="form-control" name="cantidad" data-cy="field_cantidad" formControlName="cantidad" />
+          </div>
+
+          <div class="col-md-2" style="margin-top: 30px">
+            <button class="btn btn-outline-primary" type="button" (click)="agregarProducto()">Agregar</button>
+          </div>
+        </div>
+
+        <div *ngIf="productosSeleccionados && productosSeleccionados.length > 0" class="row d-flex justify-content-center">
+          <div class="col-md-8">
+            <table class="table table-hover">
+              <thead class="head-table">
+                <tr>
+                  <th class="th-table">Producto</th>
+                  <th class="th-table">Cantidad Disponible</th>
+                  <th class="th-table">Cantidad Seleccionada</th>
+                  <th class="th-table">Precio Producto</th>
+                  <th class="th-table">Total</th>
+                  <th class="th-table">Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of productosSeleccionados">
+                  <td>{{ item.nombreProducto }}</td>
+                  <td>{{ item.cantidadTotalProducto }}</td>
+                  <td>{{ item.cantidad }}</td>
+                  <td>{{ item.precioProducto }}</td>
+                  <td>{{ item.precio }}</td>
+                  <td><button type="button" (click)="eliminarProductoSeleccionado(item)" class="btn btn-danger">Eliminar</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="row mb-4">
+          <div class="col-md-6">
+            <label class="form-label" jhiTranslate="gestionferrApp.facturaVenta.valorFactura" for="field_valorFactura">Valor Factura</label>
+            <input
+              readonly
+              type="number"
+              class="form-control"
+              name="valorFactura"
+              id="field_valorFactura"
+              data-cy="valorFactura"
+              formControlName="valorFactura"
+            />
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label" jhiTranslate="gestionferrApp.facturaVenta.valorPagado" for="field_valorPagado">Valor Pagado</label>
+            <input
+              type="number"
+              class="form-control"
+              name="valorPagado"
+              id="field_valorPagado"
+              data-cy="valorPagado"
+              formControlName="valorPagado"
+              (keyup)="restarValores()"
+            />
+          </div>
+        </div>
+
+        <div class="row mb-4">
+          <div class="col-md-6 form-group">
+            <label class="form-label" jhiTranslate="gestionferrApp.facturaVenta.valorDeuda" for="field_valorDeuda">Valor Deuda</label>
+            <input
+              readonly
+              type="number"
+              class="form-control"
+              name="valorDeuda"
+              id="field_valorDeuda"
+              data-cy="valorDeuda"
+              formControlName="valorDeuda"
+            />
+            <div *ngIf="validarValorDeuda" class="alert alert-warning" role="alert">
+              <p class="mb-0">{{ mensajeValorDeuda }}</p>
+            </div>
+          </div>
+
+          <div class="col-md-6 form-group">
+            <label class="form-label" for="field_estado">Estado</label>
+            <input readonly type="text" class="form-control" name="estado" id="field_estado" data-cy="estado" formControlName="estado" />
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="d-flex justify-content-center">
+          <div class="col-md-4">
+            <label for="tipoFactura" class="form-label">Tipo Factura</label>
+            <select class="form-select" name="tipoFactura" id="tipoFactura" formControlName="tipoFactura" data-cy="tipoFactura">
+              <option [ngValue]="null">{{ 'gestionferrApp.TipoFacturaEnum.null' | translate }}</option>
+              <option [ngValue]="tipoFactura" *ngFor="let tipoFactura of tipoFacturaEnumValues">{{ tipoFactura }}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving || productosSeleccionados.length === 0 || validarValorDeuda"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<ng-template #cantidadInvalida>
+  <div class="modal-header">
+    <h4 class="modal-title" style="color: red">Error</h4>
+  </div>
+  <div class="modal-body">
+    <div>
+      <p style="color: black">
+        {{ mensajeCantidadInvalida }}
+      </p>
+    </div>
+  </div>
+  <div class="modal-footer color-toggle text-black">
+    <h4>Ferreteria Wilzon Camargo</h4>
+  </div>
+</ng-template>
+
+<ng-template #alertaProductoVacio>
+  <div class="modal-header">
+    <h4 class="modal-title" style="color: blue">ATENCION</h4>
+  </div>
+  <div class="modal-body">
+    <div>
+      <p style="color: black">
+        {{ mensajeAlertaProductoVacio }}
+      </p>
+    </div>
+  </div>
+  <div class="modal-footer color-toggle text-black">
+    <h4>Ferreteria Wilzon Camargo</h4>
+  </div>
+</ng-template>

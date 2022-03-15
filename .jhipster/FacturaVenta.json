@@ -1,0 +1,49 @@
+{
+  "applications": "*",
+  "changelogDate": "20220312172234",
+  "dto": "mapstruct",
+  "embedded": false,
+  "entityTableName": "factura_venta",
+  "fields": [
+    {
+      "fieldName": "numeroFactura",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "fechaCreacion",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "infoCliente",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "valorFactura",
+      "fieldType": "BigDecimal"
+    },
+    {
+      "fieldName": "valorPagado",
+      "fieldType": "BigDecimal"
+    },
+    {
+      "fieldName": "valorDeuda",
+      "fieldType": "BigDecimal"
+    },
+    {
+      "fieldName": "tipoFactura",
+      "fieldType": "TipoFacturaEnum",
+      "fieldValues": "CREDITO,DEBITO"
+    },
+    {
+      "fieldName": "idCliente",
+      "fieldType": "Long"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "FacturaVenta",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [],
+  "service": "serviceImpl"
+}

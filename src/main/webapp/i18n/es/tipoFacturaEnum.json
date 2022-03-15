@@ -1,0 +1,9 @@
+{
+  "gestionferrApp": {
+    "TipoFacturaEnum": {
+      "null": "",
+      "CREDITO": "CREDITO",
+      "DEBITO": "DEBITO"
+    }
+  }
+}

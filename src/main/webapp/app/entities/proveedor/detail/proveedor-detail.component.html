@@ -1,0 +1,54 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="proveedor">
+      <h2 data-cy="proveedorDetailsHeading"><span jhiTranslate="gestionferrApp.proveedor.detail.title">Proveedor</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ proveedor.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="gestionferrApp.proveedor.nombre">Nombre</span></dt>
+        <dd>
+          <span>{{ proveedor.nombre }}</span>
+        </dd>
+        <dt><span jhiTranslate="gestionferrApp.proveedor.numeroContacto">Numero Contacto</span></dt>
+        <dd>
+          <span>{{ proveedor.numeroContacto }}</span>
+        </dd>
+        <dt><span jhiTranslate="gestionferrApp.proveedor.email">Email</span></dt>
+        <dd>
+          <span>{{ proveedor.email }}</span>
+        </dd>
+        <dt><span jhiTranslate="gestionferrApp.proveedor.tipoIdentificacion">Tipo Identificacion</span></dt>
+        <dd>
+          <span jhiTranslate="{{ 'gestionferrApp.TipoIdentificacionEnum.' + proveedor.tipoIdentificacion }}">{{
+            proveedor.tipoIdentificacion
+          }}</span>
+        </dd>
+        <dt><span jhiTranslate="gestionferrApp.proveedor.numeroCC">Numero CC</span></dt>
+        <dd>
+          <span>{{ proveedor.numeroCC }}</span>
+        </dd>
+        <dt><span jhiTranslate="gestionferrApp.proveedor.tipoProveedor">Tipo Proveedor</span></dt>
+        <dd>
+          <span jhiTranslate="{{ 'gestionferrApp.TipoProveedorEnum.' + proveedor.tipoProveedor }}">{{ proveedor.tipoProveedor }}</span>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/proveedor', proveedor.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

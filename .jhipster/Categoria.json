@@ -1,0 +1,24 @@
+{
+  "applications": "*",
+  "changelogDate": "20220312172243",
+  "dto": "mapstruct",
+  "embedded": false,
+  "entityTableName": "categoria",
+  "fields": [
+    {
+      "fieldName": "categoriaProducto",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "descripcion",
+      "fieldType": "String"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Categoria",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [],
+  "service": "serviceImpl"
+}

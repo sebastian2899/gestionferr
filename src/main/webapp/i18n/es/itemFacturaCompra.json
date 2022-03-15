@@ -1,0 +1,27 @@
+{
+  "gestionferrApp": {
+    "itemFacturaCompra": {
+      "home": {
+        "title": "Item Factura Compras",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Crear nuevo Item Factura Compra",
+        "createOrEditLabel": "Crear o editar Item Factura Compra",
+        "notFound": "Ningún Item Factura Compras encontrado"
+      },
+      "created": "Un nuevo Item Factura Compra ha sido creado con el identificador {{ param }}",
+      "updated": "Un Item Factura Compra ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Item Factura Compra ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Item Factura Compra {{ id }}?"
+      },
+      "detail": {
+        "title": "Item Factura Compra"
+      },
+      "id": "ID",
+      "idFacturaCompra": "Id Factura Compra",
+      "idProducto": "Id Producto",
+      "cantidad": "Cantidad",
+      "precio": "Precio"
+    }
+  }
+}

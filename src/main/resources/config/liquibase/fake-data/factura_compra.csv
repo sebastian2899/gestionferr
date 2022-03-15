@@ -1,0 +1,11 @@
+id;numero_factura;fecha_creacion;info_cliente;valor_factura;valor_pagado;valor_deuda;tipo_factura;id_proovedor
+1;Granito;2022-03-11T18:51:18;Reducido Cambridgeshire Factores;63738;91659;28654;CREDITO;94915
+2;open-source;2022-03-12T10:33:46;utilize bandwidth;3213;14612;7310;CREDITO;75898
+3;mano application;2022-03-11T17:41:35;Extremadura Jordania 24/365;83198;9343;62848;CREDITO;27712
+4;por;2022-03-11T17:48:55;Andalucía Artesanal;29137;23323;18174;DEBITO;55500
+5;online;2022-03-12T06:09:15;Estratega conjunto;597;10048;22395;DEBITO;54509
+6;Videojuegos Supervisor;2022-03-12T17:03:53;Rojo iniciativa;36873;91566;28985;CREDITO;71338
+7;Identidad Calidad extensible;2022-03-12T05:56:19;invoice Berkshire;11887;37644;31217;DEBITO;32037
+8;Inversor Borders;2022-03-12T02:00:43;New Conjunto Bedfordshire;76554;86821;35403;CREDITO;12379
+9;ubiquitous;2022-03-11T20:32:58;RSS unleash;91338;30417;35662;DEBITO;73377
+10;exploit connecting;2022-03-12T15:46:25;web-readiness supply-chains B2C;62241;16483;71895;DEBITO;9670

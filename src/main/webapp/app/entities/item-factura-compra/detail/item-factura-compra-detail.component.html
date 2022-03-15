@@ -1,0 +1,46 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="itemFacturaCompra">
+      <h2 data-cy="itemFacturaCompraDetailsHeading">
+        <span jhiTranslate="gestionferrApp.itemFacturaCompra.detail.title">Item Factura Compra</span>
+      </h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ itemFacturaCompra.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="gestionferrApp.itemFacturaCompra.idFacturaCompra">Id Factura Compra</span></dt>
+        <dd>
+          <span>{{ itemFacturaCompra.idFacturaCompra }}</span>
+        </dd>
+        <dt><span jhiTranslate="gestionferrApp.itemFacturaCompra.idProducto">Id Producto</span></dt>
+        <dd>
+          <span>{{ itemFacturaCompra.idProducto }}</span>
+        </dd>
+        <dt><span jhiTranslate="gestionferrApp.itemFacturaCompra.cantidad">Cantidad</span></dt>
+        <dd>
+          <span>{{ itemFacturaCompra.cantidad }}</span>
+        </dd>
+        <dt><span jhiTranslate="gestionferrApp.itemFacturaCompra.precio">Precio</span></dt>
+        <dd>
+          <span>{{ itemFacturaCompra.precio }}</span>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/item-factura-compra', itemFacturaCompra.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

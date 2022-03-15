@@ -1,0 +1,32 @@
+{
+  "applications": "*",
+  "changelogDate": "20220312172241",
+  "dto": "mapstruct",
+  "embedded": false,
+  "entityTableName": "abono",
+  "fields": [
+    {
+      "fieldName": "idFactura",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "fechaCreacion",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "valorAbono",
+      "fieldType": "BigDecimal"
+    },
+    {
+      "fieldName": "tipoFactura",
+      "fieldType": "String"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Abono",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [],
+  "service": "serviceImpl"
+}

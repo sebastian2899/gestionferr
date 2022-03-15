@@ -1,0 +1,31 @@
+{
+  "gestionferrApp": {
+    "facturaVenta": {
+      "home": {
+        "title": "Factura Ventas",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Crear nuevo Factura Venta",
+        "createOrEditLabel": "Crear o editar Factura Venta",
+        "notFound": "Ningún Factura Ventas encontrado"
+      },
+      "created": "Un nuevo Factura Venta ha sido creado con el identificador {{ param }}",
+      "updated": "Un Factura Venta ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Factura Venta ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Factura Venta {{ id }}?"
+      },
+      "detail": {
+        "title": "Factura Venta"
+      },
+      "id": "ID",
+      "numeroFactura": "Numero Factura",
+      "fechaCreacion": "Fecha Creacion",
+      "infoCliente": "Informacion Cliente",
+      "valorFactura": "Valor Factura",
+      "valorPagado": "Valor Pagado",
+      "valorDeuda": "Valor Deuda",
+      "tipoFactura": "Tipo Factura",
+      "idCliente": "Id Cliente"
+    }
+  }
+}

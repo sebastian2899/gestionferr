@@ -7,7 +7,6 @@ Navbar
 
 .navbar-version {
   font-size: 0.65em;
-  color: $navbar-dark-color;
 }
 
 .profile-image {
@@ -15,9 +14,12 @@ Navbar
   width: 1.75em;
 }
 
+.color-tem {
+  color: aliceblue;
+}
+
 .navbar {
   padding: 0.2rem 1rem;
-
   a.nav-link {
     font-weight: 400;
   }

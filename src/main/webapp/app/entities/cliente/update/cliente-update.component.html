@@ -1,0 +1,79 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-cliente-heading" data-cy="ClienteCreateUpdateHeading" jhiTranslate="gestionferrApp.cliente.home.createOrEditLabel">
+        Create or edit a Cliente
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="row mb-3" [hidden]="editForm.get('id')!.value == null">
+          <label class="form-label" jhiTranslate="global.field.id" for="field_id">ID</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="gestionferrApp.cliente.nombre" for="field_nombre">Nombre</label>
+          <input type="text" class="form-control" name="nombre" id="field_nombre" data-cy="nombre" formControlName="nombre" />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="gestionferrApp.cliente.numeroContacto" for="field_numeroContacto">Numero Contacto</label>
+          <input
+            type="text"
+            class="form-control"
+            name="numeroContacto"
+            id="field_numeroContacto"
+            data-cy="numeroContacto"
+            formControlName="numeroContacto"
+          />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="gestionferrApp.cliente.email" for="field_email">Email</label>
+          <input type="text" class="form-control" name="email" id="field_email" data-cy="email" formControlName="email" />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="gestionferrApp.cliente.tipoIdentificacion" for="field_tipoIdentificacion"
+            >Tipo Identificacion</label
+          >
+          <select
+            class="form-control"
+            name="tipoIdentificacion"
+            formControlName="tipoIdentificacion"
+            id="field_tipoIdentificacion"
+            data-cy="tipoIdentificacion"
+          >
+            <option [ngValue]="null">{{ 'gestionferrApp.TipoIdentificacionEnum.null' | translate }}</option>
+            <option *ngFor="let tipoIdentificacionEnum of tipoIdentificacionEnumValues" [value]="tipoIdentificacionEnum">
+              {{ 'gestionferrApp.TipoIdentificacionEnum.' + tipoIdentificacionEnum | translate }}
+            </option>
+          </select>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="gestionferrApp.cliente.numeroCC" for="field_numeroCC">Numero CC</label>
+          <input type="text" class="form-control" name="numeroCC" id="field_numeroCC" data-cy="numeroCC" formControlName="numeroCC" />
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

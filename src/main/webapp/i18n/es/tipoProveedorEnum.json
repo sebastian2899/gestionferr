@@ -1,0 +1,9 @@
+{
+  "gestionferrApp": {
+    "TipoProveedorEnum": {
+      "null": "",
+      "NATURAL": "NATURAL",
+      "JURIDICA": "JURIDICA"
+    }
+  }
+}

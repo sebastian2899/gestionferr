@@ -11,5 +11,11 @@ public final class Constants {
     public static final String SYSTEM = "system";
     public static final String DEFAULT_LANGUAGE = "es";
 
+    //VENTAS
+    public static final String RESTAR_PRODUCTOS_SELECCIONADOS = "UPDATE FROM Producto SET cantidad=cantidad-:cantidad WHERE id=:id";
+
+    //CATEGORIA
+    public static final String CONSULTAR_NOMBRE_CATEGORIA = "SELECT c.categoriaProducto FROM Categoria c WHERE c.id = :id";
+
     private Constants() {}
 }

@@ -1,0 +1,32 @@
+{
+  "applications": "*",
+  "changelogDate": "20220312172239",
+  "dto": "mapstruct",
+  "embedded": false,
+  "entityTableName": "item_factura_venta",
+  "fields": [
+    {
+      "fieldName": "idFacturaVenta",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "idProducto",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "cantidad",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "precio",
+      "fieldType": "BigDecimal"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "ItemFacturaVenta",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [],
+  "service": "serviceImpl"
+}

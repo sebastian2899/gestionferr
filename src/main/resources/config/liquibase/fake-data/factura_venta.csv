@@ -1,0 +1,11 @@
+id;numero_factura;fecha_creacion;info_cliente;valor_factura;valor_pagado;valor_deuda;tipo_factura;id_cliente
+1;invoice Cambridgeshire;2022-03-12T03:12:08;overriding;73629;69518;96283;DEBITO;90107
+2;Personal payment;2022-03-12T09:03:47;Versatil incentivize neural;40607;48601;39213;DEBITO;55650
+3;payment Interacciones;2022-03-12T01:05:46;Account;72854;20739;9114;DEBITO;67556
+4;quantifying bleeding-edge;2022-03-12T03:23:22;Sorprendente;40145;59983;54862;CREDITO;63527
+5;haptic Hecho multitarea;2022-03-12T01:56:26;Técnico HDD;20531;79491;65265;CREDITO;34134
+6;robust;2022-03-12T16:54:03;Fantástico Australian;13681;61866;66720;CREDITO;50137
+7;GB;2022-03-11T18:23:09;bandwidth recontextualize abierta;49938;33705;87624;CREDITO;97634
+8;Violeta;2022-03-12T13:00:22;Moda Interno;15721;37870;83300;CREDITO;6176
+9;Mesa facilitate Moda;2022-03-11T23:55:11;blockchains Central;88936;68248;79287;DEBITO;5830
+10;Account Cataluña;2022-03-12T08:51:06;Heredado compelling;46419;89283;88081;DEBITO;23408

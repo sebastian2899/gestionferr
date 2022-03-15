@@ -1,0 +1,42 @@
+{
+  "applications": "*",
+  "changelogDate": "20220312172237",
+  "dto": "mapstruct",
+  "embedded": false,
+  "entityTableName": "proveedor",
+  "fields": [
+    {
+      "fieldName": "nombre",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "numeroContacto",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "email",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "tipoIdentificacion",
+      "fieldType": "TipoIdentificacionEnum",
+      "fieldValues": "CC,NIT,ROOT,CE,TI"
+    },
+    {
+      "fieldName": "numeroCC",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "tipoProveedor",
+      "fieldType": "TipoProveedorEnum",
+      "fieldValues": "NATURAL,JURIDICA"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Proveedor",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [],
+  "service": "serviceImpl"
+}

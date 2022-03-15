@@ -1,0 +1,37 @@
+{
+  "applications": "*",
+  "changelogDate": "20220312172240",
+  "dto": "mapstruct",
+  "embedded": false,
+  "entityTableName": "caja",
+  "fields": [
+    {
+      "fieldName": "fechaCreacion",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "valorVentaDia",
+      "fieldType": "BigDecimal"
+    },
+    {
+      "fieldName": "valorRegistradoDia",
+      "fieldType": "BigDecimal"
+    },
+    {
+      "fieldName": "estado",
+      "fieldType": "TipoEstadoEnum",
+      "fieldValues": "PAGADA,DEUDA,CANCELADA"
+    },
+    {
+      "fieldName": "diferencia",
+      "fieldType": "BigDecimal"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Caja",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [],
+  "service": "serviceImpl"
+}

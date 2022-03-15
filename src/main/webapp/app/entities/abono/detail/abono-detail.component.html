@@ -1,0 +1,44 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="abono">
+      <h2 data-cy="abonoDetailsHeading"><span jhiTranslate="gestionferrApp.abono.detail.title">Abono</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ abono.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="gestionferrApp.abono.idFactura">Id Factura</span></dt>
+        <dd>
+          <span>{{ abono.idFactura }}</span>
+        </dd>
+        <dt><span jhiTranslate="gestionferrApp.abono.fechaCreacion">Fecha Creacion</span></dt>
+        <dd>
+          <span>{{ abono.fechaCreacion | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span jhiTranslate="gestionferrApp.abono.valorAbono">Valor Abono</span></dt>
+        <dd>
+          <span>{{ abono.valorAbono }}</span>
+        </dd>
+        <dt><span jhiTranslate="gestionferrApp.abono.tipoFactura">Tipo Factura</span></dt>
+        <dd>
+          <span>{{ abono.tipoFactura }}</span>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/abono', abono.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

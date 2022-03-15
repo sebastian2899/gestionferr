@@ -1,0 +1,10 @@
+{
+  "gestionferrApp": {
+    "TipoEstadoEnum": {
+      "null": "",
+      "PAGADA": "PAGADA",
+      "DEUDA": "DEUDA",
+      "CANCELADA": "CANCELADA"
+    }
+  }
+}

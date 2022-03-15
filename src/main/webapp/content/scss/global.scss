@@ -24,6 +24,14 @@ a:hover {
   color: #533f03;
 }
 
+.head-table {
+  background-color: #000;
+}
+
+.th-table {
+  color: white;
+}
+
 /* override hover color for dropdown-item forced by bootstrap to all a:not([href]):not([tabindex]) elements in _reboot.scss */
 a:not([href]):not([tabindex]):hover.dropdown-item {
   color: $dropdown-link-hover-color;
