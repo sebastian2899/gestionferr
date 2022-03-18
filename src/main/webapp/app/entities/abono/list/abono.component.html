@@ -1,74 +1,42 @@
-<div>
-  <h2 id="page-heading" data-cy="AbonoHeading">
-    <span jhiTranslate="gestionferrApp.abono.home.title">Abonos</span>
-
-    <div class="d-flex justify-content-end">
-      <button class="btn btn-info me-2" (click)="loadAll()" [disabled]="isLoading">
-        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
-        <span jhiTranslate="gestionferrApp.abono.home.refreshListLabel">Refresh List</span>
-      </button>
-
-      <button
-        id="jh-create-entity"
-        data-cy="entityCreateButton"
-        class="btn btn-primary jh-create-entity create-abono"
-        [routerLink]="['/abono/new']"
-      >
-        <fa-icon icon="plus"></fa-icon>
-        <span jhiTranslate="gestionferrApp.abono.home.createLabel"> Create a new Abono </span>
-      </button>
-    </div>
-  </h2>
-
-  <jhi-alert-error></jhi-alert-error>
-
-  <jhi-alert></jhi-alert>
-
-  <div class="alert alert-warning" id="no-result" *ngIf="abonos?.length === 0">
-    <span jhiTranslate="gestionferrApp.abono.home.notFound">No abonos found</span>
-  </div>
-
-  <div class="table-responsive" id="entities" *ngIf="abonos && abonos.length > 0">
-    <table class="table table-striped" aria-describedby="page-heading">
-      <thead>
-        <tr>
-          <th scope="col"><span jhiTranslate="global.field.id">ID</span></th>
-          <th scope="col"><span jhiTranslate="gestionferrApp.abono.idFactura">Id Factura</span></th>
-          <th scope="col"><span jhiTranslate="gestionferrApp.abono.fechaCreacion">Fecha Creacion</span></th>
-          <th scope="col"><span jhiTranslate="gestionferrApp.abono.valorAbono">Valor Abono</span></th>
-          <th scope="col"><span jhiTranslate="gestionferrApp.abono.tipoFactura">Tipo Factura</span></th>
-          <th scope="col"></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let abono of abonos; trackBy: trackId" data-cy="entityTable">
-          <td>
-            <a [routerLink]="['/abono', abono.id, 'view']">{{ abono.id }}</a>
-          </td>
-          <td>{{ abono.idFactura }}</td>
-          <td>{{ abono.fechaCreacion | formatMediumDatetime }}</td>
-          <td>{{ abono.valorAbono }}</td>
-          <td>{{ abono.tipoFactura }}</td>
-          <td class="text-end">
-            <div class="btn-group">
-              <button type="submit" [routerLink]="['/abono', abono.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
-                <fa-icon icon="eye"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
-              </button>
-
-              <button type="submit" [routerLink]="['/abono', abono.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
-                <fa-icon icon="pencil-alt"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
-              </button>
-
-              <button type="submit" (click)="delete(abono)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
-                <fa-icon icon="times"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
-              </button>
+<div class="container">
+  <div class="card o-hidden border-0 shadow-lg my-5">
+    <div class="card-body p-0">
+      <!-- Nested Row within Card Body -->
+      <div class="row">
+        <div class="col-md-5 imagen-abono"></div>
+        <div class="col-lg-7">
+          <div class="p-5">
+            <div class="text-center">
+              <h1 style="color: blue; font-style: normal; font-weight: bold" class="h4 text-gray-900 mb-4">
+                Abonos de la facutra con identificador: {{ idFactura }}
+              </h1>
             </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+
+            <div *ngIf="abonos === null || abonos!.length === 0">
+              <div class="alert alert-info" role="alert">
+                <p class="mb-0">Esta factura aun no tiene abonos registrados.</p>
+              </div>
+            </div>
+            <table *ngIf="abonos && abonos.length > 0" class="table table-hover">
+              <thead style="background-color: rgb(68, 125, 248)">
+                <tr>
+                  <th class="col"></th>
+                  <th scope="col">Varlo Abono</th>
+                  <th scope="col">Fecha Abono</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let abono of abonos">
+                  <td class="col"></td>
+                  <td>{{ abono.valorAbono }}</td>
+                  <td>{{ abono.fechaCreacion | formatMediumDate }}</td>
+                </tr>
+              </tbody>
+            </table>
+            <hr />
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

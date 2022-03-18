@@ -5,6 +5,9 @@ import com.gestionferr.app.repository.CajaRepository;
 import com.gestionferr.app.service.CajaService;
 import com.gestionferr.app.service.dto.CajaDTO;
 import com.gestionferr.app.service.mapper.CajaMapper;
+import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -73,5 +76,29 @@ public class CajaServiceImpl implements CajaService {
     public void delete(Long id) {
         log.debug("Request to delete Caja : {}", id);
         cajaRepository.deleteById(id);
+    }
+
+    @Override
+    public BigDecimal valoresDia() {
+        log.debug("Request to get value day");
+
+        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+        String fecha = format.format(new Date());
+
+        BigDecimal valorDiaFacturaVenta = cajaRepository.valorPagadoDia(fecha);
+
+        if (valorDiaFacturaVenta == null) {
+            valorDiaFacturaVenta = BigDecimal.ZERO;
+        }
+
+        BigDecimal valorAbonoDia = cajaRepository.valorABonoDia(fecha);
+
+        if (valorAbonoDia == null) {
+            valorAbonoDia = BigDecimal.ZERO;
+        }
+
+        BigDecimal valorTotal = valorDiaFacturaVenta.add(valorAbonoDia);
+
+        return valorTotal;
     }
 }

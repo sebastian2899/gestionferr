@@ -5,9 +5,10 @@ import { FacturaVentaDetailComponent } from './detail/factura-venta-detail.compo
 import { FacturaVentaUpdateComponent } from './update/factura-venta-update.component';
 import { FacturaVentaDeleteDialogComponent } from './delete/factura-venta-delete-dialog.component';
 import { FacturaVentaRoutingModule } from './route/factura-venta-routing.module';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
-  imports: [SharedModule, FacturaVentaRoutingModule],
+  imports: [SharedModule, FacturaVentaRoutingModule, MatIconModule],
   declarations: [FacturaVentaComponent, FacturaVentaDetailComponent, FacturaVentaUpdateComponent, FacturaVentaDeleteDialogComponent],
   entryComponents: [FacturaVentaDeleteDialogComponent],
 })

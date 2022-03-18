@@ -14,15 +14,28 @@ Navbar
   width: 1.75em;
 }
 
+.icon-position {
+  position: relative;
+  top: 4px;
+}
+
 .color-tem {
   color: aliceblue;
 }
 
 .navbar {
   padding: 0.2rem 1rem;
+  width: 100%;
+  position: fixed;
+  z-index: 100;
+  margin-top: -22px;
   a.nav-link {
     font-weight: 400;
   }
+}
+
+a:hover {
+  background-color: rgb(66, 66, 255);
 }
 
 /* ==========================================================================

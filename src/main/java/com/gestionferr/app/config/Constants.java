@@ -14,8 +14,18 @@ public final class Constants {
     //VENTAS
     public static final String RESTAR_PRODUCTOS_SELECCIONADOS = "UPDATE FROM Producto SET cantidad=cantidad-:cantidad WHERE id=:id";
 
+    public static final String SUMAR_PRODUCTOS_FACTURA_REVERTIDA = "UPDATE FROM Producto SET cantidad=cantidad+:cantidad" + " WHERE id=:id";
+
     //CATEGORIA
     public static final String CONSULTAR_NOMBRE_CATEGORIA = "SELECT c.categoriaProducto FROM Categoria c WHERE c.id = :id";
+
+    //ABONO
+    public static final String CONSULTAR_ABONOS_POR_FACTURAVENTA =
+        "SELECT a FROM Abono a WHERE a.idFactura=:idFactura AND " + "a.tipoFactura = 'Factura Venta'";
+
+    public static final String ELIMINAR_ABONOS_FACTURA = "DELETE FROM Abono WHERE idFactura=:id AND tipoFactura = 'Factura Venta'";
+
+    public static final String ELIMINAR_ITEMS_POR_FACTURA = "DELETE FROM ItemFacturaVenta WHERE idFacturaVenta =:id";
 
     private Constants() {}
 }

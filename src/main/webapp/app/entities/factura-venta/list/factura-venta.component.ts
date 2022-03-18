@@ -5,6 +5,8 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { IFacturaVenta } from '../factura-venta.model';
 import { FacturaVentaService } from '../service/factura-venta.service';
 import { FacturaVentaDeleteDialogComponent } from '../delete/factura-venta-delete-dialog.component';
+import { StateStorageService } from 'app/core/auth/state-storage.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'jhi-factura-venta',
@@ -14,7 +16,12 @@ export class FacturaVentaComponent implements OnInit {
   facturaVentas?: IFacturaVenta[];
   isLoading = false;
 
-  constructor(protected facturaVentaService: FacturaVentaService, protected modalService: NgbModal) {}
+  constructor(
+    protected facturaVentaService: FacturaVentaService,
+    protected modalService: NgbModal,
+    protected storageService: StateStorageService,
+    protected route: Router
+  ) {}
 
   loadAll(): void {
     this.isLoading = true;
@@ -28,6 +35,16 @@ export class FacturaVentaComponent implements OnInit {
         this.isLoading = false;
       },
     });
+  }
+
+  pasoParametroFactura(idFactura: number): void {
+    this.storageService.pasoParametroFactura(idFactura);
+    this.route.navigate(['abono/new']);
+  }
+
+  pasoParametroAbonosPorFactura(idFactura: number): void {
+    this.storageService.pasoParametroFactura(idFactura);
+    this.route.navigate(['abono']);
   }
 
   ngOnInit(): void {

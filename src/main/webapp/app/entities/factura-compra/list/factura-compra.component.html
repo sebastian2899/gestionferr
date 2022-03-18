@@ -79,6 +79,16 @@
                 <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
               </button>
 
+              <button
+                *ngIf="facturaCompra.valorDeuda! > 0"
+                type="submit"
+                class="btn btn-primary btn-sm"
+                data-cy="entityEditButton"
+                (click)="pasoParametroFacturaCompra(facturaCompra.id!)"
+              >
+                <span class="d-none d-md-inline">Abonar</span>
+              </button>
+
               <button type="submit" (click)="delete(facturaCompra)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
                 <fa-icon icon="times"></fa-icon>
                 <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>

@@ -69,6 +69,10 @@ export class NavbarComponent implements OnInit {
     this.router.navigate(['']);
   }
 
+  isAuthenticated(): boolean {
+    return this.accountService.isAuthenticated();
+  }
+
   toggleNavbar(): void {
     this.isNavbarCollapsed = !this.isNavbarCollapsed;
   }

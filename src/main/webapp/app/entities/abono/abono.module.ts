@@ -5,9 +5,11 @@ import { AbonoDetailComponent } from './detail/abono-detail.component';
 import { AbonoUpdateComponent } from './update/abono-update.component';
 import { AbonoDeleteDialogComponent } from './delete/abono-delete-dialog.component';
 import { AbonoRoutingModule } from './route/abono-routing.module';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
-  imports: [SharedModule, AbonoRoutingModule],
+  imports: [SharedModule, AbonoRoutingModule, MatMenuModule, MatIconModule],
   declarations: [AbonoComponent, AbonoDetailComponent, AbonoUpdateComponent, AbonoDeleteDialogComponent],
   entryComponents: [AbonoDeleteDialogComponent],
 })

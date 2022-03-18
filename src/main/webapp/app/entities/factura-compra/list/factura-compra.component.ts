@@ -5,6 +5,8 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { IFacturaCompra } from '../factura-compra.model';
 import { FacturaCompraService } from '../service/factura-compra.service';
 import { FacturaCompraDeleteDialogComponent } from '../delete/factura-compra-delete-dialog.component';
+import { StateStorageService } from 'app/core/auth/state-storage.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'jhi-factura-compra',
@@ -14,7 +16,12 @@ export class FacturaCompraComponent implements OnInit {
   facturaCompras?: IFacturaCompra[];
   isLoading = false;
 
-  constructor(protected facturaCompraService: FacturaCompraService, protected modalService: NgbModal) {}
+  constructor(
+    protected facturaCompraService: FacturaCompraService,
+    protected modalService: NgbModal,
+    protected storageService: StateStorageService,
+    protected router: Router
+  ) {}
 
   loadAll(): void {
     this.isLoading = true;
@@ -32,6 +39,11 @@ export class FacturaCompraComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadAll();
+  }
+
+  pasoParametroFacturaCompra(id: number): void {
+    this.storageService.pasoParametroFacturaCompra(id);
+    this.router.navigate(['abono/new']);
   }
 
   trackId(index: number, item: IFacturaCompra): number {

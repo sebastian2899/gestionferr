@@ -9,6 +9,7 @@ import com.gestionferr.app.service.FacturaVentaService;
 import com.gestionferr.app.service.dto.FacturaVentaDTO;
 import com.gestionferr.app.service.mapper.FacturaVentaMapper;
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.time.Instant;
 import java.util.LinkedList;
 import java.util.List;
@@ -149,6 +150,36 @@ public class FacturaVentaServiceImpl implements FacturaVentaService {
     @Override
     public void delete(Long id) {
         log.debug("Request to delete FacturaVenta : {}", id);
+
+        //SE VUELVEN A SUMAR LOS PRODUCTOS QUE SE VENDIERON EN LA FACTURA QUE ESTA POR REVERTIRSE
+        List<Object[]> datos = itemFacturaVentaRepository.productosRevertir(id);
+
+        for (Object[] dato : datos) {
+            Long cantidad = Long.parseLong(dato[1].toString());
+            BigDecimal cant = BigDecimal.valueOf(cantidad);
+            Query qu = entityManager
+                .createQuery(Constants.SUMAR_PRODUCTOS_FACTURA_REVERTIDA)
+                .setParameter("cantidad", cant)
+                .setParameter("id", Long.parseLong(dato[0].toString()));
+
+            qu.executeUpdate();
+        }
+
+        if (id != null) {
+            //SE BORRAN TODOS LOS ABONOS RELACIONADOS CON LA FACTURA QUE SE ELIMINO
+            Query q = entityManager.createQuery(Constants.ELIMINAR_ABONOS_FACTURA).setParameter("id", id);
+            q.executeUpdate();
+        }
+
+        //SE BORRAN TODOS LOS ITEMS FACTURA RELACIONADOS CON ESTA FACTUDA
+        eliminarItemsPOrFactura(id);
+
         facturaVentaRepository.deleteById(id);
+    }
+
+    private void eliminarItemsPOrFactura(Long id) {
+        Query query = entityManager.createQuery(Constants.ELIMINAR_ITEMS_POR_FACTURA).setParameter("id", id);
+
+        query.executeUpdate();
     }
 }

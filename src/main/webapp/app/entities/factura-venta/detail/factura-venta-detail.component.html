@@ -42,10 +42,6 @@
         <dd>
           <span jhiTranslate="{{ 'gestionferrApp.TipoFacturaEnum.' + facturaVenta.tipoFactura }}">{{ facturaVenta.tipoFactura }}</span>
         </dd>
-        <dt><span jhiTranslate="gestionferrApp.facturaVenta.idCliente">Id Cliente</span></dt>
-        <dd>
-          <span>{{ facturaVenta.idCliente }}</span>
-        </dd>
       </dl>
 
       <div class="alert alert-primary" role="alert" *ngIf="facturaVenta.itemsPorFactura!.length === 0">
@@ -57,7 +53,7 @@
       <div class="row" *ngIf="facturaVenta.itemsPorFactura && facturaVenta.itemsPorFactura.length > 0">
         <div class="md-5">
           <div class="d-flex justify-content-center">
-            <h2 style="color: blue">Items Factura Numero: {{ facturaVenta.numeroFactura }}</h2>
+            <h2 style="color: blue; font-style: normal; font-weight: bold">Items Factura Numero: {{ facturaVenta.numeroFactura }}</h2>
           </div>
         </div>
         <table class="table table-hover">
@@ -69,7 +65,7 @@
               <th scope="col">Precio</th>
             </tr>
           </thead>
-          <tbody style="background-color: rgb(191, 217, 250)">
+          <tbody style="background-color: rgb(243, 244, 245)">
             <tr *ngFor="let item of facturaVenta.itemsPorFactura">
               <th scope="row">-</th>
               <td>{{ item.nombreProducto }}</td>

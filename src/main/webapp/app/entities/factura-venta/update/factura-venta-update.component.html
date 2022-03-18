@@ -3,10 +3,10 @@
     <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
       <h2
         id="jhi-factura-venta-heading"
+        style="font-style: normal; font-weight: bold; margin-bottom: 50px; color: blue"
         data-cy="FacturaVentaCreateUpdateHeading"
-        jhiTranslate="gestionferrApp.facturaVenta.home.createOrEditLabel"
       >
-        Create or edit a Factura Venta
+        {{ titulo }}
       </h2>
 
       <div>
@@ -186,7 +186,7 @@
       </div>
 
       <div>
-        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-dark" (click)="previousState()">
           <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
         </button>
 

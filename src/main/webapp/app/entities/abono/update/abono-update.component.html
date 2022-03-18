@@ -1,65 +1,72 @@
 <div class="d-flex justify-content-center">
-  <div class="col-8">
+  <div class="col-10">
     <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
-      <h2 id="jhi-abono-heading" data-cy="AbonoCreateUpdateHeading" jhiTranslate="gestionferrApp.abono.home.createOrEditLabel">
+      <h2
+        id="jhi-abono-heading"
+        style="margin-bottom: 30px; color: blue; font-style: normal; font-weight: bold"
+        data-cy="AbonoCreateUpdateHeading"
+        jhiTranslate="gestionferrApp.abono.home.createOrEditLabel"
+      >
         Create or edit a Abono
       </h2>
 
       <div>
         <jhi-alert-error></jhi-alert-error>
 
-        <div class="row mb-3" [hidden]="editForm.get('id')!.value == null">
-          <label class="form-label" jhiTranslate="global.field.id" for="field_id">ID</label>
-          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
-        </div>
-
-        <div class="row mb-3">
-          <label class="form-label" jhiTranslate="gestionferrApp.abono.idFactura" for="field_idFactura">Id Factura</label>
-          <input type="number" class="form-control" name="idFactura" id="field_idFactura" data-cy="idFactura" formControlName="idFactura" />
-        </div>
-
-        <div class="row mb-3">
-          <label class="form-label" jhiTranslate="gestionferrApp.abono.fechaCreacion" for="field_fechaCreacion">Fecha Creacion</label>
-          <div class="d-flex">
+        <div class="row">
+          <div class="col-md-5">
+            <label class="form-label" jhiTranslate="gestionferrApp.abono.valorAbono" for="field_valorAbono">Valor Abono</label>
             <input
-              id="field_fechaCreacion"
-              data-cy="fechaCreacion"
-              type="datetime-local"
+              type="number"
               class="form-control"
-              name="fechaCreacion"
-              formControlName="fechaCreacion"
-              placeholder="YYYY-MM-DD HH:mm"
+              name="valorAbono"
+              id="field_valorAbono"
+              data-cy="valorAbono"
+              formControlName="valorAbono"
+              (keyup)="restarValores()"
+            />
+            <div *ngIf="validarPrecioAbono" class="alert alert-warning" role="alert">
+              <p class="mb-0">Recuerde que el valor ha abonar no debe ser mayor al valor total de la deuda.</p>
+            </div>
+          </div>
+
+          <div class="col-md-3 mb-5">
+            <label class="form-label" for="field_valorDeuda">Valor deuda</label>
+            <input
+              readonly
+              type="number"
+              class="form-control"
+              name="valorDeuda"
+              id="field_valorDeuda"
+              data-cy="valorDeuda"
+              formControlName="valorDeuda"
+            />
+          </div>
+
+          <div class="col-md-3 mb-5">
+            <label class="form-label" jhiTranslate="gestionferrApp.abono.tipoFactura" for="field_tipoFactura">Tipo Factura</label>
+            <input
+              readonly
+              type="text"
+              class="form-control"
+              name="tipoFactura"
+              id="field_tipoFactura"
+              data-cy="tipoFactura"
+              formControlName="tipoFactura"
             />
           </div>
         </div>
-
-        <div class="row mb-3">
-          <label class="form-label" jhiTranslate="gestionferrApp.abono.valorAbono" for="field_valorAbono">Valor Abono</label>
-          <input
-            type="number"
-            class="form-control"
-            name="valorAbono"
-            id="field_valorAbono"
-            data-cy="valorAbono"
-            formControlName="valorAbono"
-          />
-        </div>
-
-        <div class="row mb-3">
-          <label class="form-label" jhiTranslate="gestionferrApp.abono.tipoFactura" for="field_tipoFactura">Tipo Factura</label>
-          <input
-            type="text"
-            class="form-control"
-            name="tipoFactura"
-            id="field_tipoFactura"
-            data-cy="tipoFactura"
-            formControlName="tipoFactura"
-          />
-        </div>
       </div>
 
-      <div>
-        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+      <div class="d-flex justify-content-center">
+        <button
+          type="button"
+          id="cancel-save"
+          style="margin-right: 10px"
+          data-cy="entityCreateCancelButton"
+          class="btn btn-secondary"
+          (click)="previousState()"
+        >
           <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
         </button>
 
@@ -67,7 +74,7 @@
           type="submit"
           id="save-entity"
           data-cy="entityCreateSaveButton"
-          [disabled]="editForm.invalid || isSaving"
+          [disabled]="editForm.invalid || isSaving || validarPrecioAbono"
           class="btn btn-primary"
         >
           <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>

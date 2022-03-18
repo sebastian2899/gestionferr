@@ -1,6 +1,7 @@
 package com.gestionferr.app.service;
 
 import com.gestionferr.app.service.dto.CajaDTO;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -45,4 +46,6 @@ public interface CajaService {
      * @param id the id of the entity.
      */
     void delete(Long id);
+
+    BigDecimal valoresDia();
 }

@@ -41,6 +41,7 @@ export class FacturaVentaUpdateComponent implements OnInit {
   mensajeAlertaProductoVacio = 'Por favor seleccione un producto y una cantidad';
   validarValorDeuda?: boolean | null;
   mensajeValorDeuda = 'Para guardar la factura, asegurese de no estar debiendo un valor al cliente.';
+  titulo?: string | null;
 
   editForm = this.fb.group({
     id: [],
@@ -71,6 +72,9 @@ export class FacturaVentaUpdateComponent implements OnInit {
       if (facturaVenta.id === undefined) {
         const today = dayjs().startOf('day');
         facturaVenta.fechaCreacion = today;
+        this.titulo = 'Crear Factura';
+      } else {
+        this.titulo = 'Actualizar Factura';
       }
 
       this.updateForm(facturaVenta);
@@ -80,25 +84,25 @@ export class FacturaVentaUpdateComponent implements OnInit {
   }
 
   consultarProductos(): void {
-    this.productoService.query().subscribe(
-      (res: HttpResponse<IProducto[]>) => {
+    this.productoService.query().subscribe({
+      next: (res: HttpResponse<IProducto[]>) => {
         this.productos = res.body ?? [];
       },
-      () => {
+      error: () => {
         this.productos = [];
-      }
-    );
+      },
+    });
   }
 
   consultarClientes(): void {
-    this.clienteService.query().subscribe(
-      (res: HttpResponse<ICliente[]>) => {
+    this.clienteService.query().subscribe({
+      next: (res: HttpResponse<ICliente[]>) => {
         this.clientes = res.body ?? [];
       },
-      () => {
+      error: () => {
         this.clientes = [];
-      }
-    );
+      },
+    });
   }
 
   previousState(): void {

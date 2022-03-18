@@ -45,4 +45,6 @@ public interface AbonoService {
      * @param id the id of the entity.
      */
     void delete(Long id);
+
+    List<AbonoDTO> abonosPorFactura(Long id);
 }

@@ -15,6 +15,7 @@ export type EntityArrayResponseType = HttpResponse<IAbono[]>;
 @Injectable({ providedIn: 'root' })
 export class AbonoService {
   protected resourceUrl = this.applicationConfigService.getEndpointFor('api/abonos');
+  protected AbonosPorFacturaUrl = this.applicationConfigService.getEndpointFor('api/abonosFactura');
 
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
@@ -49,6 +50,12 @@ export class AbonoService {
     const options = createRequestOption(req);
     return this.http
       .get<IAbono[]>(this.resourceUrl, { params: options, observe: 'response' })
+      .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
+  }
+
+  abonosPorFactura(id: number): Observable<EntityArrayResponseType> {
+    return this.http
+      .get<IAbono[]>(`${this.AbonosPorFacturaUrl}/${id}`, { observe: 'response' })
       .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
   }
 

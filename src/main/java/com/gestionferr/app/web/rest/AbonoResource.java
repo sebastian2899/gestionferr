@@ -154,6 +154,12 @@ public class AbonoResource {
         return ResponseUtil.wrapOrNotFound(abonoDTO);
     }
 
+    @GetMapping("/abonosFactura/{id}")
+    public List<AbonoDTO> getAbonosPorFactura(@PathVariable Long id) {
+        log.debug("REST request to get Abonos per Factura : {}", id);
+        return abonoService.abonosPorFactura(id);
+    }
+
     /**
      * {@code DELETE  /abonos/:id} : delete the "id" abono.
      *
