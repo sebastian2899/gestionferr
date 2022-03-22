@@ -2,15 +2,27 @@
   <h2 style="color: blue; font-style: normal; font-weight: bold" id="page-heading" data-cy="FacturaVentaHeading">
     Factura Venta
     <div class="d-flex justify-content-end mb-5">
-      <button class="btn btn-info me-2" (click)="loadAll()" [disabled]="isLoading">
-        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
-        <span jhiTranslate="gestionferrApp.facturaVenta.home.refreshListLabel">Refresh List</span>
-      </button>
+      <div class="dropdown me-2">
+        <button
+          class="btn btn-outline-dark dropdown-toggle"
+          type="button"
+          id="dropdownMenuButton1"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+          style="border: none; font-size: 25px; font-weight: bold"
+        >
+          Opciones
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+          <li><a class="dropdown-item" (click)="generearReporteMensual()">Generar Reporte (PDF)</a></li>
+          <li><a class="dropdown-item" [routerLink]="['/factura-venta/factura-fechas']">Consultar Facturas Mensuales</a></li>
+        </ul>
+      </div>
 
       <button
         id="jh-create-entity"
         data-cy="entityCreateButton"
-        class="btn btn-primary jh-create-entity create-factura-venta"
+        class="btn btn-outline-primary jh-create-entity create-factura-venta"
         [routerLink]="['/factura-venta/new']"
       >
         <fa-icon icon="plus"></fa-icon>
@@ -18,6 +30,44 @@
       </button>
     </div>
   </h2>
+
+  <div class="row mb-5">
+    <div class="col-md-3">
+      <label for="nombreCliente" class="form-label">Nombre Cliente</label>
+      <input
+        type="text"
+        (keyup)="facturasFiltro()"
+        class="form-control"
+        placeholder="Filtrar por nombre del cliente"
+        [(ngModel)]="nombreCliente"
+      />
+    </div>
+
+    <div class="col-md-3 mb-5">
+      <label for="estado" class="form-label">Estado</label>
+      <input type="text" (keyup)="facturasFiltro()" class="form-control" placeholder="Filtrar por estado" [(ngModel)]="estado" />
+    </div>
+
+    <div class="col-md-3 mb-5">
+      <label for="nombreCliente" class="form-label">Numero Factura</label>
+      <input
+        type="text"
+        (keyup)="facturasFiltro()"
+        class="form-control"
+        placeholder="Filtrar por numero de factura"
+        [(ngModel)]="numeroFactura"
+      />
+    </div>
+
+    <div class="col-md-4">
+      <label for="fecha" class="form-label">Fecha</label>
+      <input type="datetime-local" class="form-control" [(ngModel)]="fecha" />
+    </div>
+
+    <div class="col-md-2" style="margin-top: 30px">
+      <button (click)="filtrarPorFecha()" class="btn btn-primary">Filtrar</button>
+    </div>
+  </div>
 
   <jhi-alert-error></jhi-alert-error>
 
@@ -34,6 +84,7 @@
           <th scope="col"><span></span></th>
           <th scope="col"><span jhiTranslate="gestionferrApp.facturaVenta.numeroFactura">Numero Factura</span></th>
           <th scope="col"><span jhiTranslate="gestionferrApp.facturaVenta.fechaCreacion">Fecha Creacion</span></th>
+          <th scope="col"><span>Cliente</span></th>
           <th scope="col"><span>Estado</span></th>
           <th scope="col"><span jhiTranslate="gestionferrApp.facturaVenta.valorFactura">Valor Factura</span></th>
           <th scope="col"><span jhiTranslate="gestionferrApp.facturaVenta.valorDeuda">Valor Deuda</span></th>
@@ -46,8 +97,7 @@
           <td>
             <div class="dropdown">
               <button
-                style="color: blue"
-                class="menu-config"
+                class="menu-config btn btn-primary"
                 type="button"
                 id="dropdownMenuButton1"
                 data-bs-toggle="dropdown"
@@ -56,39 +106,51 @@
                 <mat-icon>more_vert</mat-icon>
               </button>
               <ul class="dropdown-menu" style="padding: 15px" aria-labelledby="dropdownMenuButton1">
-                <button class="menu-config boton-menu" [routerLink]="['/factura-venta', facturaVenta.id, 'view']">
+                <button class="menu-config btn-primary boton-menu" [routerLink]="['/factura-venta', facturaVenta.id, 'view']">
                   <mat-icon style="position: relative; top: 6px">preview</mat-icon>
                   <span>Ver</span>
                 </button>
 
-                <button class="menu-config boton-menu" [routerLink]="['/factura-venta', facturaVenta.id, 'edit']">
+                <button class="menu-config btn-primary boton-menu" [routerLink]="['/factura-venta', facturaVenta.id, 'edit']">
                   <mat-icon class="icon-config">edit</mat-icon>
                   <span>Editar</span>
                 </button>
 
-                <button class="menu-config boton-menu" (click)="pasoParametroAbonosPorFactura(facturaVenta.id!)">
+                <button class="menu-config btn-primary boton-menu" (click)="pasoParametroAbonosPorFactura(facturaVenta.id!)">
                   <mat-icon class="icon-config">find_in_page</mat-icon>
                   <span>Ver Abonos</span>
                 </button>
 
                 <button
                   *ngIf="facturaVenta.valorDeuda! > 0"
-                  class="menu-config boton-menu"
+                  class="menu-config btn-primary boton-menu"
                   (click)="pasoParametroFactura(facturaVenta.id!)"
                 >
                   <mat-icon class="icon-config">paid</mat-icon>
                   <span>Abonar</span>
                 </button>
 
-                <button class="menu-config boton-menu" (click)="delete(facturaVenta)">
-                  <mat-icon style="color: red" class="icon-config">delete</mat-icon>
-                  <span>Eliminar</span>
+                <button class="menu-config boton-eliminar" (click)="delete(facturaVenta)">
+                  <mat-icon class="icon-config-eliminar">delete</mat-icon>
+                  <span>Revertir</span>
                 </button>
               </ul>
             </div>
           </td>
           <td>{{ facturaVenta.numeroFactura }}</td>
           <td>{{ facturaVenta.fechaCreacion | formatMediumDatetime }}</td>
+          <td>
+            <button
+              [disabled]="facturaVenta.idCliente === null"
+              class="boton-cliente-venta"
+              [routerLink]="['/cliente', facturaVenta.idCliente, 'view']"
+            >
+              {{ facturaVenta.infoCliente }}
+            </button>
+            <!-- <div *ngIf="facturaVenta.idCliente === null" class="alert alert-success" role="alert">
+              <p class="mb-0">El cliente que desea seleccionar no esta registrado en el sistema.</p>
+            </div> -->
+          </td>
           <td>{{ facturaVenta.estado }}</td>
           <td>{{ facturaVenta.valorFactura }}</td>
           <td>{{ facturaVenta.valorDeuda }}</td>

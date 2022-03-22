@@ -8,13 +8,19 @@ import { isPresent } from 'app/core/util/operators';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
 import { IFacturaVenta, getFacturaVentaIdentifier } from '../factura-venta.model';
+import { IFacturaVentaFechas } from '../factura-fechas';
 
 export type EntityResponseType = HttpResponse<IFacturaVenta>;
 export type EntityArrayResponseType = HttpResponse<IFacturaVenta[]>;
+export type valoresFacturaFechaType = HttpResponse<IFacturaVentaFechas>;
 
 @Injectable({ providedIn: 'root' })
 export class FacturaVentaService {
   protected resourceUrl = this.applicationConfigService.getEndpointFor('api/factura-ventas');
+  protected FacturaFiltroResourceUrl = this.applicationConfigService.getEndpointFor('api/facturaFiltros');
+  protected FacturaFechaResourceUrl = this.applicationConfigService.getEndpointFor('api/facturaFechas');
+  protected valoresFactuaFechaUrl = this.applicationConfigService.getEndpointFor('api/valor-factura-mes');
+  protected reporteMensualFacturasUrl = this.applicationConfigService.getEndpointFor('api/reporte-factura-venta');
 
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
@@ -23,6 +29,27 @@ export class FacturaVentaService {
     return this.http
       .post<IFacturaVenta>(this.resourceUrl, copy, { observe: 'response' })
       .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
+  }
+
+  generarReporteMensual(): Observable<any> {
+    const httpOption = { responseType: 'arrayBuffer' as 'json' };
+    return this.http.get<any>(this.reporteMensualFacturasUrl, httpOption);
+  }
+
+  facturaFiltros(facturaVenta: IFacturaVenta): Observable<EntityArrayResponseType> {
+    return this.http
+      .post<IFacturaVenta[]>(this.FacturaFiltroResourceUrl, facturaVenta, { observe: 'response' })
+      .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
+  }
+
+  valoresFacturaMes(fechaInicio: string, fechaFin: string): Observable<valoresFacturaFechaType> {
+    return this.http.get<IFacturaVentaFechas>(`${this.valoresFactuaFechaUrl}/${fechaInicio}/${fechaFin}`, { observe: 'response' });
+  }
+
+  facturaFecha(fecha: string): Observable<EntityArrayResponseType> {
+    return this.http
+      .get<IFacturaVenta[]>(`${this.FacturaFechaResourceUrl}/${fecha}`, { observe: 'response' })
+      .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
   }
 
   update(facturaVenta: IFacturaVenta): Observable<EntityResponseType> {

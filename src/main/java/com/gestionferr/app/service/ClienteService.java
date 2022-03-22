@@ -37,7 +37,7 @@ public interface ClienteService {
      * @param id the id of the entity.
      * @return the entity.
      */
-    Optional<ClienteDTO> findOne(Long id);
+    ClienteDTO findOne(Long id);
 
     /**
      * Delete the "id" cliente.
@@ -45,4 +45,6 @@ public interface ClienteService {
      * @param id the id of the entity.
      */
     void delete(Long id);
+
+    List<ClienteDTO> clientesFiltro(ClienteDTO cliente);
 }

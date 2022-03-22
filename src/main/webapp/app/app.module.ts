@@ -27,6 +27,8 @@ import { ActiveMenuDirective } from './layouts/navbar/active-menu.directive';
 import { ErrorComponent } from './layouts/error/error.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ButtonModule } from 'primeng/button';
 
 @NgModule({
   imports: [
@@ -35,6 +37,8 @@ import { MatMenuModule } from '@angular/material/menu';
     SharedModule,
     HomeModule,
     MatIconModule,
+    BrowserAnimationsModule,
+    ButtonModule,
     // jhipster-needle-angular-add-module JHipster will add new module here
     AppRoutingModule,
     // Set this to true to enable service worker (PWA)

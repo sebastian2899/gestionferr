@@ -1,5 +1,6 @@
 package com.gestionferr.app.repository;
 
+import com.gestionferr.app.domain.Abono;
 import com.gestionferr.app.domain.FacturaVenta;
 import com.gestionferr.app.domain.ItemFacturaVenta;
 import com.gestionferr.app.domain.Producto;
@@ -26,6 +27,12 @@ public interface FacturaVentaRepository extends JpaRepository<FacturaVenta, Long
 
     @Query("SELECT p FROM Producto p WHERE p.id =:id")
     Producto productoPorId(@Param("id") Long id);
+
+    @Query("SELECT f FROM FacturaVenta f ORDER BY f.fechaCreacion DESC")
+    List<FacturaVenta> facturasOrdenadas();
+
+    @Query("SELECT a From Abono a WHERE a.idFactura =:id AND a.tipoFactura = 'Factura Venta'")
+    List<Abono> abonosPorFactura(@Param("id") Long id);
 
     @Query("SELECT c.nombre FROM Cliente c WHERE c.id=:id")
     String nombreCliente(@Param("id") Long id);

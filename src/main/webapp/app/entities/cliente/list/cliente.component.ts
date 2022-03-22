@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
-import { ICliente } from '../cliente.model';
+import { Cliente, ICliente } from '../cliente.model';
 import { ClienteService } from '../service/cliente.service';
 import { ClienteDeleteDialogComponent } from '../delete/cliente-delete-dialog.component';
 
@@ -13,6 +13,9 @@ import { ClienteDeleteDialogComponent } from '../delete/cliente-delete-dialog.co
 export class ClienteComponent implements OnInit {
   clientes?: ICliente[];
   isLoading = false;
+  cliente?: ICliente | null;
+  nombre = '';
+  numeroCC = '';
 
   constructor(protected clienteService: ClienteService, protected modalService: NgbModal) {}
 
@@ -26,6 +29,21 @@ export class ClienteComponent implements OnInit {
       },
       error: () => {
         this.isLoading = false;
+      },
+    });
+  }
+
+  filtrarCliente(): void {
+    this.cliente = new Cliente();
+    this.cliente.nombre = this.nombre;
+    this.cliente.numeroCC = this.numeroCC;
+
+    this.clienteService.clientesFiltro(this.cliente).subscribe({
+      next: (res: HttpResponse<ICliente[]>) => {
+        this.clientes = res.body ?? [];
+      },
+      error: () => {
+        this.clientes = [];
       },
     });
   }

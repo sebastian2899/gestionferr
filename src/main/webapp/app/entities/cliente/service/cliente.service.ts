@@ -13,11 +13,16 @@ export type EntityArrayResponseType = HttpResponse<ICliente[]>;
 @Injectable({ providedIn: 'root' })
 export class ClienteService {
   protected resourceUrl = this.applicationConfigService.getEndpointFor('api/clientes');
+  protected ClientesFiltroUrl = this.applicationConfigService.getEndpointFor('api/clientes-filtro');
 
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
   create(cliente: ICliente): Observable<EntityResponseType> {
     return this.http.post<ICliente>(this.resourceUrl, cliente, { observe: 'response' });
+  }
+
+  clientesFiltro(cliente: ICliente): Observable<EntityArrayResponseType> {
+    return this.http.post<ICliente[]>(this.ClientesFiltroUrl, cliente, { observe: 'response' });
   }
 
   update(cliente: ICliente): Observable<EntityResponseType> {

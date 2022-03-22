@@ -1,22 +1,24 @@
 <div>
-  <h2 id="page-heading" data-cy="CajaHeading">
-    <span jhiTranslate="gestionferrApp.caja.home.title">Cajas</span>
+  <h2 id="page-heading" data-cy="CajaHeading" style="margin-bottom: 70px">
+    <div class="d-flex justify-content-center mb-5">
+      <span style="color: blue; font-style: normal; font-weight: bold" jhiTranslate="gestionferrApp.caja.home.title">Cajas</span>
+    </div>
 
-    <div class="d-flex justify-content-end">
-      <button class="btn btn-info me-2" (click)="loadAll()" [disabled]="isLoading">
-        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
-        <span jhiTranslate="gestionferrApp.caja.home.refreshListLabel">Refresh List</span>
-      </button>
-
-      <button
-        id="jh-create-entity"
-        data-cy="entityCreateButton"
-        class="btn btn-primary jh-create-entity create-caja"
-        [routerLink]="['/caja/new']"
+    <div class="d-flex justify-content-around mb-2">
+      <a class="link-caja">
+        <mat-icon style="font-size: 40px; margin-right: 25px; position: relative; top: 12px">manage_search</mat-icon>
+        <span>Consultar caja mensual</span></a
       >
+
+      <a class="link-caja">
+        <mat-icon style="font-size: 40px; margin-right: 25px; position: relative; top: 12px">picture_as_pdf</mat-icon>
+        <span>Generar PDF</span>
+      </a>
+
+      <a style="margin-top: 22px" id="jh-create-entity" data-cy="entityCreateButton" class="link-caja" [routerLink]="['/caja/new']">
         <fa-icon icon="plus"></fa-icon>
-        <span jhiTranslate="gestionferrApp.caja.home.createLabel"> Create a new Caja </span>
-      </button>
+        <span>Crear caja del dia </span>
+      </a>
     </div>
   </h2>
 
@@ -30,9 +32,9 @@
 
   <div class="table-responsive" id="entities" *ngIf="cajas && cajas.length > 0">
     <table class="table table-striped" aria-describedby="page-heading">
-      <thead>
+      <thead style="background-color: rgb(120, 167, 253)">
         <tr>
-          <th scope="col"><span jhiTranslate="global.field.id">ID</span></th>
+          <th scope="col"></th>
           <th scope="col"><span jhiTranslate="gestionferrApp.caja.fechaCreacion">Fecha Creacion</span></th>
           <th scope="col"><span jhiTranslate="gestionferrApp.caja.valorVentaDia">Valor Venta Dia</span></th>
           <th scope="col"><span jhiTranslate="gestionferrApp.caja.valorRegistradoDia">Valor Registrado Dia</span></th>
@@ -44,7 +46,29 @@
       <tbody>
         <tr *ngFor="let caja of cajas; trackBy: trackId" data-cy="entityTable">
           <td>
-            <a [routerLink]="['/caja', caja.id, 'view']">{{ caja.id }}</a>
+            <div class="dropdown">
+              <button
+                style="color: blue"
+                class="menu-config btn btn-primary"
+                type="button"
+                id="dropdownMenuButton1"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <mat-icon>more_vert</mat-icon>
+              </button>
+              <ul class="dropdown-menu" style="padding: 15px" aria-labelledby="dropdownMenuButton1">
+                <button class="menu-config btn btn-primary" [routerLink]="['/caja', caja.id, 'view']">
+                  <mat-icon style="position: relative; top: 6px">preview</mat-icon>
+                  <span>Ver</span>
+                </button>
+                <br />
+                <button class="menu-config boton-eliminar" (click)="delete(caja)">
+                  <mat-icon style="position: relative; top: 6px; color: red">delete</mat-icon>
+                  <span>Borrar</span>
+                </button>
+              </ul>
+            </div>
           </td>
           <td>{{ caja.fechaCreacion | formatMediumDatetime }}</td>
           <td>{{ caja.valorVentaDia }}</td>
@@ -53,7 +77,7 @@
           <td>{{ caja.diferencia }}</td>
           <td class="text-end">
             <div class="btn-group">
-              <button type="submit" [routerLink]="['/caja', caja.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
+              <!-- <button type="submit" [routerLink]="['/caja', caja.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
                 <fa-icon icon="eye"></fa-icon>
                 <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
               </button>
@@ -61,12 +85,7 @@
               <button type="submit" [routerLink]="['/caja', caja.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
                 <fa-icon icon="pencil-alt"></fa-icon>
                 <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
-              </button>
-
-              <button type="submit" (click)="delete(caja)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
-                <fa-icon icon="times"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
-              </button>
+              </button> -->
             </div>
           </td>
         </tr>

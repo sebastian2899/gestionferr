@@ -1,7 +1,9 @@
 <div class="d-flex justify-content-center">
   <div class="col-8">
     <div *ngIf="cliente">
-      <h2 data-cy="clienteDetailsHeading"><span jhiTranslate="gestionferrApp.cliente.detail.title">Cliente</span></h2>
+      <h2 class="titulo-entidades" data-cy="clienteDetailsHeading">
+        <span jhiTranslate="gestionferrApp.cliente.detail.title">Cliente</span>
+      </h2>
 
       <hr />
 
@@ -10,10 +12,6 @@
       <jhi-alert></jhi-alert>
 
       <dl class="row-md jh-entity-details">
-        <dt><span jhiTranslate="global.field.id">ID</span></dt>
-        <dd>
-          <span>{{ cliente.id }}</span>
-        </dd>
         <dt><span jhiTranslate="gestionferrApp.cliente.nombre">Nombre</span></dt>
         <dd>
           <span>{{ cliente.nombre }}</span>
@@ -38,11 +36,46 @@
         </dd>
       </dl>
 
-      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+      <div *ngIf="cliente.facturasCliente === null || cliente.facturasCliente!.length === 0" class="alert alert-success" role="alert">
+        <h4 class="alert-heading">Este cliente no tiene facturas registradas</h4>
+        <p></p>
+        <p class="mb-0">
+          Dirigase a la seccion de factura ventas si quiere buscar una factura especifica relacionada a este cliente, <br />
+          ya que en el momento, el cliente no presenta ninguna factura pendiente.
+        </p>
+      </div>
+
+      <div *ngIf="cliente.facturasCliente && cliente.facturasCliente.length > 0" class="mt-5 mb-3 d-flex justify-content-center">
+        <h5 class="titulo-entidades">Facturas Relacionadas Del Cliente</h5>
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th scope="row"></th>
+              <th scope="col">Numero Factura</th>
+              <th scope="col">Valor Factura</th>
+              <th scope="col">Fecha Factura</th>
+              <th scope="col">Valor Pagado</th>
+              <th scope="col">Deuda</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let factura of cliente.facturasCliente">
+              <th scope="row"></th>
+              <td>{{ factura.numeroFactura | currency }}</td>
+              <td>{{ factura.valorFactura }}</td>
+              <td>{{ factura.fechaCreacion | formatMediumDatetime }}</td>
+              <td>{{ factura.valorPagado | currency }}</td>
+              <td>{{ factura.valorDeuda }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <button type="submit" (click)="previousState()" class="btn btn-outline-primary" data-cy="entityDetailsBackButton">
         <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
       </button>
 
-      <button type="button" [routerLink]="['/cliente', cliente.id, 'edit']" class="btn btn-primary">
+      <button type="button" [routerLink]="['/cliente', cliente.id, 'edit']" class="btn btn-outline-primary">
         <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
       </button>
     </div>

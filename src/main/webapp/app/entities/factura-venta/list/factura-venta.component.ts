@@ -2,11 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
-import { IFacturaVenta } from '../factura-venta.model';
+import { FacturaVenta, IFacturaVenta } from '../factura-venta.model';
 import { FacturaVentaService } from '../service/factura-venta.service';
 import { FacturaVentaDeleteDialogComponent } from '../delete/factura-venta-delete-dialog.component';
 import { StateStorageService } from 'app/core/auth/state-storage.service';
 import { Router } from '@angular/router';
+import dayjs from 'dayjs/esm';
+import { AlertService } from 'app/core/util/alert.service';
+import { ClienteService } from 'app/entities/cliente/service/cliente.service';
+import { ICliente } from 'app/entities/cliente/cliente.model';
 
 @Component({
   selector: 'jhi-factura-venta',
@@ -14,13 +18,21 @@ import { Router } from '@angular/router';
 })
 export class FacturaVentaComponent implements OnInit {
   facturaVentas?: IFacturaVenta[];
+  facturaVenta?: IFacturaVenta | null;
   isLoading = false;
+  numeroFactura = '';
+  nombreCliente = '';
+  estado = '';
+  fecha?: dayjs.Dayjs | null;
+  cliente?: ICliente | null;
 
   constructor(
     protected facturaVentaService: FacturaVentaService,
     protected modalService: NgbModal,
     protected storageService: StateStorageService,
-    protected route: Router
+    protected route: Router,
+    protected alert: AlertService,
+    protected clienteService: ClienteService
   ) {}
 
   loadAll(): void {
@@ -35,6 +47,52 @@ export class FacturaVentaComponent implements OnInit {
         this.isLoading = false;
       },
     });
+  }
+
+  generearReporteMensual(): void {
+    this.facturaVentaService.generarReporteMensual().subscribe(
+      (res: any) => {
+        const file = new Blob([res], { type: 'application/pdf' });
+        const fileURL = URL.createObjectURL(file);
+        window.open(fileURL);
+      },
+
+      () => {
+        this.alert.addAlert({
+          type: 'danger',
+          message: 'Error al generar el reporte',
+        });
+      }
+    );
+  }
+
+  facturasFiltro(): void {
+    this.facturaVenta = new FacturaVenta();
+    this.facturaVenta.numeroFactura = this.numeroFactura;
+    this.facturaVenta.infoCliente = this.nombreCliente;
+    this.facturaVenta.estado = this.estado;
+
+    this.facturaVentaService.facturaFiltros(this.facturaVenta).subscribe({
+      next: (res: HttpResponse<IFacturaVenta[]>) => {
+        this.facturaVentas = res.body ?? [];
+      },
+      error: () => {
+        this.facturaVentas = [];
+      },
+    });
+  }
+
+  filtrarPorFecha(): void {
+    if (this.fecha) {
+      this.facturaVentaService.facturaFecha(this.fecha.toString()).subscribe({
+        next: (res: HttpResponse<IFacturaVenta[]>) => {
+          this.facturaVentas = res.body ?? [];
+        },
+        error: () => {
+          this.facturaVentas = [];
+        },
+      });
+    }
   }
 
   pasoParametroFactura(idFactura: number): void {

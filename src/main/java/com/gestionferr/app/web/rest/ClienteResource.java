@@ -141,6 +141,12 @@ public class ClienteResource {
         return clienteService.findAll();
     }
 
+    @PostMapping("clientes-filtro")
+    public List<ClienteDTO> clientesFiltro(@RequestBody ClienteDTO cliente) {
+        log.debug("REST request to get all clientes per filter");
+        return clienteService.clientesFiltro(cliente);
+    }
+
     /**
      * {@code GET  /clientes/:id} : get the "id" cliente.
      *
@@ -150,8 +156,8 @@ public class ClienteResource {
     @GetMapping("/clientes/{id}")
     public ResponseEntity<ClienteDTO> getCliente(@PathVariable Long id) {
         log.debug("REST request to get Cliente : {}", id);
-        Optional<ClienteDTO> clienteDTO = clienteService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(clienteDTO);
+        ClienteDTO clienteDTO = clienteService.findOne(id);
+        return ResponseEntity.ok().body(clienteDTO);
     }
 
     /**

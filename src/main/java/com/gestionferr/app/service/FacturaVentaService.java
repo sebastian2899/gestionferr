@@ -1,6 +1,8 @@
 package com.gestionferr.app.service;
 
 import com.gestionferr.app.service.dto.FacturaVentaDTO;
+import com.gestionferr.app.service.dto.FacturaVentasFechaDTO;
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,4 +48,12 @@ public interface FacturaVentaService {
      * @param id the id of the entity.
      */
     void delete(Long id);
+
+    List<FacturaVentaDTO> facturasPorFiltro(FacturaVentaDTO facturaVentaDTO);
+
+    List<FacturaVentaDTO> facturasPorFecha(String fecha);
+
+    FacturaVentasFechaDTO valoresFacturaFecha(Instant fechaInicio, Instant fechaFin);
+
+    byte[] generarReporteFacturaVentasMensual();
 }

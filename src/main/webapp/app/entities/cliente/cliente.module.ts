@@ -5,9 +5,10 @@ import { ClienteDetailComponent } from './detail/cliente-detail.component';
 import { ClienteUpdateComponent } from './update/cliente-update.component';
 import { ClienteDeleteDialogComponent } from './delete/cliente-delete-dialog.component';
 import { ClienteRoutingModule } from './route/cliente-routing.module';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
-  imports: [SharedModule, ClienteRoutingModule],
+  imports: [SharedModule, ClienteRoutingModule, MatIconModule],
   declarations: [ClienteComponent, ClienteDetailComponent, ClienteUpdateComponent, ClienteDeleteDialogComponent],
   entryComponents: [ClienteDeleteDialogComponent],
 })

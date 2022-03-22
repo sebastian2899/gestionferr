@@ -11,12 +11,30 @@ public final class Constants {
     public static final String SYSTEM = "system";
     public static final String DEFAULT_LANGUAGE = "es";
 
-    //VENTAS
+    //VENTAS////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public static final String RESTAR_PRODUCTOS_SELECCIONADOS = "UPDATE FROM Producto SET cantidad=cantidad-:cantidad WHERE id=:id";
 
     public static final String SUMAR_PRODUCTOS_FACTURA_REVERTIDA = "UPDATE FROM Producto SET cantidad=cantidad+:cantidad" + " WHERE id=:id";
 
-    //CATEGORIA
+    public static final String FACTURA_FILTRO_GENERAL = "SELECT f FROM FacturaVenta f WHERE f.id IS NOT NULL";
+
+    public static final String FACTURA_FILTRO_NUMERO_FACTURA = " AND f.numeroFactura LIKE :numeroFactura";
+
+    public static final String FACTURA_FILTRO_NOMBRE_CLIENTE = " AND UPPER(f.infoCliente) LIKE :nombreCliente";
+
+    public static final String FACTURA_FILTRO_ESTADO_FACTURA = " AND UPPER(f.estado) = :estado";
+
+    public static final String FACTURA_FILTRO_FECHA_FACTURA =
+        "SELECT f FROM FacturaVenta f WHERE TO_CHAR(f.fechaCreacion, 'yyyy-MM-dd')=:fecha";
+
+    public static final String CONSULTAR_VALORES_FACTURA_MENSUAL =
+        "SELECT SUM(f.valorFactura),SUM(f.valorPagado),SUM(f.valorDeuda) " +
+        "FROM FacturaVenta f WHERE f.fechaCreacion BETWEEN :fechaInicio AND :fechaFin";
+
+    public static final String CONSULTAR_FACUTRAS_POR_FECHAS =
+        "SELECT f FROM FacturaVenta f WHERE f.fechaCreacion BETWEEN :fechaInicio and :fechaFin";
+
+    //CATEGORIA/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public static final String CONSULTAR_NOMBRE_CATEGORIA = "SELECT c.categoriaProducto FROM Categoria c WHERE c.id = :id";
 
     //ABONO
@@ -26,6 +44,21 @@ public final class Constants {
     public static final String ELIMINAR_ABONOS_FACTURA = "DELETE FROM Abono WHERE idFactura=:id AND tipoFactura = 'Factura Venta'";
 
     public static final String ELIMINAR_ITEMS_POR_FACTURA = "DELETE FROM ItemFacturaVenta WHERE idFacturaVenta =:id";
+
+    //CAJA////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    public static final String ELIMINAR_VALOR_CAJA_ABONO_FECHA =
+        "UPDATE FROM Caja SET valorVentaDia=valorVentaDia-:valorAbono WHERE" + " TO_CHAR(fechaCreacion, 'dd/MM/yyyy') =:fechaCreacion";
+
+    public static final String ELIMINAR_VALOR_CAJA_FACTURA_FECHA =
+        "UPDATE FROM Caja SET valorVentaDia=valorVentaDia-:valorFactura WHERE" + " TO_CHAR(fechaCreacion, 'dd/MM/yyyy') = :fechaCreacion";
+
+    public static final String ELIMINAR_CAJA_VALOR_CERO =
+        "DELETE FROM Caja WHERE TO_CHAR(fechaCreacion, 'dd/MM/yyyy') =:fecha AND valorVentaDia = 0";
+
+    //CLIENTES
+    public static final String CLIENTE_BASE = "SELECT c FROM Cliente c WHERE c.id IS NOT NULL";
+    public static final String CLIENTE_FILTRO_NOMBRE = " AND UPPER(c.nombre) LIKE :nombre";
+    public static final String CLIENTE_FILTRO_NUMCC = " AND UPPER(c.numeroCC) LIKE :numeroCC";
 
     private Constants() {}
 }

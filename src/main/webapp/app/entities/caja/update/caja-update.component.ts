@@ -19,6 +19,8 @@ import { TipoEstadoEnum } from 'app/entities/enumerations/tipo-estado-enum.model
 export class CajaUpdateComponent implements OnInit {
   isSaving = false;
   tipoEstadoEnumValues = Object.keys(TipoEstadoEnum);
+  valorCajaDia?: number | null;
+  mensajePrecioMayor = false;
 
   editForm = this.fb.group({
     id: [],
@@ -40,10 +42,45 @@ export class CajaUpdateComponent implements OnInit {
 
       this.updateForm(caja);
     });
+    this.consultarValorDia();
   }
 
   previousState(): void {
     window.history.back();
+  }
+
+  consultarValorDia(): void {
+    this.cajaService.valorCajaDia().subscribe({
+      next: (res: HttpResponse<number>) => {
+        this.valorCajaDia = res.body;
+        if (this.valorCajaDia) {
+          this.editForm.get(['valorVentaDia'])?.setValue(this.valorCajaDia);
+          this.editForm.get(['estado'])?.setValue('Deuda');
+          this.editForm.get(['diferencia'])?.setValue(this.valorCajaDia);
+        }
+      },
+      error: () => {
+        this.valorCajaDia = null;
+      },
+    });
+  }
+
+  calcularValores(): void {
+    const valorRegistrado = this.editForm.get(['valorRegistradoDia'])!.value;
+    this.mensajePrecioMayor = false;
+    if (this.valorCajaDia) {
+      const diferencia = this.valorCajaDia - valorRegistrado;
+      this.editForm.get(['diferencia'])?.setValue(diferencia);
+
+      let estado = '';
+      diferencia === 0 ? (estado = 'Saldada') : (estado = 'Deuda');
+
+      this.editForm.get(['estado'])?.setValue(estado);
+
+      if (diferencia < 0) {
+        this.mensajePrecioMayor = true;
+      }
+    }
   }
 
   save(): void {

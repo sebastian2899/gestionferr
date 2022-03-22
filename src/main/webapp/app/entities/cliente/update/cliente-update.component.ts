@@ -16,6 +16,7 @@ import { TipoIdentificacionEnum } from 'app/entities/enumerations/tipo-identific
 export class ClienteUpdateComponent implements OnInit {
   isSaving = false;
   tipoIdentificacionEnumValues = Object.keys(TipoIdentificacionEnum);
+  titulo?: string | null;
 
   editForm = this.fb.group({
     id: [],
@@ -30,6 +31,11 @@ export class ClienteUpdateComponent implements OnInit {
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ cliente }) => {
+      if (cliente.id !== undefined) {
+        this.titulo = 'Actualizar Cliente';
+      } else {
+        this.titulo = 'Crear Cliente';
+      }
       this.updateForm(cliente);
     });
   }

@@ -72,6 +72,7 @@
     "packaging": "jar"
   },
   "dependencies": {
+    "@angular/animations": "^13.3.0",
     "@angular/common": "13.2.4",
     "@angular/compiler": "13.2.4",
     "@angular/core": "13.2.4",
@@ -92,6 +93,8 @@
     "dayjs": "1.10.7",
     "ngx-infinite-scroll": "10.0.1",
     "ngx-webstorage": "9.0.0",
+    "primeicons": "^5.0.0",
+    "primeng": "^13.3.0",
     "rxjs": "7.5.4",
     "swagger-ui-dist": "4.5.2",
     "tslib": "2.3.1",

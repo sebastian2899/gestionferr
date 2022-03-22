@@ -5,9 +5,11 @@ import { CajaDetailComponent } from './detail/caja-detail.component';
 import { CajaUpdateComponent } from './update/caja-update.component';
 import { CajaDeleteDialogComponent } from './delete/caja-delete-dialog.component';
 import { CajaRoutingModule } from './route/caja-routing.module';
+import { ButtonModule } from 'primeng/button';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
-  imports: [SharedModule, CajaRoutingModule],
+  imports: [SharedModule, CajaRoutingModule, ButtonModule, MatIconModule],
   declarations: [CajaComponent, CajaDetailComponent, CajaUpdateComponent, CajaDeleteDialogComponent],
   entryComponents: [CajaDeleteDialogComponent],
 })

@@ -6,6 +6,7 @@ import { FacturaVentaComponent } from '../list/factura-venta.component';
 import { FacturaVentaDetailComponent } from '../detail/factura-venta-detail.component';
 import { FacturaVentaUpdateComponent } from '../update/factura-venta-update.component';
 import { FacturaVentaRoutingResolveService } from './factura-venta-routing-resolve.service';
+import { FacturaFechasComponent } from '../factura-fechas/factura-fechas.component';
 
 const facturaVentaRoute: Routes = [
   {
@@ -24,6 +25,14 @@ const facturaVentaRoute: Routes = [
   {
     path: 'new',
     component: FacturaVentaUpdateComponent,
+    resolve: {
+      facturaVenta: FacturaVentaRoutingResolveService,
+    },
+    canActivate: [UserRouteAccessService],
+  },
+  {
+    path: ':factura-fechas',
+    component: FacturaFechasComponent,
     resolve: {
       facturaVenta: FacturaVentaRoutingResolveService,
     },

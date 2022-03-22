@@ -1,0 +1,91 @@
+<div class="container">
+  <div class="card o-hidden border-0 shadow-lg my-5">
+    <div class="card-body d-flex justify-content-center">
+      <!-- Nested Row within Card Body -->
+      <div class="row">
+        <div class="p-5">
+          <div class="text-center">
+            <h1 class="h4 text-gray-900 aqua-text mb-4">Consultar precios facturas venta por fechas</h1>
+          </div>
+
+          <div class="row">
+            <div class="col-md-5 form-group">
+              <label class="form-control-label aqua-text" for="field_fechaInicio">Fecha inicio</label>
+              <div class="d-flex">
+                <input
+                  id="field_fechaInicio"
+                  data-cy="fechaInicio"
+                  type="datetime-local"
+                  class="form-control"
+                  name="fechaInicio"
+                  [(ngModel)]="fechaInicio"
+                  placeholder="YYYY"
+                />
+              </div>
+            </div>
+
+            <div class="col-md-5 form-group">
+              <label class="form-control-label aqua-text" for="field_fechaFin">Fecha fin</label>
+              <div class="d-flex">
+                <input
+                  id="field_fechaFin"
+                  data-cy="fechaFin"
+                  type="datetime-local"
+                  class="form-control"
+                  name="fechaFin"
+                  [(ngModel)]="fechaFin"
+                  placeholder="YYYY"
+                />
+              </div>
+            </div>
+
+            <div class="col-md-2">
+              <br />
+              <button (click)="consultarValores()" class="btn btn-dark jh-create-entity create-proyecto alinear-filtrar">Filtrar</button>
+            </div>
+          </div>
+        </div>
+
+        <table class="table table-hover" *ngIf="valoresFactura">
+          <thead>
+            <tr>
+              <th scope="row"></th>
+              <th scope="col">Valor Total Facturas</th>
+              <th scope="col">Valor Total Pagado</th>
+              <th scope="col">Diferencia</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row"></th>
+              <td>{{ valoresFactura.valorTotal }}</td>
+              <td>{{ valoresFactura.valorPagado }}</td>
+              <td>{{ valoresFactura.diferencia }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="text-center">
+      <button class="btn btn-dark" (click)="previusState()">Volver</button>
+    </div>
+  </div>
+</div>
+
+<ng-template #mensajeInicio>
+  <div class="modal-header color-toggle">
+    <h4 class="modal-title text-black">Informacion</h4>
+  </div>
+  <div class="modal-body text-black">
+    <div>
+      <p class="aqua-text">
+        En esta seccion prodra hacer un registro historico de los ingresos filtrando por fechas.<br />
+        Podra ver el valor total de la caja en las fechas que se digiten. Tambien podra ver el valor que se pago en total y la deuda total
+        por la cantidad total de la factura sumada en las fechas.
+      </p>
+    </div>
+  </div>
+  <div class="modal-footer color-toggle">
+    <h4 class="text-black">Asegurese de estar digitando un formato de fecha valido como se indica en los campos requeridos.</h4>
+  </div>
+</ng-template>

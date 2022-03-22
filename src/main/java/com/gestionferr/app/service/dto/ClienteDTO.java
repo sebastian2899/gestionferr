@@ -2,12 +2,18 @@ package com.gestionferr.app.service.dto;
 
 import com.gestionferr.app.domain.enumeration.TipoIdentificacionEnum;
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
 /**
  * A DTO for the {@link com.gestionferr.app.domain.Cliente} entity.
  */
 public class ClienteDTO implements Serializable {
+
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
 
     private Long id;
 
@@ -20,6 +26,16 @@ public class ClienteDTO implements Serializable {
     private TipoIdentificacionEnum tipoIdentificacion;
 
     private String numeroCC;
+
+    private List<FacturaVentaDTO> facturasCliente;
+
+    public List<FacturaVentaDTO> getFacturasCliente() {
+        return facturasCliente;
+    }
+
+    public void setFacturasCliente(List<FacturaVentaDTO> facturasCliente) {
+        this.facturasCliente = facturasCliente;
+    }
 
     public Long getId() {
         return id;
