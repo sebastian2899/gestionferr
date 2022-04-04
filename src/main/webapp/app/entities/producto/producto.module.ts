@@ -5,9 +5,10 @@ import { ProductoDetailComponent } from './detail/producto-detail.component';
 import { ProductoUpdateComponent } from './update/producto-update.component';
 import { ProductoDeleteDialogComponent } from './delete/producto-delete-dialog.component';
 import { ProductoRoutingModule } from './route/producto-routing.module';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
-  imports: [SharedModule, ProductoRoutingModule],
+  imports: [SharedModule, ProductoRoutingModule, MatIconModule],
   declarations: [ProductoComponent, ProductoDetailComponent, ProductoUpdateComponent, ProductoDeleteDialogComponent],
   entryComponents: [ProductoDeleteDialogComponent],
 })

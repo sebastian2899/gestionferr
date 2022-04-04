@@ -13,11 +13,37 @@ export type EntityArrayResponseType = HttpResponse<IProducto[]>;
 @Injectable({ providedIn: 'root' })
 export class ProductoService {
   protected resourceUrl = this.applicationConfigService.getEndpointFor('api/productos');
+  protected productoPorCategoriaUrl = this.applicationConfigService.getEndpointFor('api/productos-categoria');
+  protected productoFiltroAutomaticoUrl = this.applicationConfigService.getEndpointFor('api/productos-filtro-automatico');
+  protected productoAgotadosUrl = this.applicationConfigService.getEndpointFor('api/productos-agotados');
+  protected productoCasiAgotadosUrl = this.applicationConfigService.getEndpointFor('api/productos-casi-agotados');
+  protected actualizarPrecioProductosUrl = this.applicationConfigService.getEndpointFor('api/productos-precios-porcentaje');
+  protected productosPorNombreUrl = this.applicationConfigService.getEndpointFor('api/productos-nombre');
 
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
   create(producto: IProducto): Observable<EntityResponseType> {
     return this.http.post<IProducto>(this.resourceUrl, producto, { observe: 'response' });
+  }
+
+  productosAgotados(): Observable<EntityArrayResponseType> {
+    return this.http.get<IProducto[]>(this.productoAgotadosUrl, { observe: 'response' });
+  }
+
+  productosPorNombre(nombre: string): Observable<EntityArrayResponseType> {
+    return this.http.get<IProducto[]>(`${this.productosPorNombreUrl}/${nombre}`, { observe: 'response' });
+  }
+
+  productosCasiAgotados(): Observable<EntityArrayResponseType> {
+    return this.http.get<IProducto[]>(this.productoCasiAgotadosUrl, { observe: 'response' });
+  }
+
+  productosFiltroAutomatico(codigo: number): Observable<EntityArrayResponseType> {
+    return this.http.get<IProducto[]>(`${this.productoFiltroAutomaticoUrl}/${codigo}`, { observe: 'response' });
+  }
+
+  productosPorCategoria(idCategoria: number): Observable<EntityArrayResponseType> {
+    return this.http.get<IProducto[]>(`${this.productoPorCategoriaUrl}/${idCategoria}`, { observe: 'response' });
   }
 
   update(producto: IProducto): Observable<EntityResponseType> {
@@ -37,6 +63,10 @@ export class ProductoService {
   query(req?: any): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
     return this.http.get<IProducto[]>(this.resourceUrl, { params: options, observe: 'response' });
+  }
+
+  actualizarPrecioProductos(opcion: string, porcentaje: number): Observable<HttpResponse<{}>> {
+    return this.http.get(`${this.actualizarPrecioProductosUrl}/${opcion}/${porcentaje}`, { observe: 'response' });
   }
 
   delete(id: number): Observable<HttpResponse<{}>> {

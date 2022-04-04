@@ -105,7 +105,7 @@ public class ClienteServiceImpl implements ClienteService {
 
         if (cliente.getNumeroCC() != null && !cliente.getNumeroCC().isEmpty()) {
             sb.append(Constants.CLIENTE_FILTRO_NUMCC);
-            filtros.put("numeroCC", "%" + cliente.getNumeroCC() + "%");
+            filtros.put("numeroCC", "%" + cliente.getNumeroCC().toUpperCase() + "%");
         }
 
         Query q = entityManager.createQuery(sb.toString());

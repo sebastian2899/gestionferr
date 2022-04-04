@@ -8,80 +8,87 @@
       <div>
         <jhi-alert-error></jhi-alert-error>
 
-        <div class="row mb-3" [hidden]="editForm.get('id')!.value == null">
+        <div class="row mb-4">
+          <div class="col-md-6">
+            <label class="form-label" jhiTranslate="gestionferrApp.producto.nombre" for="field_nombre">Nombre</label>
+            <input type="text" class="form-control" name="nombre" id="field_nombre" data-cy="nombre" formControlName="nombre" />
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label" jhiTranslate="gestionferrApp.producto.precio" for="field_precio">Precio</label>
+            <input type="number" class="form-control" name="precio" id="field_precio" data-cy="precio" formControlName="precio" />
+          </div>
+        </div>
+
+        <!-- <div class="row mb-3" [hidden]="editForm.get('id')!.value == null">
           <label class="form-label" jhiTranslate="global.field.id" for="field_id">ID</label>
           <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
-        </div>
+        </div> -->
+        <div class="row mb-4">
+          <div class="col-md-6">
+            <label class="form-label" jhiTranslate="gestionferrApp.producto.cantidad" for="field_cantidad">Cantidad</label>
+            <input type="number" class="form-control" name="cantidad" id="field_cantidad" data-cy="cantidad" formControlName="cantidad" />
+          </div>
 
-        <div class="row mb-3">
-          <label class="form-label" jhiTranslate="gestionferrApp.producto.nombre" for="field_nombre">Nombre</label>
-          <input type="text" class="form-control" name="nombre" id="field_nombre" data-cy="nombre" formControlName="nombre" />
-        </div>
-
-        <div class="row mb-3">
-          <label class="form-label" jhiTranslate="gestionferrApp.producto.precio" for="field_precio">Precio</label>
-          <input type="number" class="form-control" name="precio" id="field_precio" data-cy="precio" formControlName="precio" />
-        </div>
-
-        <div class="row mb-3">
-          <label class="form-label" jhiTranslate="gestionferrApp.producto.cantidad" for="field_cantidad">Cantidad</label>
-          <input type="number" class="form-control" name="cantidad" id="field_cantidad" data-cy="cantidad" formControlName="cantidad" />
-        </div>
-
-        <div class="row mb-3">
-          <label class="form-label" jhiTranslate="gestionferrApp.producto.foto" for="field_foto">Foto</label>
-          <div>
-            <img
-              [src]="'data:' + editForm.get('fotoContentType')!.value + ';base64,' + editForm.get('foto')!.value"
-              style="max-height: 100px"
-              *ngIf="editForm.get('foto')!.value"
-              alt="producto image"
-            />
-            <div *ngIf="editForm.get('foto')!.value" class="form-text text-danger clearfix">
-              <span class="pull-start">{{ editForm.get('fotoContentType')!.value }}, {{ byteSize(editForm.get('foto')!.value) }}</span>
-              <button
-                type="button"
-                (click)="clearInputImage('foto', 'fotoContentType', 'file_foto')"
-                class="btn btn-secondary btn-xs pull-end"
-              >
-                <fa-icon icon="times"></fa-icon>
-              </button>
+          <div class="col-md-6">
+            <label class="form-label" jhiTranslate="gestionferrApp.producto.foto" for="field_foto">Foto</label>
+            <div>
+              <img
+                [src]="'data:' + editForm.get('fotoContentType')!.value + ';base64,' + editForm.get('foto')!.value"
+                style="max-height: 100px"
+                *ngIf="editForm.get('foto')!.value"
+                alt="producto image"
+              />
+              <div *ngIf="editForm.get('foto')!.value" class="form-text text-danger clearfix">
+                <span class="pull-start">{{ editForm.get('fotoContentType')!.value }}, {{ byteSize(editForm.get('foto')!.value) }}</span>
+                <button
+                  type="button"
+                  (click)="clearInputImage('foto', 'fotoContentType', 'file_foto')"
+                  class="btn btn-secondary btn-xs pull-end"
+                >
+                  <fa-icon icon="times"></fa-icon>
+                </button>
+              </div>
+              <input
+                type="file"
+                id="file_foto"
+                data-cy="foto"
+                (change)="setFileData($event, 'foto', true)"
+                accept="image/*"
+                jhiTranslate="entity.action.addimage"
+              />
             </div>
+            <input type="hidden" class="form-control" name="foto" id="field_foto" data-cy="foto" formControlName="foto" />
+            <input type="hidden" class="form-control" name="fotoContentType" id="field_fotoContentType" formControlName="fotoContentType" />
+          </div>
+        </div>
+
+        <div class="row mb-4">
+          <div class="col-md-6">
+            <label class="form-label" jhiTranslate="gestionferrApp.producto.descripcion" for="field_descripcion">Descripcion</label>
             <input
-              type="file"
-              id="file_foto"
-              data-cy="foto"
-              (change)="setFileData($event, 'foto', true)"
-              accept="image/*"
-              jhiTranslate="entity.action.addimage"
+              type="text"
+              class="form-control"
+              name="descripcion"
+              id="field_descripcion"
+              data-cy="descripcion"
+              formControlName="descripcion"
             />
           </div>
-          <input type="hidden" class="form-control" name="foto" id="field_foto" data-cy="foto" formControlName="foto" />
-          <input type="hidden" class="form-control" name="fotoContentType" id="field_fotoContentType" formControlName="fotoContentType" />
-        </div>
 
-        <div class="row mb-3">
-          <label class="form-label" jhiTranslate="gestionferrApp.producto.descripcion" for="field_descripcion">Descripcion</label>
-          <input
-            type="text"
-            class="form-control"
-            name="descripcion"
-            id="field_descripcion"
-            data-cy="descripcion"
-            formControlName="descripcion"
-          />
-        </div>
-
-        <div class="row mb-3">
-          <label class="form-label" jhiTranslate="gestionferrApp.producto.idCategoria" for="field_idCategoria">Id Categoria</label>
-          <input
-            type="number"
-            class="form-control"
-            name="idCategoria"
-            id="field_idCategoria"
-            data-cy="idCategoria"
-            formControlName="idCategoria"
-          />
+          <div class="col-md-6">
+            <label class="form-label" for="field_idCategoria">Categoria</label>
+            <select
+              type="number"
+              class="form-select"
+              name="idCategoria"
+              id="field_idCategoria"
+              data-cy="idCategoria"
+              formControlName="idCategoria"
+            >
+              <option [ngValue]="categoria.id" *ngFor="let categoria of categorias">{{ categoria.categoriaProducto }}</option>
+            </select>
+          </div>
         </div>
       </div>
 

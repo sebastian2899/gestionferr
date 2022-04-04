@@ -3,16 +3,19 @@ package com.gestionferr.app.web.rest;
 import com.gestionferr.app.repository.CajaRepository;
 import com.gestionferr.app.service.CajaService;
 import com.gestionferr.app.service.dto.CajaDTO;
+import com.gestionferr.app.service.dto.CajaFechasDTO;
 import com.gestionferr.app.web.rest.errors.BadRequestAlertException;
 import java.math.BigDecimal;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.text.ParseException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -137,6 +140,30 @@ public class CajaResource {
         );
     }
 
+    @GetMapping("cajas-valores-meses/{fechaInicio}/{fechaFin}")
+    public ResponseEntity<CajaFechasDTO> cajaValoresMeses(
+        @PathVariable(value = "fechaInicio") String fechaInicio,
+        @PathVariable(value = "fechaFin") String fechaFin
+    ) {
+        log.debug("REST request to get values of cajas per dates", fechaInicio, fechaFin);
+
+        CajaFechasDTO cajasFechas = null;
+
+        if (fechaInicio == null && fechaFin == null) {
+            throw new BadRequestAlertException("Dates is null", ENTITY_NAME, "null dates");
+        }
+
+        cajasFechas = cajaService.valoresCajaPorFechas(fechaInicio, fechaFin);
+
+        return ResponseEntity.ok().body(cajasFechas);
+    }
+
+    @GetMapping("/cajas-por-fecha/{fecha}")
+    public List<CajaDTO> cajasPorFecha(@PathVariable String fecha) {
+        log.debug("REST request to get all cajas per date", fecha);
+        return cajaService.cajasPorFecha(fecha);
+    }
+
     @GetMapping("/valorCajaDia")
     public ResponseEntity<BigDecimal> valorCajaDia() throws URISyntaxException {
         log.debug("REST requesto to get caja value day");
@@ -155,6 +182,19 @@ public class CajaResource {
     public List<CajaDTO> getAllCajas() {
         log.debug("REST request to get all Cajas");
         return cajaService.findAll();
+    }
+
+    @GetMapping("/cajas-reporte")
+    public ResponseEntity<byte[]> generarReporteCaja() {
+        log.debug("REST request to get report of caja per dates");
+        byte[] reporte = cajaService.reporteCaja();
+        return new ResponseEntity<byte[]>(reporte, HttpStatus.OK);
+    }
+
+    @GetMapping("/cajas-filtro-estado/{estado}")
+    public List<CajaDTO> cajasPorEstado(@PathVariable String estado) throws ParseException {
+        log.debug("REST request to get all cajas per estado: ", estado);
+        return cajaService.cajasPorFiltro(estado);
     }
 
     /**

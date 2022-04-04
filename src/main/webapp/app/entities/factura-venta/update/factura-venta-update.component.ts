@@ -25,6 +25,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 export class FacturaVentaUpdateComponent implements OnInit {
   @ViewChild('cantidadInvalida', { static: true }) content: ElementRef | undefined;
   @ViewChild('alertaProductoVacio', { static: true }) content2: ElementRef | undefined;
+  @ViewChild('validacionFacturaVentaSave', { static: true }) contente3: ElementRef | undefined;
 
   isSaving = false;
   tipoFacturaEnumValues = Object.keys(TipoFacturaEnum);
@@ -42,6 +43,7 @@ export class FacturaVentaUpdateComponent implements OnInit {
   validarValorDeuda?: boolean | null;
   mensajeValorDeuda = 'Para guardar la factura, asegurese de no estar debiendo un valor al cliente.';
   titulo?: string | null;
+  numeroFactura?: string | null;
 
   editForm = this.fb.group({
     id: [],
@@ -217,6 +219,24 @@ export class FacturaVentaUpdateComponent implements OnInit {
     this.clienteNoRegistrado = false;
     const infoCliente = this.editForm.get(['infoCliente'])!.value;
     this.editForm.get(['infoCliente'])?.setValue(infoCliente);
+  }
+
+  validarSaveFacturaVenta(): void {
+    const numeroFactura = this.editForm.get(['numeroFactura'])!.value;
+    this.facturaVentaService.validarFacturaVentaSave(numeroFactura).subscribe({
+      next: (res: HttpResponse<boolean>) => {
+        const resp = res.body;
+        if (resp) {
+          this.numeroFactura = numeroFactura;
+          this.modalService.open(this.contente3);
+        } else {
+          this.save();
+        }
+      },
+      error: () => {
+        this.numeroFactura = null;
+      },
+    });
   }
 
   save(): void {

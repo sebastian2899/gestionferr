@@ -7,10 +7,11 @@ import { CajaDeleteDialogComponent } from './delete/caja-delete-dialog.component
 import { CajaRoutingModule } from './route/caja-routing.module';
 import { ButtonModule } from 'primeng/button';
 import { MatIconModule } from '@angular/material/icon';
+import { CajaFechasComponent } from './caja-fechas/caja-fechas.component';
 
 @NgModule({
   imports: [SharedModule, CajaRoutingModule, ButtonModule, MatIconModule],
-  declarations: [CajaComponent, CajaDetailComponent, CajaUpdateComponent, CajaDeleteDialogComponent],
+  declarations: [CajaComponent, CajaDetailComponent, CajaUpdateComponent, CajaDeleteDialogComponent, CajaFechasComponent],
   entryComponents: [CajaDeleteDialogComponent],
 })
 export class CajaModule {}

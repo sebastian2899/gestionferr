@@ -8,15 +8,22 @@ import { isPresent } from 'app/core/util/operators';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
 import { ICaja, getCajaIdentifier } from '../caja.model';
+import { ICajaFechas } from '../caja-fechas/caja-fechas';
 
 export type EntityResponseType = HttpResponse<ICaja>;
 export type EntityArrayResponseType = HttpResponse<ICaja[]>;
 export type NumberType = HttpResponse<number>;
+export type CajaFechasType = HttpResponse<ICajaFechas>;
+export type CajaByteType = HttpResponse<any>;
 
 @Injectable({ providedIn: 'root' })
 export class CajaService {
   protected resourceUrl = this.applicationConfigService.getEndpointFor('api/cajas');
   protected ValorDiaResourceUrl = this.applicationConfigService.getEndpointFor('api/valorCajaDia');
+  protected cajasPorEstadoUrl = this.applicationConfigService.getEndpointFor('api/cajas-filtro-estado');
+  protected cajasPorFechaUrl = this.applicationConfigService.getEndpointFor('api/cajas-por-fecha');
+  protected cajasValoresPorFechaUrl = this.applicationConfigService.getEndpointFor('api/cajas-valores-meses');
+  protected cajasReporteUrl = this.applicationConfigService.getEndpointFor('api/cajas-reporte');
 
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
@@ -25,6 +32,27 @@ export class CajaService {
     return this.http
       .post<ICaja>(this.resourceUrl, copy, { observe: 'response' })
       .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
+  }
+
+  cajasPorEstado(estado: string): Observable<EntityArrayResponseType> {
+    return this.http
+      .get<ICaja[]>(`${this.cajasPorEstadoUrl}/${estado}`, { observe: 'response' })
+      .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
+  }
+
+  reporteCaja(): Observable<any> {
+    const httpOption = { responseType: 'arrayBuffer' as 'json' };
+    return this.http.get<any>(this.cajasReporteUrl, httpOption);
+  }
+
+  cajasPorFecha(fecha: string): Observable<EntityArrayResponseType> {
+    return this.http
+      .get<ICaja[]>(`${this.cajasPorFechaUrl}/${fecha}`, { observe: 'response' })
+      .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
+  }
+
+  cajasValoresFechas(fechaInicio: string, fechaFin: string): Observable<CajaFechasType> {
+    return this.http.get<ICajaFechas>(`${this.cajasValoresPorFechaUrl}/${fechaInicio}/${fechaFin}`, { observe: 'response' });
   }
 
   update(caja: ICaja): Observable<EntityResponseType> {

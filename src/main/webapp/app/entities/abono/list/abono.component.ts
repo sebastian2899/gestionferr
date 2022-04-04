@@ -15,6 +15,7 @@ export class AbonoComponent implements OnInit {
   abonos?: IAbono[];
   isLoading = false;
   idFactura?: number | null;
+  idFacturaCompra?: number | null;
 
   constructor(protected abonoService: AbonoService, protected modalService: NgbModal, protected storageService: StateStorageService) {}
 
@@ -22,7 +23,8 @@ export class AbonoComponent implements OnInit {
     this.isLoading = true;
 
     if (this.idFactura) {
-      this.abonoService.abonosPorFactura(this.idFactura).subscribe({
+      const codigo = 1;
+      this.abonoService.abonosPorFactura(this.idFactura, codigo).subscribe({
         next: (res: HttpResponse<IAbono[]>) => {
           this.isLoading = false;
           this.abonos = res.body ?? [];
@@ -31,11 +33,28 @@ export class AbonoComponent implements OnInit {
           this.isLoading = false;
         },
       });
+      this.storageService.clearFactura();
+    } else {
+      this.idFacturaCompra = this.storageService.getParametroFacturaCompra();
+      if (this.idFacturaCompra) {
+        const codigo = 2;
+        this.abonoService.abonosPorFactura(this.idFacturaCompra, codigo).subscribe({
+          next: (res: HttpResponse<IAbono[]>) => {
+            this.isLoading = false;
+            this.abonos = res.body ?? [];
+          },
+          error: () => {
+            this.isLoading = false;
+          },
+        });
+        this.storageService.clearFacturaCompra();
+      }
     }
   }
 
   ngOnInit(): void {
     this.idFactura = this.storageService.getParametroFactura();
+    this.idFacturaCompra = this.storageService.getParametroFacturaCompra();
     this.loadAll();
   }
 

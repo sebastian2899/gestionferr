@@ -34,12 +34,32 @@ public final class Constants {
     public static final String CONSULTAR_FACUTRAS_POR_FECHAS =
         "SELECT f FROM FacturaVenta f WHERE f.fechaCreacion BETWEEN :fechaInicio and :fechaFin";
 
+    //////COMPRAS///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public static final String FACTURA_COMPRA_BASE = "SELECT f FROM FacturaCompra f WHERE f.id IS NOT NULL";
+
+    public static final String FACTURA_COMPRA_NUMERO_FACTURA = " AND f.numeroFactura LIKE :numeroFactura";
+
+    public static final String FACTURA_COMPRA_INFO_PROVEEDOR = " AND UPPER(f.infoCliente) LIKE :infoProveedor";
+
+    public static final String FACTURA_COMPRA__ESTADO = " AND UPPER(f.estado) LIKE :estado";
+
+    public static final String FACTURA_COMPRA_FECHA =
+        "SELECT f FROM FacturaCompra f WHERE TO_CHAR(f.fechaCreacion,'yyyy-MM-dd')" + " = :fecha";
+
+    public static final String FACTURA_COMPRA_ORDER_BY = "SELECT f FROM FacturaCompra f ORDER BY f.fechaCreacion DESC";
+
+    public static final String ELIMINAR_ITEMS_FACTURA_COMPRA = "DELETE FROM ItemFacturaCompra i WHERE i.idFacturaCompra =:idFactura";
+
     //CATEGORIA/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public static final String CONSULTAR_NOMBRE_CATEGORIA = "SELECT c.categoriaProducto FROM Categoria c WHERE c.id = :id";
+    public static final String CONSULTAR_NOMBRE_CATEGORIA = "SELECT c.categoriaProducto FROM Categoria c WHERE c.id =:id";
 
     //ABONO
     public static final String CONSULTAR_ABONOS_POR_FACTURAVENTA =
         "SELECT a FROM Abono a WHERE a.idFactura=:idFactura AND " + "a.tipoFactura = 'Factura Venta'";
+
+    public static final String CONSULTAR_ABONO_POR_FACTURA_COMPRA =
+        "SELECT a FROM Abono a WHERE a.idFactura=:idFactura AND a.tipoFactura" + " = 'Factura Compra'";
 
     public static final String ELIMINAR_ABONOS_FACTURA = "DELETE FROM Abono WHERE idFactura=:id AND tipoFactura = 'Factura Venta'";
 
@@ -54,6 +74,12 @@ public final class Constants {
 
     public static final String ELIMINAR_CAJA_VALOR_CERO =
         "DELETE FROM Caja WHERE TO_CHAR(fechaCreacion, 'dd/MM/yyyy') =:fecha AND valorVentaDia = 0";
+
+    public static final String CAJAS_BASE = "SELECT * FROM caja WHERE id IS NOT NULL";
+
+    public static final String CAJA_POR_FECHA = " AND TO_CHAR(c.fechaCreacion, 'yyyy-MM-dd') = :fecha";
+
+    public static final String CAJA_POR_ESTADO = " AND estado =:estado";
 
     //CLIENTES
     public static final String CLIENTE_BASE = "SELECT c FROM Cliente c WHERE c.id IS NOT NULL";

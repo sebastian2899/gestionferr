@@ -1,17 +1,28 @@
 <div>
-  <h2 id="page-heading" data-cy="FacturaCompraHeading">
+  <h2 class="titulo-entidades mb-5" id="page-heading" data-cy="FacturaCompraHeading">
     <span jhiTranslate="gestionferrApp.facturaCompra.home.title">Factura Compras</span>
 
     <div class="d-flex justify-content-end">
-      <button class="btn btn-info me-2" (click)="loadAll()" [disabled]="isLoading">
-        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
-        <span jhiTranslate="gestionferrApp.facturaCompra.home.refreshListLabel">Refresh List</span>
-      </button>
+      <div class="dropdown me-3">
+        <button
+          class="menu-config btn-info dropdown-toggle"
+          type="button"
+          id="dropdownMenuButton1"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          Opciones
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+          <li><a class="dropdown-item" href="#">Generar Reporte (PDF)</a></li>
+          <li><a class="dropdown-item" [routerLink]="['/factura-compra/registro-factura-compra']">Consultar Factura Compras Mensual</a></li>
+        </ul>
+      </div>
 
       <button
         id="jh-create-entity"
         data-cy="entityCreateButton"
-        class="btn btn-primary jh-create-entity create-factura-compra"
+        class="btn btn-outline-primary jh-create-entity create-factura-compra"
         [routerLink]="['/factura-compra/new']"
       >
         <fa-icon icon="plus"></fa-icon>
@@ -24,6 +35,56 @@
 
   <jhi-alert></jhi-alert>
 
+  <div class="row d-flex justify-content-around mb-4">
+    <div class="col-md-3">
+      <label for="numeroFactura" class="form-label">Numero factura</label>
+      <input
+        (keyup)="facturasFiltro()"
+        placeholder="Filtrar por numero factura"
+        type="text"
+        class="form-control"
+        name="numeroFactura"
+        [(ngModel)]="numeroFactura"
+      />
+    </div>
+
+    <div class="col-md-3">
+      <label for="infoProveedor" class="form-label">Informacion Proveedor</label>
+      <input
+        (keyup)="facturasFiltro()"
+        placeholder="Filtrar por nombre proveedor"
+        type="text"
+        class="form-control"
+        name="infoProveedor"
+        [(ngModel)]="infoProveedor"
+      />
+    </div>
+
+    <div class="col-md-3">
+      <label for="estadoFactura" class="form-label">Estado factura</label>
+      <select [(ngModel)]="estado" (click)="facturasFiltro()" name="estado" id="estado" class="form-select">
+        <option><button (click)="loadAll()"></button></option>
+        <option *ngFor="let estadoFac of estados">{{ estadoFac }}</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="row d-flex justify-content-start ms-5 mb-5">
+    <div class="col-md-3">
+      <label for="fecha" class="form-label">Fecha</label>
+      <input type="datetime-local" class="form-control" name="fecha" [(ngModel)]="fecha" />
+    </div>
+    <div class="col-md-2" style="margin-top: 30px">
+      <button class="btn btn-primary" (click)="facturasPorFecha()">Filtrar</button>
+    </div>
+    <div class="col-md-2" style="margin-top: 30px">
+      <button class="btn btn-outline-primary" (click)="loadAll()">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span> Refrescar Facturas</span>
+      </button>
+    </div>
+  </div>
+
   <div class="alert alert-warning" id="no-result" *ngIf="facturaCompras?.length === 0">
     <span jhiTranslate="gestionferrApp.facturaCompra.home.notFound">No facturaCompras found</span>
   </div>
@@ -32,7 +93,7 @@
     <table class="table table-striped" aria-describedby="page-heading">
       <thead>
         <tr>
-          <th scope="col"><span jhiTranslate="global.field.id">ID</span></th>
+          <th scope="col"></th>
           <th scope="col"><span jhiTranslate="gestionferrApp.facturaCompra.numeroFactura">Numero Factura</span></th>
           <th scope="col"><span jhiTranslate="gestionferrApp.facturaCompra.fechaCreacion">Fecha Creacion</span></th>
           <th scope="col"><span jhiTranslate="gestionferrApp.facturaCompra.infoCliente">Info Cliente</span></th>
@@ -40,25 +101,79 @@
           <th scope="col"><span jhiTranslate="gestionferrApp.facturaCompra.valorPagado">Valor Pagado</span></th>
           <th scope="col"><span jhiTranslate="gestionferrApp.facturaCompra.valorDeuda">Valor Deuda</span></th>
           <th scope="col"><span jhiTranslate="gestionferrApp.facturaCompra.tipoFactura">Tipo Factura</span></th>
-          <th scope="col"><span jhiTranslate="gestionferrApp.facturaCompra.idProovedor">Id Proovedor</span></th>
+          <th scope="col"><span>Estado</span></th>
           <th scope="col"></th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let facturaCompra of facturaCompras; trackBy: trackId" data-cy="entityTable">
           <td>
-            <a [routerLink]="['/factura-compra', facturaCompra.id, 'view']">{{ facturaCompra.id }}</a>
+            <div class="dropdown">
+              <button
+                class="menu-config btn-primary"
+                type="button"
+                id="dropdownMenuButton1"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <mat-icon class="menu-config">more_vert</mat-icon>
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                <li>
+                  <button class="menu-config btn-primary mb-2" [routerLink]="['/factura-compra', facturaCompra.id, 'view']">
+                    <mat-icon class="icon-config">visibility</mat-icon>
+                    <span style="color: #000">Ver</span>
+                  </button>
+                </li>
+                <li>
+                  <button class="menu-config btn-primary mb-2" [routerLink]="['/factura-compra', facturaCompra.id, 'edit']">
+                    <mat-icon class="icon-config">manage_search</mat-icon>
+                    <span style="color: #000">Editar</span>
+                  </button>
+                </li>
+                <li>
+                  <button
+                    (click)="pasoParametroFacturaCompraAbono(facturaCompra.id!)"
+                    class="menu-config btn-primary mb-2"
+                    [routerLink]="['/abono']"
+                  >
+                    <mat-icon class="icon-config">edit</mat-icon>
+                    <span style="color: #000">Abonos</span>
+                  </button>
+                </li>
+                <li *ngIf="facturaCompra.valorDeuda! > 0">
+                  <button class="menu-config btn-primary mb-2" (click)="pasoParametroFacturaCompra(facturaCompra.id!)">
+                    <mat-icon class="icon-config">request_quote</mat-icon>
+                    <span style="color: #000">Abonar</span>
+                  </button>
+                </li>
+                <li>
+                  <button class="boton-eliminar" (click)="delete(facturaCompra)">
+                    <mat-icon class="icon-config-eliminar">delete</mat-icon>
+                    <span>Borrar</span>
+                  </button>
+                </li>
+              </ul>
+            </div>
           </td>
           <td>{{ facturaCompra.numeroFactura }}</td>
           <td>{{ facturaCompra.fechaCreacion | formatMediumDatetime }}</td>
-          <td>{{ facturaCompra.infoCliente }}</td>
+          <td>
+            <button
+              [disabled]="!facturaCompra.id"
+              style="border: none; background: none; color: rgb(0, 145, 255)"
+              [routerLink]="['/proveedor', facturaCompra.idProovedor, 'view']"
+            >
+              {{ facturaCompra.infoCliente }}
+            </button>
+          </td>
           <td>{{ facturaCompra.valorFactura }}</td>
           <td>{{ facturaCompra.valorPagado }}</td>
           <td>{{ facturaCompra.valorDeuda }}</td>
           <td jhiTranslate="{{ 'gestionferrApp.TipoFacturaEnum.' + facturaCompra.tipoFactura }}">{{ facturaCompra.tipoFactura }}</td>
-          <td>{{ facturaCompra.idProovedor }}</td>
+          <td>{{ facturaCompra.estado }}</td>
           <td class="text-end">
-            <div class="btn-group">
+            <!-- <div class="btn-group">
               <button
                 type="submit"
                 [routerLink]="['/factura-compra', facturaCompra.id, 'view']"
@@ -93,7 +208,7 @@
                 <fa-icon icon="times"></fa-icon>
                 <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
               </button>
-            </div>
+            </div> -->
           </td>
         </tr>
       </tbody>

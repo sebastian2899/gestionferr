@@ -6,9 +6,11 @@ import { isPresent } from 'app/core/util/operators';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
 import { IProveedor, getProveedorIdentifier } from '../proveedor.model';
+import { IFacturaCompra } from 'app/entities/factura-compra/factura-compra.model';
 
 export type EntityResponseType = HttpResponse<IProveedor>;
 export type EntityArrayResponseType = HttpResponse<IProveedor[]>;
+export type EntityResponseTypeFactura = HttpResponse<IFacturaCompra[]>;
 
 @Injectable({ providedIn: 'root' })
 export class ProveedorService {

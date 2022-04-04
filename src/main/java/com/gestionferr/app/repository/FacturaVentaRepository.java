@@ -39,4 +39,7 @@ public interface FacturaVentaRepository extends JpaRepository<FacturaVenta, Long
 
     @Query("SELECT p.nombre FROM Producto p WHERE p.id=:id")
     String nombreProducto(@Param("id") Long id);
+
+    @Query("SELECT COUNT(*) FROM FacturaVenta f WHERE f.numeroFactura = :numeroFactura")
+    int validarNumeroFacturaSave(@Param("numeroFactura") String numeroFactura);
 }

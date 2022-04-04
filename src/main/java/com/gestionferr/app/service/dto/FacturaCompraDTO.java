@@ -4,12 +4,18 @@ import com.gestionferr.app.domain.enumeration.TipoFacturaEnum;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.List;
 import java.util.Objects;
 
 /**
  * A DTO for the {@link com.gestionferr.app.domain.FacturaCompra} entity.
  */
 public class FacturaCompraDTO implements Serializable {
+
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
 
     private Long id;
 
@@ -25,7 +31,27 @@ public class FacturaCompraDTO implements Serializable {
 
     private BigDecimal valorDeuda;
 
+    private List<ItemFacturaCompraDTO> itemsFacturaCompra;
+
+    private String estado;
+
     private TipoFacturaEnum tipoFactura;
+
+    public List<ItemFacturaCompraDTO> getItemsFacturaCompra() {
+        return itemsFacturaCompra;
+    }
+
+    public void setItemsFacturaCompra(List<ItemFacturaCompraDTO> itemsFacturaCompra) {
+        this.itemsFacturaCompra = itemsFacturaCompra;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
 
     private Long idProovedor;
 

@@ -1,43 +1,165 @@
-<div>
-  <h2 id="page-heading" data-cy="ProductoHeading">
-    <span jhiTranslate="gestionferrApp.producto.home.title">Productos</span>
+<div [ngStyle]="{ display: mostrarProductosAgotados === true ? 'flex' : '' }">
+  <div *ngIf="mostrarProductosAgotados" class="col-md-3 me-2">
+    <button (click)="ocultarAgotados(1)" class="ms-2 btn btn-outline-primary mb-2">Ocultar</button>
+    <h4 class="titulo-entidades" style="color: #000">Totalmente Agotados</h4>
+    <ul class="list-group" *ngFor="let productoAgotado of productosAgotados">
+      <li class="list-group-item">
+        {{ productoAgotado.nombre }} - cantidad: {{ productoAgotado.cantidad }}
+        <button class="menu-config" [routerLink]="['/producto', productoAgotado.id, 'edit']">
+          <mat-icon class="icon-config">add_circle</mat-icon>
+        </button>
+      </li>
+    </ul>
+    <h4 class="titulo-entidades mt-4" style="color: #000">Casi agotados</h4>
+    <ul class="list-group" *ngFor="let productoCasiAgotado of productosCasiAgotados">
+      <li class="list-group-item">
+        {{ productoCasiAgotado.nombre }} - Cantidad: {{ productoCasiAgotado.cantidad }}
+        <button class="menu-config" [routerLink]="['/producto', productoCasiAgotado.id, 'edit']">
+          <mat-icon class="icon-config">add_circle</mat-icon>
+        </button>
+      </li>
+    </ul>
+  </div>
 
-    <div class="d-flex justify-content-end">
-      <!-- <button class="btn btn-info me-2" (click)="loadAll()" [disabled]="isLoading">
+  <div>
+    <h2 class="titulo-entidades" id="page-heading" data-cy="ProductoHeading">
+      <span jhiTranslate="gestionferrApp.producto.home.title">Productos</span>
+      <div class="justify-content-start" *ngIf="botonProductosAgotados">
+        <button
+          class="mt-2 btn btn-outline-warning parpadea boton-parpadeo"
+          (click)="ocultarAgotados(2)"
+          (click)="productosAgotadosMethod()"
+        >
+          Ver Agotados
+        </button>
+      </div>
+
+      <div class="d-flex justify-content-end mt-2">
+        <!-- <button class="btn btn-info me-2" (click)="loadAll()" [disabled]="isLoading">
         <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
         <span jhiTranslate="gestionferrApp.producto.home.refreshListLabel">Refresh List</span>
       </button> -->
 
-      <button class="btn btn-info me-2" [routerLink]="['/categoria']">
-        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
-        <span>Crear una categoria</span>
-      </button>
+        <button class="btn btn-outline-primary me-2" (click)="loadAll()" [disabled]="isLoading">
+          <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+          <span jhiTranslate="gestionferrApp.itemFacturaCompra.home.refreshListLabel">Refresh List</span>
+        </button>
 
-      <button
-        id="jh-create-entity"
-        data-cy="entityCreateButton"
-        class="btn btn-primary jh-create-entity create-producto"
-        [routerLink]="['/producto/new']"
-      >
-        <fa-icon icon="plus"></fa-icon>
-        <span jhiTranslate="gestionferrApp.producto.home.createLabel"> Create a new Producto </span>
-      </button>
+        <button
+          id="jh-create-entity"
+          data-cy="entityCreateButton"
+          class="btn btn-outline-primary jh-create-entity create-producto"
+          [routerLink]="['/producto/new']"
+        >
+          <mat-icon class="icon-config">add_circle_outline</mat-icon>
+          <span jhiTranslate="gestionferrApp.producto.home.createLabel"> Create a new Producto </span>
+        </button>
+      </div>
+    </h2>
+
+    <jhi-alert-error></jhi-alert-error>
+
+    <jhi-alert></jhi-alert>
+
+    <div class="d-flex justify-content-center ms-3">
+      <div class="">
+        <label for="categoria">Ordenar por categoria</label>
+        <select [(ngModel)]="idCategoria" (click)="productosPorCategoria()" name="categoria" id="categoria" class="form-select">
+          <option></option>
+          <option [ngValue]="categoria.id" *ngFor="let categoria of categorias">{{ categoria.categoriaProducto }}</option>
+        </select>
+      </div>
+      <div class="">
+        <div class="dropdown">
+          <button
+            class="m-4 menu-config3 btn-info dropdown-toggle"
+            type="button"
+            id="dropdownMenuButton1"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            <mat-icon style="font-size: 30px">import_export</mat-icon>
+          </button>
+          <ul style="text-align: center" class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+            <li><a class="link-producto dropdown-item" (click)="filtroProductoAutomatico(1)">A - z</a></li>
+            <li><a class="link-producto dropdown-item" (click)="filtroProductoAutomatico(2)">Precio </a></li>
+          </ul>
+        </div>
+      </div>
     </div>
-  </h2>
 
-  <jhi-alert-error></jhi-alert-error>
+    <div class="alert alert-warning" id="no-result" *ngIf="productos?.length === 0">
+      <span jhiTranslate="gestionferrApp.producto.home.notFound">No productos found</span>
+    </div>
 
-  <jhi-alert></jhi-alert>
+    <div class="row justify-content-start">
+      <div class="col-md-3">
+        <label for="nombre" class="form-label">Nombre Producto</label>
+        <input
+          placeholder="Filtrar por nombre"
+          [(ngModel)]="nombreProducto"
+          (keyup)="productosPorNombre()"
+          type="text"
+          class="form-control"
+          name="nombre"
+        />
+      </div>
+    </div>
 
-  <div class="alert alert-warning" id="no-result" *ngIf="productos?.length === 0">
-    <span jhiTranslate="gestionferrApp.producto.home.notFound">No productos found</span>
-  </div>
+    <div class="row justify-content-end">
+      <div class="d-flex justify-content-end mb-3">
+        <button (click)="mensajeProductosPorcentajes()" class="menu-config" type="button">
+          <mat-icon style="color: #000">help</mat-icon>
+        </button>
+        <a class="boton-link me-4" (click)="agregarPorcentajePrecios('aumento')">Aumentar Precio General</a>
+        <a class="boton-link me-4" (click)="agregarPorcentajePrecios('decremento')">Decrementar Precio General</a>
+      </div>
 
-  <div class="table-responsive" id="entities" *ngIf="productos && productos.length > 0">
+      <div class="col-md-5 mb-3" *ngIf="aumento">
+        <label for="aumento" class="form-label"
+          >Ingrese el porcentaje en numero que desea <b style="color: blue">aumentar</b> en el precio de los productos</label
+        >
+        <div class="d-flex">
+          <input
+            style="width: 102px; margin-left: 168px"
+            placeholder="%"
+            type="number"
+            [(ngModel)]="cantidadAumentar"
+            class="form-control me-1"
+            name="aumento"
+          />
+          <button class="btn btn-outline-success me-1" (click)="aplicarPorcentajePrecio()">Aplicar</button>
+          <button style="color: red" class="menu-config btn-danger" (click)="OpcionesPorcentjaeDefecto()">
+            <mat-icon>clear</mat-icon>
+          </button>
+        </div>
+      </div>
+
+      <div class="col-md-5 mb-3" *ngIf="decremento">
+        <label for="" class="form-label"
+          >Ingrese el porcentaje en numero que desea <b style="color: blue">disminuir</b> en el precio de los productos</label
+        >
+        <div class="d-flex">
+          <input
+            style="width: 102px; margin-left: 168px"
+            placeholder="%"
+            [(ngModel)]="cantidadDecrementar"
+            type="number"
+            class="form-control me-1"
+            name="cantidadAumentar"
+          />
+          <button class="btn btn-outline-success me-1" (click)="aplicarPorcentajePrecio()">Aplicar</button>
+          <button style="color: red" class="menu-config btn-danger" (click)="OpcionesPorcentjaeDefecto()">
+            <mat-icon>clear</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+    <!-- <div class="table-responsive" id="entities" *ngIf="productos && productos.length > 0">
     <table class="table table-striped" aria-describedby="page-heading">
       <thead>
         <tr>
-          <th scope="col"><span jhiTranslate="global.field.id">ID</span></th>
+          <th scope="col"></th>
           <th scope="col"><span jhiTranslate="gestionferrApp.producto.nombre">Nombre</span></th>
           <th scope="col"><span jhiTranslate="gestionferrApp.producto.precio">Precio</span></th>
           <th scope="col"><span jhiTranslate="gestionferrApp.producto.cantidad">Cantidad</span></th>
@@ -50,7 +172,16 @@
       <tbody>
         <tr *ngFor="let producto of productos; trackBy: trackId" data-cy="entityTable">
           <td>
-            <a [routerLink]="['/producto', producto.id, 'view']">{{ producto.id }}</a>
+            <div class="dropdown">
+              <button class="menu-config btn-primary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                <mat-icon >more_vert</mat-icon>
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                <li><a class="dropdown-item" href="#">Action</a></li>
+                <li><a class="dropdown-item" href="#">Another action</a></li>
+                <li><a class="dropdown-item" href="#">Something else here</a></li>
+              </ul>
+            </div>
           </td>
           <td>{{ producto.nombre }}</td>
           <td>{{ producto.precio }}</td>
@@ -64,7 +195,7 @@
           <td>{{ producto.descripcion }}</td>
           <td>{{ producto.nombreCategoria }}</td>
           <td class="text-end">
-            <div class="btn-group">
+           <div class="btn-group">
               <button
                 type="submit"
                 [routerLink]="['/producto', producto.id, 'view']"
@@ -93,6 +224,52 @@
           </td>
         </tr>
       </tbody>
-    </table>
+    </table> 
+  </div>
+  -->
+    <div class="row text-center">
+      <div style="box-shadow: 5px 5px 5px rgb(71, 207, 232)" class="col-lg-3 col-md-6 mb-4" *ngFor="let producto of productos">
+        <div class="card" style="width: 18rem">
+          <a *ngIf="producto.foto" (click)="openFile(producto.foto, producto.fotoContentType)">
+            <img [src]="'data:' + producto.fotoContentType + ';base64,' + producto.foto" style="max-height: 100px" alt="producto image" />
+          </a>
+          <div class="card-body">
+            <h5 class="card-title titulo-entidades">{{ producto.nombre }}</h5>
+            <p class="card-text titulo-entidades">{{ producto.descripcion }}</p>
+            <p class="card-text titulo-entidades">Categoria: {{ producto.nombreCategoria }}</p>
+            <p class="card-text titulo-entidades">Cantidad: {{ producto.cantidad }}</p>
+            <p class="card-text titulo-entidades">Precio: {{ producto.precio | currency }}</p>
+            <div class="d-flex justify-content-around" style="background-color: rgba(0, 187, 255, 0.241); border-radius: 10px">
+              <button class="menu-config2" [routerLink]="['/producto', producto.id, 'view']">
+                <mat-icon class="icon-config2">pageview</mat-icon>
+              </button>
+              <button class="menu-config2" [routerLink]="['/producto', producto.id, 'edit']">
+                <mat-icon class="icon-config2">edit</mat-icon>
+              </button>
+              <button class="menu-config2" (click)="delete(producto)">
+                <mat-icon class="icon-config-eliminar2">delete_forever</mat-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
+
+<ng-template #mensajeProductoPorcentajes>
+  <div class="modal-header">
+    <h4 class="modal-title titulo-entidades-warning">Informacion</h4>
+  </div>
+  <div class="modal-body">
+    <div>
+      <p style="color: black">
+        {{ mensajePorcentaje }}
+      </p>
+    </div>
+  </div>
+  <div class="modal-footer color-toggle text-black">
+    <h4 class="me-3">Gestion Ferreteria</h4>
+    <a class="mt-4" style="font-size: 15px; text-decoration: none" (click)="previusState()">Regresar</a>
+  </div>
+</ng-template>

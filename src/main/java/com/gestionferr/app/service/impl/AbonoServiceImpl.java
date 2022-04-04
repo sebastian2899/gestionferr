@@ -2,8 +2,10 @@ package com.gestionferr.app.service.impl;
 
 import com.gestionferr.app.config.Constants;
 import com.gestionferr.app.domain.Abono;
+import com.gestionferr.app.domain.FacturaCompra;
 import com.gestionferr.app.domain.FacturaVenta;
 import com.gestionferr.app.repository.AbonoRepository;
+import com.gestionferr.app.repository.FacturaCompraRepository;
 import com.gestionferr.app.repository.FacturaVentaRepository;
 import com.gestionferr.app.service.AbonoService;
 import com.gestionferr.app.service.dto.AbonoDTO;
@@ -36,13 +38,21 @@ public class AbonoServiceImpl implements AbonoService {
 
     private final FacturaVentaRepository facturaVentaRepository;
 
+    private final FacturaCompraRepository facturaCompraRepositoty;
+
     @PersistenceContext
     private EntityManager entityManager;
 
-    public AbonoServiceImpl(FacturaVentaRepository facturaVentaRepository, AbonoRepository abonoRepository, AbonoMapper abonoMapper) {
+    public AbonoServiceImpl(
+        FacturaVentaRepository facturaVentaRepository,
+        AbonoRepository abonoRepository,
+        AbonoMapper abonoMapper,
+        FacturaCompraRepository facturaCompraRepositoty
+    ) {
         this.abonoRepository = abonoRepository;
         this.abonoMapper = abonoMapper;
         this.facturaVentaRepository = facturaVentaRepository;
+        this.facturaCompraRepositoty = facturaCompraRepositoty;
     }
 
     @Override
@@ -51,13 +61,27 @@ public class AbonoServiceImpl implements AbonoService {
         Abono abono = abonoMapper.toEntity(abonoDTO);
         abono.setFechaCreacion(Instant.now());
 
-        FacturaVenta facturaVenta = facturaVentaRepository.facturaVentaPorId(abono.getIdFactura());
-        facturaVenta.setValorDeuda(facturaVenta.getValorDeuda().subtract(abono.getValorAbono()));
-        int deuda = facturaVenta.getValorDeuda().intValue();
-        if (deuda == 0) {
-            facturaVenta.setEstado("PAGADA");
-        } else {
-            facturaVenta.setEstado("DEUDA");
+        if (abono.getTipoFactura().equalsIgnoreCase("Factura Venta")) {
+            FacturaVenta facturaVenta = facturaVentaRepository.facturaVentaPorId(abono.getIdFactura());
+            facturaVenta.setValorDeuda(facturaVenta.getValorDeuda().subtract(abono.getValorAbono()));
+            int deuda = facturaVenta.getValorDeuda().intValue();
+            if (deuda == 0) {
+                facturaVenta.setEstado("PAGADA");
+            } else {
+                facturaVenta.setEstado("DEUDA");
+            }
+        }
+
+        if (abono.getTipoFactura().equalsIgnoreCase("Factura Compra")) {
+            FacturaCompra facturaCompra = facturaCompraRepositoty.facuraPorId(abono.getIdFactura());
+            facturaCompra.setValorDeuda(facturaCompra.getValorDeuda().subtract(abono.getValorAbono()));
+            int valorDeuda = facturaCompra.getValorDeuda().intValue();
+
+            if (valorDeuda == 0) {
+                facturaCompra.setEstado("PAGADA");
+            } else {
+                facturaCompra.setEstado("DEUDA");
+            }
         }
 
         abono = abonoRepository.save(abono);
@@ -88,14 +112,24 @@ public class AbonoServiceImpl implements AbonoService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<AbonoDTO> abonosPorFactura(Long id) {
+    public List<AbonoDTO> abonosPorFactura(Long id, Long codigo) {
         log.debug("Request to get all abonos per facturaVenta");
 
-        Query q = entityManager.createQuery(Constants.CONSULTAR_ABONOS_POR_FACTURAVENTA).setParameter("idFactura", id);
+        List<Abono> abonosPorFactura = null;
 
-        List<Abono> abonosPorFacturaVenta = q.getResultList();
+        if (codigo == 1) {
+            Query q = entityManager.createQuery(Constants.CONSULTAR_ABONOS_POR_FACTURAVENTA).setParameter("idFactura", id);
 
-        return abonoMapper.toDto(abonosPorFacturaVenta);
+            abonosPorFactura = q.getResultList();
+        }
+
+        if (codigo == 2) {
+            Query q = entityManager.createQuery(Constants.CONSULTAR_ABONO_POR_FACTURA_COMPRA).setParameter("idFactura", id);
+
+            abonosPorFactura = q.getResultList();
+        }
+
+        return abonoMapper.toDto(abonosPorFactura);
     }
 
     @Override

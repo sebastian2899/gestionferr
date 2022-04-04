@@ -1,16 +1,16 @@
 <div>
   <h2 id="page-heading" data-cy="CajaHeading" style="margin-bottom: 70px">
-    <div class="d-flex justify-content-center mb-5">
+    <div class="d-flex justify-content-center mb-2">
       <span style="color: blue; font-style: normal; font-weight: bold" jhiTranslate="gestionferrApp.caja.home.title">Cajas</span>
     </div>
 
-    <div class="d-flex justify-content-around mb-2">
-      <a class="link-caja">
+    <div class="d-flex justify-content-around">
+      <a class="link-caja" [routerLink]="['/caja/caja-fechas']">
         <mat-icon style="font-size: 40px; margin-right: 25px; position: relative; top: 12px">manage_search</mat-icon>
         <span>Consultar caja mensual</span></a
       >
 
-      <a class="link-caja">
+      <a class="link-caja" (click)="generarReporteCaja()">
         <mat-icon style="font-size: 40px; margin-right: 25px; position: relative; top: 12px">picture_as_pdf</mat-icon>
         <span>Generar PDF</span>
       </a>
@@ -21,6 +21,25 @@
       </a>
     </div>
   </h2>
+
+  <div class="row d-flex justify-content-around mb-4">
+    <div class="col-md-3">
+      <label for="fecha" class="form-label titulo-entidades">Fecha</label>
+      <input type="datetime-local" [(ngModel)]="fecha" class="form-control" name="fecha" />
+      <button (click)="cajasPorEstado()" class="menu-config">Filtrar <mat-icon class="icon-config">done_outline</mat-icon></button>
+    </div>
+
+    <div class="col-md-1">
+      <button class="menu-config" (click)="loadAll()"><mat-icon style="font-size: 40px">autorenew</mat-icon></button>
+    </div>
+
+    <div class="col-md-3">
+      <label for="estado" class="form-label titulo-entidades">Estado</label>
+      <select name="estado" id="estado" class="form-select" [(ngModel)]="estado" (click)="cajasPorEstado()">
+        <option *ngFor="let estado of estados">{{ estado }}</option>
+      </select>
+    </div>
+  </div>
 
   <jhi-alert-error></jhi-alert-error>
 
@@ -70,7 +89,7 @@
               </ul>
             </div>
           </td>
-          <td>{{ caja.fechaCreacion | formatMediumDatetime }}</td>
+          <td>{{ caja.fechaCreacion | formatMediumDate }}</td>
           <td>{{ caja.valorVentaDia }}</td>
           <td>{{ caja.valorRegistradoDia }}</td>
           <td jhiTranslate="{{ 'gestionferrApp.TipoEstadoEnum.' + caja.estado }}">{{ caja.estado }}</td>

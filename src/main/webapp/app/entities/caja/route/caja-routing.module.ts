@@ -6,6 +6,7 @@ import { CajaComponent } from '../list/caja.component';
 import { CajaDetailComponent } from '../detail/caja-detail.component';
 import { CajaUpdateComponent } from '../update/caja-update.component';
 import { CajaRoutingResolveService } from './caja-routing-resolve.service';
+import { CajaFechasComponent } from '../caja-fechas/caja-fechas.component';
 
 const cajaRoute: Routes = [
   {
@@ -32,6 +33,14 @@ const cajaRoute: Routes = [
   {
     path: ':id/edit',
     component: CajaUpdateComponent,
+    resolve: {
+      caja: CajaRoutingResolveService,
+    },
+    canActivate: [UserRouteAccessService],
+  },
+  {
+    path: ':caja-fechas',
+    component: CajaFechasComponent,
     resolve: {
       caja: CajaRoutingResolveService,
     },

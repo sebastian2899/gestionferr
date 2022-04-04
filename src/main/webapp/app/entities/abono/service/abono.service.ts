@@ -53,9 +53,9 @@ export class AbonoService {
       .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
   }
 
-  abonosPorFactura(id: number): Observable<EntityArrayResponseType> {
+  abonosPorFactura(id: number, codigo: number): Observable<EntityArrayResponseType> {
     return this.http
-      .get<IAbono[]>(`${this.AbonosPorFacturaUrl}/${id}`, { observe: 'response' })
+      .get<IAbono[]>(`${this.AbonosPorFacturaUrl}/${id}/${codigo}`, { observe: 'response' })
       .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
   }
 

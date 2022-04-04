@@ -34,10 +34,21 @@ public class ItemFacturaCompra implements Serializable {
     @Column(name = "precio", precision = 21, scale = 2)
     private BigDecimal precio;
 
+    @Transient
+    private String nombreProducto;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
     public Long getId() {
         return this.id;
+    }
+
+    public String getNombreProducto() {
+        return nombreProducto;
+    }
+
+    public void setNombreProducto(String nombreProducto) {
+        this.nombreProducto = nombreProducto;
     }
 
     public ItemFacturaCompra id(Long id) {

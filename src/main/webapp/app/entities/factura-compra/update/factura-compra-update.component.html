@@ -1,7 +1,8 @@
 <div class="d-flex justify-content-center">
-  <div class="col-8">
+  <div class="col-12">
     <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
       <h2
+        class="titulo-entidades mb-4"
         id="jhi-factura-compra-heading"
         data-cy="FacturaCompraCreateUpdateHeading"
         jhiTranslate="gestionferrApp.facturaCompra.home.createOrEditLabel"
@@ -12,110 +13,155 @@
       <div>
         <jhi-alert-error></jhi-alert-error>
 
-        <div class="row mb-3" [hidden]="editForm.get('id')!.value == null">
-          <label class="form-label" jhiTranslate="global.field.id" for="field_id">ID</label>
-          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
-        </div>
-
         <div class="row mb-3">
-          <label class="form-label" jhiTranslate="gestionferrApp.facturaCompra.numeroFactura" for="field_numeroFactura"
-            >Numero Factura</label
-          >
-          <input
-            type="text"
-            class="form-control"
-            name="numeroFactura"
-            id="field_numeroFactura"
-            data-cy="numeroFactura"
-            formControlName="numeroFactura"
-          />
-        </div>
-
-        <div class="row mb-3">
-          <label class="form-label" jhiTranslate="gestionferrApp.facturaCompra.fechaCreacion" for="field_fechaCreacion"
-            >Fecha Creacion</label
-          >
-          <div class="d-flex">
+          <div class="col-md-6">
+            <label class="form-label titulo-entidades" jhiTranslate="gestionferrApp.facturaCompra.numeroFactura" for="field_numeroFactura"
+              >Numero Factura</label
+            >
             <input
-              id="field_fechaCreacion"
-              data-cy="fechaCreacion"
-              type="datetime-local"
+              [readonly]="validarEditar"
+              type="text"
               class="form-control"
-              name="fechaCreacion"
-              formControlName="fechaCreacion"
-              placeholder="YYYY-MM-DD HH:mm"
+              name="numeroFactura"
+              id="field_numeroFactura"
+              data-cy="numeroFactura"
+              formControlName="numeroFactura"
+            />
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label titulo-entidades" for="field_idProovedor">Proovedor</label>
+            <select
+              required="true"
+              class="form-select"
+              name="idProovedor"
+              id="field_idProovedor"
+              data-cy="idProovedor"
+              formControlName="idProovedor"
+            >
+              <option [ngValue]="proovedor.id" *ngFor="let proovedor of proveedores">{{ proovedor.nombre }}</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="border-radius: 10px; background-color: rgba(23, 114, 250, 0.213)" class="row d-flex justify-content-center mb-4">
+          <div class="col-md-3">
+            <label for="producto" class="titulo-entidades form-label">Producto</label>
+            <select class="form-select" name="producto" id="producto" formControlName="producto" data-cy="producto">
+              <option [ngValue]="producto.id" *ngFor="let producto of productos">{{ producto.nombre }}</option>
+            </select>
+          </div>
+
+          <div class="col-md-2">
+            <label for="cantidad" class="titulo-entidades form-label">Cantidad</label>
+            <input name="cantidad" type="number" id="cantidad" formControlName="cantidad" data-cy="cantidad" class="form-control" />
+          </div>
+
+          <div class="col-md-2" style="margin-top: 30px; padding: 10px">
+            <button [disabled]="validarEditar" (click)="seleccionarProducto()" type="button" class="btn btn-primary">Seleccionar</button>
+          </div>
+          <jhi-alert></jhi-alert>
+          <div *ngIf="productosSeleccionados && productosSeleccionados.length > 0" class="col-md-8 mt-4 mb-4">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th class="titulo-entidades" scope="col">Producto</th>
+                  <th class="titulo-entidades" scope="col">Cantidad En Inventario</th>
+                  <th class="titulo-entidades" scope="col">Cantidad Seleccionada</th>
+                  <th class="titulo-entidades" scope="col">Precio</th>
+                  <th class="titulo-entidades" scope="col">Total</th>
+                  <th class="titulo-entidades" scope="col">acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let producto of productosSeleccionados">
+                  <td>{{ producto.nombreProducto }}</td>
+                  <td>{{ producto.cantidadTotalProducto }}</td>
+                  <td>{{ producto.cantidad }}</td>
+                  <td>{{ producto.precioProducto }}</td>
+                  <td>{{ producto.precio }}</td>
+                  <td>
+                    <button
+                      [disabled]="validarEditar"
+                      (click)="eliminarProducto(producto)"
+                      style="color: red; border: none; background: none"
+                    >
+                      <mat-icon>delete</mat-icon>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label class="titulo-entidades form-label" jhiTranslate="gestionferrApp.facturaCompra.valorFactura" for="field_valorFactura"
+              >Valor Factura</label
+            >
+            <input
+              type="number"
+              class="form-control"
+              name="valorFactura"
+              id="field_valorFactura"
+              data-cy="valorFactura"
+              readonly
+              formControlName="valorFactura"
+            />
+          </div>
+
+          <div class="col-md-6">
+            <label class="titulo-entidades form-label" jhiTranslate="gestionferrApp.facturaCompra.valorPagado" for="field_valorPagado"
+              >Valor Pagado</label
+            >
+            <input
+              type="number"
+              class="form-control"
+              name="valorPagado"
+              id="field_valorPagado"
+              data-cy="valorPagado"
+              formControlName="valorPagado"
+              (keyup)="calcularValores()"
+              [readonly]="validarEditar"
             />
           </div>
         </div>
 
         <div class="row mb-3">
-          <label class="form-label" jhiTranslate="gestionferrApp.facturaCompra.infoCliente" for="field_infoCliente">Info Cliente</label>
-          <input
-            type="text"
-            class="form-control"
-            name="infoCliente"
-            id="field_infoCliente"
-            data-cy="infoCliente"
-            formControlName="infoCliente"
-          />
+          <div class="col-md-6">
+            <label class="titulo-entidades form-label" jhiTranslate="gestionferrApp.facturaCompra.valorDeuda" for="field_valorDeuda"
+              >Valor Deuda</label
+            >
+            <input
+              type="number"
+              class="form-control"
+              name="valorDeuda"
+              id="field_valorDeuda"
+              data-cy="valorDeuda"
+              readonly
+              formControlName="valorDeuda"
+            />
+          </div>
+
+          <div class="col-md-6">
+            <label for="estado" class="titulo-entidades form-label">Estado</label>
+            <input readonly type="text" name="estado" id="estado" class="form-control" formControlName="estado" data-cy="estado" />
+          </div>
         </div>
 
-        <div class="row mb-3">
-          <label class="form-label" jhiTranslate="gestionferrApp.facturaCompra.valorFactura" for="field_valorFactura">Valor Factura</label>
-          <input
-            type="number"
-            class="form-control"
-            name="valorFactura"
-            id="field_valorFactura"
-            data-cy="valorFactura"
-            formControlName="valorFactura"
-          />
-        </div>
-
-        <div class="row mb-3">
-          <label class="form-label" jhiTranslate="gestionferrApp.facturaCompra.valorPagado" for="field_valorPagado">Valor Pagado</label>
-          <input
-            type="number"
-            class="form-control"
-            name="valorPagado"
-            id="field_valorPagado"
-            data-cy="valorPagado"
-            formControlName="valorPagado"
-          />
-        </div>
-
-        <div class="row mb-3">
-          <label class="form-label" jhiTranslate="gestionferrApp.facturaCompra.valorDeuda" for="field_valorDeuda">Valor Deuda</label>
-          <input
-            type="number"
-            class="form-control"
-            name="valorDeuda"
-            id="field_valorDeuda"
-            data-cy="valorDeuda"
-            formControlName="valorDeuda"
-          />
-        </div>
-
-        <div class="row mb-3">
-          <label class="form-label" jhiTranslate="gestionferrApp.facturaCompra.tipoFactura" for="field_tipoFactura">Tipo Factura</label>
-          <select class="form-control" name="tipoFactura" formControlName="tipoFactura" id="field_tipoFactura" data-cy="tipoFactura">
-            <option [ngValue]="null">{{ 'gestionferrApp.TipoFacturaEnum.null' | translate }}</option>
-            <option *ngFor="let tipoFacturaEnum of tipoFacturaEnumValues" [value]="tipoFacturaEnum">
-              {{ 'gestionferrApp.TipoFacturaEnum.' + tipoFacturaEnum | translate }}
-            </option>
-          </select>
-        </div>
-
-        <div class="row mb-3">
-          <label class="form-label" jhiTranslate="gestionferrApp.facturaCompra.idProovedor" for="field_idProovedor">Id Proovedor</label>
-          <input
-            type="number"
-            class="form-control"
-            name="idProovedor"
-            id="field_idProovedor"
-            data-cy="idProovedor"
-            formControlName="idProovedor"
-          />
+        <div class="row mb-3 d-flex justify-content-center">
+          <div class="col-md-6">
+            <label class="titulo-entidades form-label" jhiTranslate="gestionferrApp.facturaCompra.tipoFactura" for="field_tipoFactura"
+              >Tipo Factura</label
+            >
+            <select class="form-select" name="tipoFactura" formControlName="tipoFactura" id="field_tipoFactura" data-cy="tipoFactura">
+              <option [ngValue]="null">{{ 'gestionferrApp.TipoFacturaEnum.null' | translate }}</option>
+              <option *ngFor="let tipoFacturaEnum of tipoFacturaEnumValues" [value]="tipoFacturaEnum">
+                {{ 'gestionferrApp.TipoFacturaEnum.' + tipoFacturaEnum | translate }}
+              </option>
+            </select>
+          </div>
         </div>
       </div>
 
@@ -125,10 +171,11 @@
         </button>
 
         <button
-          type="submit"
+          (click)="validarFacturaCompraSave()"
+          type="button"
           id="save-entity"
           data-cy="entityCreateSaveButton"
-          [disabled]="editForm.invalid || isSaving"
+          [disabled]="editForm.invalid || isSaving || productosSeleccionados!.length === 0"
           class="btn btn-primary"
         >
           <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
@@ -137,3 +184,20 @@
     </form>
   </div>
 </div>
+
+<ng-template #mensajeValidacionFactura>
+  <div class="modal-header">
+    <h4 class="modal-title" style="color: red">ATENCION</h4>
+  </div>
+  <div class="modal-body">
+    <div>
+      <p style="color: black">
+        No se peude crear la factura con numero {{ numFactura }}, ya que ya existe en la base de datos una factura con este mismo numero de
+        factura, por favor ingrese otro numero de factura valido para guardar correctamente la factura.
+      </p>
+    </div>
+  </div>
+  <div class="modal-footer color-toggle text-black">
+    <h4 class="text-black">Gestion Ferreteria</h4>
+  </div>
+</ng-template>

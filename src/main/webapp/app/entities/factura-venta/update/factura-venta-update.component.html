@@ -113,7 +113,7 @@
                   <td>{{ item.cantidadTotalProducto }}</td>
                   <td>{{ item.cantidad }}</td>
                   <td>{{ item.precioProducto }}</td>
-                  <td>{{ item.precio }}</td>
+                  <td>{{ item.precio | currency }}</td>
                   <td><button type="button" (click)="eliminarProductoSeleccionado(item)" class="btn btn-danger">Eliminar</button></td>
                 </tr>
               </tbody>
@@ -191,7 +191,8 @@
         </button>
 
         <button
-          type="submit"
+          (click)="validarSaveFacturaVenta()"
+          type="button"
           id="save-entity"
           data-cy="entityCreateSaveButton"
           [disabled]="editForm.invalid || isSaving || productosSeleccionados.length === 0 || validarValorDeuda"
@@ -228,6 +229,24 @@
     <div>
       <p style="color: black">
         {{ mensajeAlertaProductoVacio }}
+      </p>
+    </div>
+  </div>
+  <div class="modal-footer color-toggle text-black">
+    <h4>Ferreteria Wilzon Camargo</h4>
+  </div>
+</ng-template>
+
+<ng-template #validacionFacturaVentaSave>
+  <div class="modal-header">
+    <h4 class="modal-title" style="color: red">ATENCION</h4>
+  </div>
+  <div class="modal-body">
+    <div>
+      <p style="color: black">
+        No se puede guardar la factura N° {{ numeroFactura }} ya que en la base de datos ya existe una factura venta con este mismo numero
+        de factura, por favor ingrese otro numeor de factura para guardar la factura venta correctamente o elimine la factura ya existente
+        si desea crear otra con el mismo numero
       </p>
     </div>
   </div>

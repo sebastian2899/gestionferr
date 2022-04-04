@@ -10,10 +10,6 @@
       <jhi-alert></jhi-alert>
 
       <dl class="row-md jh-entity-details">
-        <dt><span jhiTranslate="global.field.id">ID</span></dt>
-        <dd>
-          <span>{{ proveedor.id }}</span>
-        </dd>
         <dt><span jhiTranslate="gestionferrApp.proveedor.nombre">Nombre</span></dt>
         <dd>
           <span>{{ proveedor.nombre }}</span>
@@ -41,6 +37,34 @@
           <span jhiTranslate="{{ 'gestionferrApp.TipoProveedorEnum.' + proveedor.tipoProveedor }}">{{ proveedor.tipoProveedor }}</span>
         </dd>
       </dl>
+
+      <div *ngIf="!proveedor.facturasProovedor || proveedor.facturasProovedor.length === 0" class="alert alert-success" role="alert">
+        <h4 class="alert-heading">Sin Facturas</h4>
+
+        <p class="mb-0">No hay facturas pendientes para el proveedor {{ proveedor.nombre }} hasta el momento</p>
+      </div>
+
+      <div *ngIf="proveedor.facturasProovedor && proveedor.facturasProovedor.length > 0" class="row">
+        <div class="d-flex justify-content-center">
+          <h4 class="titulo-entidades">Factuas Pendientes al proveedor {{ proveedor.nombre }}</h4>
+        </div>
+        <table class="table table-striped table-hover">
+          <thead style="color: black">
+            <th>Numero Factura</th>
+            <th>Fecha Creacion</th>
+            <th>Valor Factura</th>
+            <th>Valor Deuda</th>
+          </thead>
+          <tbody>
+            <tr *ngFor="let factura of proveedor.facturasProovedor">
+              <td>{{ factura.numeroFactura }}</td>
+              <td>{{ factura.fecha }}</td>
+              <td>{{ factura.valorFactura | currency }}</td>
+              <td>{{ factura.valorDeuda | currency }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
       <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
         <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>

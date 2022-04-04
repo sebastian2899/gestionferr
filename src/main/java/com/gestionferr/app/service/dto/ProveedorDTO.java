@@ -1,14 +1,21 @@
 package com.gestionferr.app.service.dto;
 
+import com.gestionferr.app.domain.FacturaCompra;
 import com.gestionferr.app.domain.enumeration.TipoIdentificacionEnum;
 import com.gestionferr.app.domain.enumeration.TipoProveedorEnum;
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
 /**
  * A DTO for the {@link com.gestionferr.app.domain.Proveedor} entity.
  */
 public class ProveedorDTO implements Serializable {
+
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
 
     private Long id;
 
@@ -23,6 +30,16 @@ public class ProveedorDTO implements Serializable {
     private String numeroCC;
 
     private TipoProveedorEnum tipoProveedor;
+
+    private List<ItemPorFacturaCompra> facturasProovedor;
+
+    public List<ItemPorFacturaCompra> getFacturasProovedor() {
+        return facturasProovedor;
+    }
+
+    public void setFacturasProovedor(List<ItemPorFacturaCompra> facturasProovedor) {
+        this.facturasProovedor = facturasProovedor;
+    }
 
     public Long getId() {
         return id;

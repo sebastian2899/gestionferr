@@ -1,5 +1,6 @@
 import dayjs from 'dayjs/esm';
 import { TipoFacturaEnum } from 'app/entities/enumerations/tipo-factura-enum.model';
+import { IItemFacturaCompra } from '../item-factura-compra/item-factura-compra.model';
 
 export interface IFacturaCompra {
   id?: number;
@@ -11,6 +12,8 @@ export interface IFacturaCompra {
   valorDeuda?: number | null;
   tipoFactura?: TipoFacturaEnum | null;
   idProovedor?: number | null;
+  estado?: string | null;
+  itemsFacturaCompra?: IItemFacturaCompra[] | null;
 }
 
 export class FacturaCompra implements IFacturaCompra {
@@ -23,7 +26,9 @@ export class FacturaCompra implements IFacturaCompra {
     public valorPagado?: number | null,
     public valorDeuda?: number | null,
     public tipoFactura?: TipoFacturaEnum | null,
-    public idProovedor?: number | null
+    public idProovedor?: number | null,
+    public estado?: string | null,
+    public itemsFacturaCompra?: IItemFacturaCompra[] | null
   ) {}
 }
 

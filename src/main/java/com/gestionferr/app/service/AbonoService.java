@@ -46,5 +46,5 @@ public interface AbonoService {
      */
     void delete(Long id);
 
-    List<AbonoDTO> abonosPorFactura(Long id);
+    List<AbonoDTO> abonosPorFactura(Long id, Long codigo);
 }

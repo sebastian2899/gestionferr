@@ -22,6 +22,7 @@ import com.itextpdf.text.pdf.PdfWriter;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.Calendar;
@@ -296,6 +297,10 @@ public class FacturaVentaServiceImpl implements FacturaVentaService {
             document.add(fIni);
             document.add(fFn);
 
+            BigDecimal valorTotalFacturaMensual = BigDecimal.ZERO;
+            BigDecimal valorPagadoFacturaMensual = BigDecimal.ZERO;
+            BigDecimal valorDeudaFacturaMensual = BigDecimal.ZERO;
+
             document.add(Chunk.NEWLINE);
             for (FacturaVenta factura : facturasPorFechas) {
                 PdfPTable table = new PdfPTable(6);
@@ -363,7 +368,25 @@ public class FacturaVentaServiceImpl implements FacturaVentaService {
                     document.add(tableAbono);
                     document.add(Chunk.NEWLINE);
                 }
+                valorTotalFacturaMensual = valorTotalFacturaMensual.add(factura.getValorFactura());
+                valorPagadoFacturaMensual = valorPagadoFacturaMensual.add(factura.getValorPagado());
+                valorDeudaFacturaMensual = valorDeudaFacturaMensual.add(factura.getValorDeuda());
             }
+
+            document.add(Chunk.NEWLINE);
+
+            DecimalFormat formater = new DecimalFormat("###,###.##");
+
+            Paragraph valorFacturaMensual = new Paragraph("Valor Total Facturas Mes: " + formater.format(valorTotalFacturaMensual));
+            valorFacturaMensual.setAlignment(2);
+            Paragraph valorPagadoMensual = new Paragraph("Valor Pagado Facturas Mes: " + formater.format(valorPagadoFacturaMensual));
+            valorPagadoMensual.setAlignment(2);
+            Paragraph valorDeudaMensual = new Paragraph("Valor Deuda Facturas Mes: " + formater.format(valorDeudaFacturaMensual));
+            valorDeudaMensual.setAlignment(2);
+
+            document.add(valorFacturaMensual);
+            document.add(valorPagadoMensual);
+            document.add(valorDeudaMensual);
 
             document.close();
 
@@ -442,5 +465,19 @@ public class FacturaVentaServiceImpl implements FacturaVentaService {
         Query query = entityManager.createQuery(Constants.ELIMINAR_ITEMS_POR_FACTURA).setParameter("id", id);
 
         query.executeUpdate();
+    }
+
+    @Override
+    public Boolean ValidarFacturaVentanumeroFactura(String numeroFactura) {
+        log.debug("Request to validation facturaVenta save");
+
+        int numeroValidacion = facturaVentaRepository.validarNumeroFacturaSave(numeroFactura);
+        boolean resp = false;
+
+        if (numeroValidacion >= 1) {
+            resp = true;
+        }
+
+        return resp;
     }
 }

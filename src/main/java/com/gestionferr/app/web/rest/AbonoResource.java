@@ -154,10 +154,10 @@ public class AbonoResource {
         return ResponseUtil.wrapOrNotFound(abonoDTO);
     }
 
-    @GetMapping("/abonosFactura/{id}")
-    public List<AbonoDTO> getAbonosPorFactura(@PathVariable Long id) {
+    @GetMapping("/abonosFactura/{id}/{codigo}")
+    public List<AbonoDTO> getAbonosPorFactura(@PathVariable Long id, @PathVariable Long codigo) {
         log.debug("REST request to get Abonos per Factura : {}", id);
-        return abonoService.abonosPorFactura(id);
+        return abonoService.abonosPorFactura(id, codigo);
     }
 
     /**

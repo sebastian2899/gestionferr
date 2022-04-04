@@ -45,4 +45,16 @@ public interface ProductoService {
      * @param id the id of the entity.
      */
     void delete(Long id);
+
+    List<ProductoDTO> productosPorCategoria(Long idCategoria);
+
+    List<ProductoDTO> productosFiltroAutomatico(int codigo);
+
+    List<ProductoDTO> productosAgotados();
+
+    List<ProductoDTO> productosCasiAgotados();
+
+    void actualizarPrecioProductos(String opcion, Long porcentaje);
+
+    List<ProductoDTO> productosPorNombre(String nombre);
 }

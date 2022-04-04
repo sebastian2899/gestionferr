@@ -42,6 +42,7 @@ export class CajaUpdateComponent implements OnInit {
 
       this.updateForm(caja);
     });
+
     this.consultarValorDia();
   }
 
@@ -55,7 +56,7 @@ export class CajaUpdateComponent implements OnInit {
         this.valorCajaDia = res.body;
         if (this.valorCajaDia) {
           this.editForm.get(['valorVentaDia'])?.setValue(this.valorCajaDia);
-          this.editForm.get(['estado'])?.setValue('Deuda');
+          this.editForm.get(['estado'])?.setValue('DEUDA');
           this.editForm.get(['diferencia'])?.setValue(this.valorCajaDia);
         }
       },
@@ -73,7 +74,7 @@ export class CajaUpdateComponent implements OnInit {
       this.editForm.get(['diferencia'])?.setValue(diferencia);
 
       let estado = '';
-      diferencia === 0 ? (estado = 'Saldada') : (estado = 'Deuda');
+      diferencia === 0 ? (estado = 'PAGADA') : (estado = 'DEUDA');
 
       this.editForm.get(['estado'])?.setValue(estado);
 

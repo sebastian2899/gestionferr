@@ -16,6 +16,7 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -194,6 +195,15 @@ public class FacturaVentaResource {
         }
 
         return ResponseEntity.ok().body(factura);
+    }
+
+    @GetMapping("/factura-venta-validar-factura-numero/{numeroFactura}")
+    public ResponseEntity<Boolean> validarFacturaVenta(@PathVariable String numeroFactura) {
+        log.debug("REST request to validation save of facturaCompra");
+
+        Boolean resp = facturaVentaService.ValidarFacturaVentanumeroFactura(numeroFactura);
+
+        return new ResponseEntity<Boolean>(resp, null, HttpStatus.OK);
     }
 
     @GetMapping("/reporte-factura-venta")

@@ -4,7 +4,17 @@ import com.gestionferr.app.domain.enumeration.TipoFacturaEnum;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.Instant;
-import javax.persistence.*;
+import java.util.List;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -49,10 +59,32 @@ public class FacturaCompra implements Serializable {
     @Column(name = "id_proovedor")
     private Long idProovedor;
 
+    @Column(name = "estado")
+    private String estado;
+
+    @Transient
+    private List<ItemFacturaCompra> itemsFacturaCompra;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
     public Long getId() {
         return this.id;
+    }
+
+    public List<ItemFacturaCompra> getItemsFacturaCompra() {
+        return itemsFacturaCompra;
+    }
+
+    public void setItemsFacturaCompra(List<ItemFacturaCompra> itemsFacturaCompra) {
+        this.itemsFacturaCompra = itemsFacturaCompra;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
     }
 
     public FacturaCompra id(Long id) {

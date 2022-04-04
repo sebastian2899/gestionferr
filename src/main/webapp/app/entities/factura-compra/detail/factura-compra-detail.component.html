@@ -1,7 +1,9 @@
 <div class="d-flex justify-content-center">
   <div class="col-8">
     <div *ngIf="facturaCompra">
-      <h2 data-cy="facturaCompraDetailsHeading"><span jhiTranslate="gestionferrApp.facturaCompra.detail.title">Factura Compra</span></h2>
+      <h2 class="titulo-entidades" data-cy="facturaCompraDetailsHeading">
+        <span jhiTranslate="gestionferrApp.facturaCompra.detail.title">Factura Compra</span>
+      </h2>
 
       <hr />
 
@@ -10,43 +12,61 @@
       <jhi-alert></jhi-alert>
 
       <dl class="row-md jh-entity-details">
-        <dt><span jhiTranslate="global.field.id">ID</span></dt>
-        <dd>
-          <span>{{ facturaCompra.id }}</span>
-        </dd>
-        <dt><span jhiTranslate="gestionferrApp.facturaCompra.numeroFactura">Numero Factura</span></dt>
+        <dt><span class="titulo-entidades" jhiTranslate="gestionferrApp.facturaCompra.numeroFactura">Numero Factura</span></dt>
         <dd>
           <span>{{ facturaCompra.numeroFactura }}</span>
         </dd>
-        <dt><span jhiTranslate="gestionferrApp.facturaCompra.fechaCreacion">Fecha Creacion</span></dt>
+        <dt><span class="titulo-entidades" jhiTranslate="gestionferrApp.facturaCompra.fechaCreacion">Fecha Creacion</span></dt>
         <dd>
           <span>{{ facturaCompra.fechaCreacion | formatMediumDatetime }}</span>
         </dd>
-        <dt><span jhiTranslate="gestionferrApp.facturaCompra.infoCliente">Info Cliente</span></dt>
+        <dt><span class="titulo-entidades" jhiTranslate="gestionferrApp.facturaCompra.infoCliente">Info Cliente</span></dt>
         <dd>
           <span>{{ facturaCompra.infoCliente }}</span>
         </dd>
-        <dt><span jhiTranslate="gestionferrApp.facturaCompra.valorFactura">Valor Factura</span></dt>
+        <dt><span class="titulo-entidades" jhiTranslate="gestionferrApp.facturaCompra.valorFactura">Valor Factura</span></dt>
         <dd>
           <span>{{ facturaCompra.valorFactura }}</span>
         </dd>
-        <dt><span jhiTranslate="gestionferrApp.facturaCompra.valorPagado">Valor Pagado</span></dt>
+        <dt><span class="titulo-entidades" jhiTranslate="gestionferrApp.facturaCompra.valorPagado">Valor Pagado</span></dt>
         <dd>
           <span>{{ facturaCompra.valorPagado }}</span>
         </dd>
-        <dt><span jhiTranslate="gestionferrApp.facturaCompra.valorDeuda">Valor Deuda</span></dt>
+        <dt><span class="titulo-entidades" jhiTranslate="gestionferrApp.facturaCompra.valorDeuda">Valor Deuda</span></dt>
         <dd>
           <span>{{ facturaCompra.valorDeuda }}</span>
         </dd>
-        <dt><span jhiTranslate="gestionferrApp.facturaCompra.tipoFactura">Tipo Factura</span></dt>
+        <dt><span class="titulo-entidades" jhiTranslate="gestionferrApp.facturaCompra.tipoFactura">Tipo Factura</span></dt>
         <dd>
           <span jhiTranslate="{{ 'gestionferrApp.TipoFacturaEnum.' + facturaCompra.tipoFactura }}">{{ facturaCompra.tipoFactura }}</span>
         </dd>
-        <dt><span jhiTranslate="gestionferrApp.facturaCompra.idProovedor">Id Proovedor</span></dt>
+        <dt><span class="titulo-entidades" jhiTranslate="gestionferrApp.facturaCompra.idProovedor">Id Proovedor</span></dt>
         <dd>
           <span>{{ facturaCompra.idProovedor }}</span>
         </dd>
       </dl>
+
+      <div *ngIf="facturaCompra.itemsFacturaCompra && facturaCompra.itemsFacturaCompra.length > 0" class="d-flex justify-content-center">
+        <h3 class="titulo-entidades mt-4">Items factura compra N° {{ facturaCompra.numeroFactura }}</h3>
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th scope="row"></th>
+              <th scope="col">Producto</th>
+              <th scope="col">Cantidad</th>
+              <th scope="col">Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of facturaCompra.itemsFacturaCompra">
+              <th scope="row"></th>
+              <td>{{ item.nombreProducto }}</td>
+              <td>{{ item.cantidad }}</td>
+              <td>{{ item.precio }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
       <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
         <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>

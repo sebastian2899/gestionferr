@@ -8,13 +8,20 @@ import { isPresent } from 'app/core/util/operators';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
 import { IFacturaCompra, getFacturaCompraIdentifier } from '../factura-compra.model';
+import { IRegistroFacturaCompra } from '../registroFacturaCompra';
 
 export type EntityResponseType = HttpResponse<IFacturaCompra>;
+export type BooleanResponseType = HttpResponse<boolean>;
 export type EntityArrayResponseType = HttpResponse<IFacturaCompra[]>;
+export type RegistroFacturaCompra = HttpResponse<IRegistroFacturaCompra>;
 
 @Injectable({ providedIn: 'root' })
 export class FacturaCompraService {
   protected resourceUrl = this.applicationConfigService.getEndpointFor('api/factura-compras');
+  protected facturassPorFiltroUrl = this.applicationConfigService.getEndpointFor('api/factura-compras-filtro');
+  protected registroFacturaCompraUrl = this.applicationConfigService.getEndpointFor('api/factura-compra-mes');
+  protected facturasPorFechaUrl = this.applicationConfigService.getEndpointFor('api/facturas-compra-fecha');
+  protected validarFacturaCompraUrl = this.applicationConfigService.getEndpointFor('api/factura-compra-validar-numero');
 
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
@@ -23,6 +30,26 @@ export class FacturaCompraService {
     return this.http
       .post<IFacturaCompra>(this.resourceUrl, copy, { observe: 'response' })
       .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
+  }
+
+  validarFacturaCompra(numeroFactura: string): Observable<BooleanResponseType> {
+    return this.http.get<boolean>(`${this.validarFacturaCompraUrl}/${numeroFactura}`, { observe: 'response' });
+  }
+
+  registroFacturaMes(fechaInicio: string, fechaFin: string): Observable<RegistroFacturaCompra> {
+    return this.http.get<IRegistroFacturaCompra>(`${this.registroFacturaCompraUrl}/${fechaInicio}/${fechaFin}`, { observe: 'response' });
+  }
+
+  facturasCompraPorFecha(fecha: string): Observable<EntityArrayResponseType> {
+    return this.http
+      .get<IFacturaCompra[]>(`${this.facturasPorFechaUrl}/${fecha}`, { observe: 'response' })
+      .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
+  }
+
+  facturaPorFiltro(facturaCompra: IFacturaCompra): Observable<EntityArrayResponseType> {
+    return this.http
+      .post<IFacturaCompra[]>(this.facturassPorFiltroUrl, facturaCompra, { observe: 'response' })
+      .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
   }
 
   update(facturaCompra: IFacturaCompra): Observable<EntityResponseType> {

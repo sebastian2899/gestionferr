@@ -1,7 +1,9 @@
 package com.gestionferr.app.service;
 
 import com.gestionferr.app.service.dto.CajaDTO;
+import com.gestionferr.app.service.dto.CajaFechasDTO;
 import java.math.BigDecimal;
+import java.text.ParseException;
 import java.util.List;
 import java.util.Optional;
 
@@ -48,4 +50,12 @@ public interface CajaService {
     void delete(Long id);
 
     BigDecimal valoresDia();
+
+    List<CajaDTO> cajasPorFiltro(String estado) throws ParseException;
+
+    List<CajaDTO> cajasPorFecha(String fecha);
+
+    CajaFechasDTO valoresCajaPorFechas(String fechaInicio, String fechaFin);
+
+    byte[] reporteCaja();
 }

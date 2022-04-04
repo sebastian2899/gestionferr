@@ -5,10 +5,18 @@ import { FacturaCompraDetailComponent } from './detail/factura-compra-detail.com
 import { FacturaCompraUpdateComponent } from './update/factura-compra-update.component';
 import { FacturaCompraDeleteDialogComponent } from './delete/factura-compra-delete-dialog.component';
 import { FacturaCompraRoutingModule } from './route/factura-compra-routing.module';
+import { MatIconModule } from '@angular/material/icon';
+import { RegistroFacturaCompraComponent } from './registro-factura-compra/registro-factura-compra.component';
 
 @NgModule({
-  imports: [SharedModule, FacturaCompraRoutingModule],
-  declarations: [FacturaCompraComponent, FacturaCompraDetailComponent, FacturaCompraUpdateComponent, FacturaCompraDeleteDialogComponent],
+  imports: [SharedModule, FacturaCompraRoutingModule, MatIconModule],
+  declarations: [
+    FacturaCompraComponent,
+    FacturaCompraDetailComponent,
+    FacturaCompraUpdateComponent,
+    FacturaCompraDeleteDialogComponent,
+    RegistroFacturaCompraComponent,
+  ],
   entryComponents: [FacturaCompraDeleteDialogComponent],
 })
 export class FacturaCompraModule {}

@@ -4,6 +4,9 @@ export interface IItemFacturaCompra {
   idProducto?: number | null;
   cantidad?: number | null;
   precio?: number | null;
+  cantidadTotalProducto?: number | null;
+  precioProducto?: number | null;
+  nombreProducto?: string | null;
 }
 
 export class ItemFacturaCompra implements IItemFacturaCompra {
@@ -12,7 +15,10 @@ export class ItemFacturaCompra implements IItemFacturaCompra {
     public idFacturaCompra?: number | null,
     public idProducto?: number | null,
     public cantidad?: number | null,
-    public precio?: number | null
+    public precio?: number | null,
+    public cantidadTotalProducto?: number | null,
+    public nombreProducto?: string | null,
+    public precioProducto?: number | null
   ) {}
 }
 

@@ -6,6 +6,7 @@ import com.gestionferr.app.service.dto.ProveedorDTO;
 import com.gestionferr.app.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.text.ParseException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -146,12 +147,13 @@ public class ProveedorResource {
      *
      * @param id the id of the proveedorDTO to retrieve.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the proveedorDTO, or with status {@code 404 (Not Found)}.
+     * @throws ParseException
      */
     @GetMapping("/proveedors/{id}")
-    public ResponseEntity<ProveedorDTO> getProveedor(@PathVariable Long id) {
+    public ResponseEntity<ProveedorDTO> getProveedor(@PathVariable Long id) throws ParseException {
         log.debug("REST request to get Proveedor : {}", id);
-        Optional<ProveedorDTO> proveedorDTO = proveedorService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(proveedorDTO);
+        ProveedorDTO proveedorDTO = proveedorService.findOne(id);
+        return ResponseEntity.ok().body(proveedorDTO);
     }
 
     /**

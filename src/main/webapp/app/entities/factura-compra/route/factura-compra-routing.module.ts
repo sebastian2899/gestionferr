@@ -6,6 +6,7 @@ import { FacturaCompraComponent } from '../list/factura-compra.component';
 import { FacturaCompraDetailComponent } from '../detail/factura-compra-detail.component';
 import { FacturaCompraUpdateComponent } from '../update/factura-compra-update.component';
 import { FacturaCompraRoutingResolveService } from './factura-compra-routing-resolve.service';
+import { RegistroFacturaCompraComponent } from '../registro-factura-compra/registro-factura-compra.component';
 
 const facturaCompraRoute: Routes = [
   {
@@ -24,6 +25,14 @@ const facturaCompraRoute: Routes = [
   {
     path: 'new',
     component: FacturaCompraUpdateComponent,
+    resolve: {
+      facturaCompra: FacturaCompraRoutingResolveService,
+    },
+    canActivate: [UserRouteAccessService],
+  },
+  {
+    path: 'registro-factura-compra',
+    component: RegistroFacturaCompraComponent,
     resolve: {
       facturaCompra: FacturaCompraRoutingResolveService,
     },

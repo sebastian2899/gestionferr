@@ -10,6 +10,8 @@ import { ProductoService } from '../service/producto.service';
 import { AlertError } from 'app/shared/alert/alert-error.model';
 import { EventManager, EventWithContent } from 'app/core/util/event-manager.service';
 import { DataUtils, FileLoadError } from 'app/core/util/data-util.service';
+import { CategoriaService } from 'app/entities/categoria/service/categoria.service';
+import { ICategoria } from 'app/entities/categoria/categoria.model';
 
 @Component({
   selector: 'jhi-producto-update',
@@ -17,6 +19,7 @@ import { DataUtils, FileLoadError } from 'app/core/util/data-util.service';
 })
 export class ProductoUpdateComponent implements OnInit {
   isSaving = false;
+  categorias?: ICategoria[] | null;
 
   editForm = this.fb.group({
     id: [],
@@ -35,17 +38,30 @@ export class ProductoUpdateComponent implements OnInit {
     protected productoService: ProductoService,
     protected elementRef: ElementRef,
     protected activatedRoute: ActivatedRoute,
-    protected fb: FormBuilder
+    protected fb: FormBuilder,
+    protected categoriaService: CategoriaService
   ) {}
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ producto }) => {
       this.updateForm(producto);
     });
+    this.consultarCategorias();
   }
 
   byteSize(base64String: string): string {
     return this.dataUtils.byteSize(base64String);
+  }
+
+  consultarCategorias(): void {
+    this.categoriaService.query().subscribe({
+      next: (res: HttpResponse<ICategoria[]>) => {
+        this.categorias = res.body ?? [];
+      },
+      error: () => {
+        this.categorias = [];
+      },
+    });
   }
 
   openFile(base64String: string, contentType: string | null | undefined): void {

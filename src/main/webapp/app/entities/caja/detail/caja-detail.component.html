@@ -1,7 +1,7 @@
 <div class="d-flex justify-content-center">
   <div class="col-8">
     <div *ngIf="caja">
-      <h2 data-cy="cajaDetailsHeading"><span jhiTranslate="gestionferrApp.caja.detail.title">Caja</span></h2>
+      <h2 class="titulo-entidades" data-cy="cajaDetailsHeading"><span jhiTranslate="gestionferrApp.caja.detail.title">Caja</span></h2>
 
       <hr />
 
@@ -10,10 +10,6 @@
       <jhi-alert></jhi-alert>
 
       <dl class="row-md jh-entity-details">
-        <dt><span jhiTranslate="global.field.id">ID</span></dt>
-        <dd>
-          <span>{{ caja.id }}</span>
-        </dd>
         <dt><span jhiTranslate="gestionferrApp.caja.fechaCreacion">Fecha Creacion</span></dt>
         <dd>
           <span>{{ caja.fechaCreacion | formatMediumDatetime }}</span>

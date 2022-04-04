@@ -15,4 +15,7 @@ import org.springframework.stereotype.Repository;
 public interface AbonoRepository extends JpaRepository<Abono, Long> {
     @Query("SELECT a FROM Abono a WHERE a.idFactura = :id AND a.tipoFactura = 'Factura Venta'")
     List<Abono> abonosPorFactura(@Param("id") Long id);
+
+    @Query("SELECT a FROM Abono a WHERE a.idFactura =:id AND a.tipoFactura = 'Factura Compra'")
+    List<Abono> abonosPorFacturaCompra(@Param("id") Long id);
 }

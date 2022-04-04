@@ -141,6 +141,30 @@ public class ProductoResource {
         return productoService.findAll();
     }
 
+    @GetMapping("/productos-categoria/{idCategoria}")
+    public List<ProductoDTO> productosPorCategoria(@PathVariable Long idCategoria) {
+        log.debug("REST request to get all products per cateogry", idCategoria);
+        return productoService.productosPorCategoria(idCategoria);
+    }
+
+    @GetMapping("/productos-filtro-automatico/{codigo}")
+    public List<ProductoDTO> productosFiltroAutomatico(@PathVariable int codigo) {
+        log.debug("REST request to ger all products per code", codigo);
+        return productoService.productosFiltroAutomatico(codigo);
+    }
+
+    @GetMapping("/productos-agotados")
+    public List<ProductoDTO> productosAgotados() {
+        log.debug("REST request to ger all products cold");
+        return productoService.productosAgotados();
+    }
+
+    @GetMapping("/productos-casi-agotados")
+    public List<ProductoDTO> productosCasiAgotados() {
+        log.debug("REST request to ger all products cold");
+        return productoService.productosCasiAgotados();
+    }
+
     /**
      * {@code GET  /productos/:id} : get the "id" producto.
      *
@@ -152,6 +176,23 @@ public class ProductoResource {
         log.debug("REST request to get Producto : {}", id);
         Optional<ProductoDTO> productoDTO = productoService.findOne(id);
         return ResponseUtil.wrapOrNotFound(productoDTO);
+    }
+
+    @GetMapping("/productos-precios-porcentaje/{opcion}/{porcentaje}")
+    public ResponseEntity<Void> updateValuesProducts(@PathVariable String opcion, @PathVariable Long porcentaje) {
+        log.debug("REST request to update values productos");
+        productoService.actualizarPrecioProductos(opcion, porcentaje);
+
+        return ResponseEntity
+            .noContent()
+            .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, porcentaje.toString()))
+            .build();
+    }
+
+    @GetMapping("/productos-nombre/{nombre}")
+    public List<ProductoDTO> productosPorNombre(@PathVariable String nombre) {
+        log.debug("REST request to get all productos per name");
+        return productoService.productosPorNombre(nombre);
     }
 
     /**

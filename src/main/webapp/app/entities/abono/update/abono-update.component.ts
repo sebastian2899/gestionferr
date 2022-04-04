@@ -24,6 +24,7 @@ export class AbonoUpdateComponent implements OnInit {
   // @ViewChild('precioInvalido',{static:true}) content: ElementRef | undefined;
 
   isSaving = false;
+  idFacturaEnviar?: number | null;
   idFactura?: number | null;
   idFacturaCompra?: number | null;
   tipoFactura?: string | null;
@@ -67,6 +68,7 @@ export class AbonoUpdateComponent implements OnInit {
 
   asignartipoFactura(): void {
     if (this.idFactura) {
+      this.idFacturaEnviar = this.idFactura;
       this.facturaVentaService.find(this.idFactura).subscribe({
         next: (res: HttpResponse<IFacturaVenta>) => {
           const factura = res.body;
@@ -84,6 +86,7 @@ export class AbonoUpdateComponent implements OnInit {
       this.storageService.clearFactura();
     } else {
       this.idFacturaCompra = this.storageService.getParametroFacturaCompra();
+      this.idFacturaEnviar = this.idFacturaCompra;
       this.facturaCompraService.find(this.idFacturaCompra!).subscribe({
         next: (res: HttpResponse<IFacturaCompra>) => {
           const factura = res.body;
@@ -158,7 +161,7 @@ export class AbonoUpdateComponent implements OnInit {
     return {
       ...new Abono(),
       id: this.editForm.get(['id'])!.value,
-      idFactura: this.idFactura,
+      idFactura: this.idFacturaEnviar,
       fechaCreacion: this.editForm.get(['fechaCreacion'])!.value
         ? dayjs(this.editForm.get(['fechaCreacion'])!.value, DATE_TIME_FORMAT)
         : undefined,

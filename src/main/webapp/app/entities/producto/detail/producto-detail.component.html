@@ -10,23 +10,19 @@
       <jhi-alert></jhi-alert>
 
       <dl class="row-md jh-entity-details">
-        <dt><span jhiTranslate="global.field.id">ID</span></dt>
-        <dd>
-          <span>{{ producto.id }}</span>
-        </dd>
-        <dt><span jhiTranslate="gestionferrApp.producto.nombre">Nombre</span></dt>
+        <dt><span class="titulo-entidades" jhiTranslate="gestionferrApp.producto.nombre">Nombre</span></dt>
         <dd>
           <span>{{ producto.nombre }}</span>
         </dd>
-        <dt><span jhiTranslate="gestionferrApp.producto.precio">Precio</span></dt>
+        <dt><span class="titulo-entidades" jhiTranslate="gestionferrApp.producto.precio">Precio</span></dt>
         <dd>
           <span>{{ producto.precio }}</span>
         </dd>
-        <dt><span jhiTranslate="gestionferrApp.producto.cantidad">Cantidad</span></dt>
+        <dt><span class="titulo-entidades" jhiTranslate="gestionferrApp.producto.cantidad">Cantidad</span></dt>
         <dd>
           <span>{{ producto.cantidad }}</span>
         </dd>
-        <dt><span jhiTranslate="gestionferrApp.producto.foto">Foto</span></dt>
+        <dt><span class="titulo-entidades" jhiTranslate="gestionferrApp.producto.foto">Foto</span></dt>
         <dd>
           <div *ngIf="producto.foto">
             <a (click)="openFile(producto.foto, producto.fotoContentType)">
@@ -35,7 +31,7 @@
             {{ producto.fotoContentType }}, {{ byteSize(producto.foto) }}
           </div>
         </dd>
-        <dt><span jhiTranslate="gestionferrApp.producto.descripcion">Descripcion</span></dt>
+        <dt><span class="titulo-entidades" jhiTranslate="gestionferrApp.producto.descripcion">Descripcion</span></dt>
         <dd>
           <span>{{ producto.descripcion }}</span>
         </dd>

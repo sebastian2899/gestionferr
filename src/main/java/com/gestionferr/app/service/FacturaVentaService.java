@@ -56,4 +56,6 @@ public interface FacturaVentaService {
     FacturaVentasFechaDTO valoresFacturaFecha(Instant fechaInicio, Instant fechaFin);
 
     byte[] generarReporteFacturaVentasMensual();
+
+    Boolean ValidarFacturaVentanumeroFactura(String numeroFactura);
 }

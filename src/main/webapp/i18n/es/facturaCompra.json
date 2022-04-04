@@ -12,7 +12,7 @@
       "updated": "Un Factura Compra ha sido actualizado con el identificador {{ param }}",
       "deleted": "Un Factura Compra ha sido eliminado con el identificador {{ param }}",
       "delete": {
-        "question": "¿Seguro que quiere eliminar Factura Compra {{ id }}?"
+        "question": "¿Seguro que quiere revertir la Factura Compra {{ id }}?"
       },
       "detail": {
         "title": "Factura Compra"

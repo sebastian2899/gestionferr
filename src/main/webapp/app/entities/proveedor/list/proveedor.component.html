@@ -32,7 +32,7 @@
     <table class="table table-striped" aria-describedby="page-heading">
       <thead>
         <tr>
-          <th scope="col"><span jhiTranslate="global.field.id">ID</span></th>
+          <th scope="col"></th>
           <th scope="col"><span jhiTranslate="gestionferrApp.proveedor.nombre">Nombre</span></th>
           <th scope="col"><span jhiTranslate="gestionferrApp.proveedor.numeroContacto">Numero Contacto</span></th>
           <th scope="col"><span jhiTranslate="gestionferrApp.proveedor.email">Email</span></th>
@@ -45,7 +45,37 @@
       <tbody>
         <tr *ngFor="let proveedor of proveedors; trackBy: trackId" data-cy="entityTable">
           <td>
-            <a [routerLink]="['/proveedor', proveedor.id, 'view']">{{ proveedor.id }}</a>
+            <div class="dropdown">
+              <button
+                class="menu-config btn-primary"
+                type="button"
+                id="dropdownMenuButton1"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <mat-icon>more_vert</mat-icon>
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                <li>
+                  <button class="menu-config btn-primary mb-2" [routerLink]="['/proveedor', proveedor.id, 'view']">
+                    <mat-icon class="icon-config">preview</mat-icon>
+                    <span>Ver</span>
+                  </button>
+                </li>
+                <li>
+                  <button class="menu-config btn-primary mb-2" [routerLink]="['/proveedor', proveedor.id, 'edit']">
+                    <mat-icon class="icon-config">edit</mat-icon>
+                    <span>Editar</span>
+                  </button>
+                </li>
+                <li>
+                  <button class="boton-eliminar" (click)="delete(proveedor)">
+                    <mat-icon class="icon-config-eliminar">delete</mat-icon>
+                    <span>Borrar</span>
+                  </button>
+                </li>
+              </ul>
+            </div>
           </td>
           <td>{{ proveedor.nombre }}</td>
           <td>{{ proveedor.numeroContacto }}</td>
@@ -56,7 +86,7 @@
           <td>{{ proveedor.numeroCC }}</td>
           <td jhiTranslate="{{ 'gestionferrApp.TipoProveedorEnum.' + proveedor.tipoProveedor }}">{{ proveedor.tipoProveedor }}</td>
           <td class="text-end">
-            <div class="btn-group">
+            <!-- <div class="btn-group">
               <button
                 type="submit"
                 [routerLink]="['/proveedor', proveedor.id, 'view']"
@@ -81,7 +111,7 @@
                 <fa-icon icon="times"></fa-icon>
                 <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
               </button>
-            </div>
+            </div> -->
           </td>
         </tr>
       </tbody>

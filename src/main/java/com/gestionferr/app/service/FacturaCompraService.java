@@ -1,6 +1,7 @@
 package com.gestionferr.app.service;
 
 import com.gestionferr.app.service.dto.FacturaCompraDTO;
+import com.gestionferr.app.service.dto.RegistroFacturaCompraDTO;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,7 +38,7 @@ public interface FacturaCompraService {
      * @param id the id of the entity.
      * @return the entity.
      */
-    Optional<FacturaCompraDTO> findOne(Long id);
+    FacturaCompraDTO findOne(Long id);
 
     /**
      * Delete the "id" facturaCompra.
@@ -45,4 +46,12 @@ public interface FacturaCompraService {
      * @param id the id of the entity.
      */
     void delete(Long id);
+
+    List<FacturaCompraDTO> facturasCompraFiltro(FacturaCompraDTO facturaCompra);
+
+    RegistroFacturaCompraDTO valoresFacturaCompraMes(String fechaInicio, String fechaFin);
+
+    List<FacturaCompraDTO> facturaPorFecha(String fecha);
+
+    Boolean validarNumeroFacturaSave(String numeroFactura);
 }

@@ -9,6 +9,11 @@ import java.util.Objects;
  */
 public class ItemFacturaCompraDTO implements Serializable {
 
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
+
     private Long id;
 
     private Long idFacturaCompra;
@@ -18,6 +23,16 @@ public class ItemFacturaCompraDTO implements Serializable {
     private Long cantidad;
 
     private BigDecimal precio;
+
+    private String nombreProducto;
+
+    public String getNombreProducto() {
+        return nombreProducto;
+    }
+
+    public void setNombreProducto(String nombreProducto) {
+        this.nombreProducto = nombreProducto;
+    }
 
     public Long getId() {
         return id;

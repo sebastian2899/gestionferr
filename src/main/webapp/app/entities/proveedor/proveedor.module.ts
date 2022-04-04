@@ -5,9 +5,10 @@ import { ProveedorDetailComponent } from './detail/proveedor-detail.component';
 import { ProveedorUpdateComponent } from './update/proveedor-update.component';
 import { ProveedorDeleteDialogComponent } from './delete/proveedor-delete-dialog.component';
 import { ProveedorRoutingModule } from './route/proveedor-routing.module';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
-  imports: [SharedModule, ProveedorRoutingModule],
+  imports: [SharedModule, ProveedorRoutingModule, MatIconModule],
   declarations: [ProveedorComponent, ProveedorDetailComponent, ProveedorUpdateComponent, ProveedorDeleteDialogComponent],
   entryComponents: [ProveedorDeleteDialogComponent],
 })

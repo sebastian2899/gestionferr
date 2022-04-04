@@ -12,7 +12,8 @@ import { IFacturaVentaFechas } from '../factura-fechas';
 
 export type EntityResponseType = HttpResponse<IFacturaVenta>;
 export type EntityArrayResponseType = HttpResponse<IFacturaVenta[]>;
-export type valoresFacturaFechaType = HttpResponse<IFacturaVentaFechas>;
+export type ValoresFacturaFechaType = HttpResponse<IFacturaVentaFechas>;
+export type BooleanResponseType = HttpResponse<boolean>;
 
 @Injectable({ providedIn: 'root' })
 export class FacturaVentaService {
@@ -21,6 +22,7 @@ export class FacturaVentaService {
   protected FacturaFechaResourceUrl = this.applicationConfigService.getEndpointFor('api/facturaFechas');
   protected valoresFactuaFechaUrl = this.applicationConfigService.getEndpointFor('api/valor-factura-mes');
   protected reporteMensualFacturasUrl = this.applicationConfigService.getEndpointFor('api/reporte-factura-venta');
+  protected validarFacturaVentaSaveURL = this.applicationConfigService.getEndpointFor('api/factura-venta-validar-factura-numero');
 
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
@@ -42,8 +44,12 @@ export class FacturaVentaService {
       .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
   }
 
-  valoresFacturaMes(fechaInicio: string, fechaFin: string): Observable<valoresFacturaFechaType> {
+  valoresFacturaMes(fechaInicio: string, fechaFin: string): Observable<ValoresFacturaFechaType> {
     return this.http.get<IFacturaVentaFechas>(`${this.valoresFactuaFechaUrl}/${fechaInicio}/${fechaFin}`, { observe: 'response' });
+  }
+
+  validarFacturaVentaSave(numeroFactura: string): Observable<BooleanResponseType> {
+    return this.http.get<boolean>(`${this.validarFacturaVentaSaveURL}/${numeroFactura}`, { observe: 'response' });
   }
 
   facturaFecha(fecha: string): Observable<EntityArrayResponseType> {

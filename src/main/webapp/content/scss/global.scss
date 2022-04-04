@@ -32,6 +32,30 @@ a {
   color: rgb(0, 89, 255);
 }
 
+.menu-config2 {
+  border: none;
+  background: none;
+  color: rgb(0, 0, 0);
+}
+
+.menu-config3 {
+  border: none;
+  background-color: aquamarine;
+  color: rgb(0, 0, 0);
+}
+
+.link-producto {
+  color: #000;
+  background: none;
+  text-decoration: none;
+}
+
+.link-producto:hover {
+  background-color: rgba(65, 115, 242, 0.412);
+  color: #000;
+  font-size: 25px;
+}
+
 .icon-config {
   position: relative;
   top: 5px;
@@ -43,6 +67,27 @@ a {
   color: red;
 }
 
+.icon-config2 {
+  position: relative;
+  top: 5px;
+}
+
+.icon-config2:hover {
+  color: rgb(0, 30, 255);
+  font-size: 35px;
+}
+
+.icon-config-eliminar2 {
+  position: relative;
+  top: 5px;
+  color: rgb(248, 103, 103);
+}
+
+.icon-config-eliminar2:hover {
+  font-size: 35px;
+  color: red;
+}
+
 .boton-menu {
   margin-bottom: 11px;
   color: rgb(67, 67, 67);
@@ -50,10 +95,18 @@ a {
 
 .boton-eliminar {
   color: rgb(0, 0, 0);
+  border: none;
+  background: none;
 }
 
 .titulo-entidades {
   color: blue;
+  font-style: normal;
+  font-weight: bold;
+}
+
+.titulo-entidades-warning {
+  color: rgb(202, 172, 0);
   font-style: normal;
   font-weight: bold;
 }
@@ -94,6 +147,69 @@ a {
 
 .th-table {
   color: white;
+}
+
+.boton-link {
+  border: none;
+  background: none;
+  color: rgb(0, 26, 175);
+  font-size: 18px;
+  text-decoration: none;
+}
+
+.boton-parpadeo {
+  font-size: 28px;
+  font-family: helvetica;
+  font-weight: bold;
+  color: #000000;
+  text-transform: uppercase;
+}
+.parpadea {
+  animation-name: parpadeo;
+  animation-duration: 2s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+
+  -webkit-animation-name: parpadeo;
+  -webkit-animation-duration: 2s;
+  -webkit-animation-timing-function: linear;
+  -webkit-animation-iteration-count: infinite;
+}
+
+@-moz-keyframes parpadeo {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@-webkit-keyframes parpadeo {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes parpadeo {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 /* override hover color for dropdown-item forced by bootstrap to all a:not([href]):not([tabindex]) elements in _reboot.scss */

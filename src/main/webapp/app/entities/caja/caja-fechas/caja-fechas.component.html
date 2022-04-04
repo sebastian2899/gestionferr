@@ -1,0 +1,38 @@
+<div class="container">
+  <div class="card o-hidden border-0 shadow-lg my-5 py-5">
+    <div class="card-body d-flex justify-content-center">
+      <div class="row">
+        <h2 class="justify-content-center titulo-entidades">Consultar valor por meses</h2>
+        <div class="p-5">
+          <div class="d-flex justify-content-center row">
+            <div class="col-md-3 me-1">
+              <label for="fechaInicio" class="form-label">Fecha Inicio</label>
+              <input type="datetime-local" [(ngModel)]="fechaInicio" class="form-control" />
+            </div>
+            <div class="col-md-3">
+              <label for="fechaInicio" class="form-label">Fecha Fin</label>
+              <input type="datetime-local" [(ngModel)]="fechaFin" class="form-control" />
+            </div>
+            <div class="col-md-2">
+              <button (click)="consultarValoresCaja()" class="btn btn-outline-primary" style="margin-top: 30px"><span>Buscar</span></button>
+            </div>
+
+            <div *ngIf="cajaFechas" class="col-md-4" style="margin-left: -40px">
+              <label for="valorTotal" class="form-label">Valor Total</label>
+              <input type="text" readonly class="form-control" [(ngModel)]="valorVendidoDia" />
+
+              <label for="valorTotal" class="form-label">Valor registrado en caja</label>
+              <input type="text" readonly class="form-control" [(ngModel)]="valorRegistradoDia" />
+
+              <label for="valorTotal" class="form-label">Diferencia</label>
+              <input type="text" readonly class="form-control" [(ngModel)]="diferencia" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-1 ms-5">
+      <button (click)="previusState()" class="btn btn-outline-dark">Volver</button>
+    </div>
+  </div>
+</div>

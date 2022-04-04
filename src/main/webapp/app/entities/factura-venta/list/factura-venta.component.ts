@@ -52,7 +52,7 @@ export class FacturaVentaComponent implements OnInit {
   generearReporteMensual(): void {
     this.facturaVentaService.generarReporteMensual().subscribe(
       (res: any) => {
-        const file = new Blob([res], { type: 'application/pdf' });
+        const file = new Blob([res], { type: 'aplication.pdf' });
         const fileURL = URL.createObjectURL(file);
         window.open(fileURL);
       },
