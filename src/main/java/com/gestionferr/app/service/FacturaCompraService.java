@@ -54,4 +54,6 @@ public interface FacturaCompraService {
     List<FacturaCompraDTO> facturaPorFecha(String fecha);
 
     Boolean validarNumeroFacturaSave(String numeroFactura);
+
+    byte[] facturaCompraReport();
 }

@@ -14,8 +14,11 @@ import org.springframework.stereotype.Repository;
 @SuppressWarnings("unused")
 @Repository
 public interface ClienteRepository extends JpaRepository<Cliente, Long> {
-    @Query("SELECT f FROM FacturaVenta f WHERE f.idCliente = :id")
-    List<FacturaVenta> facturasPorCliente(@Param("id") Long id);
+    @Query(
+        "SELECT f.id,f.fechaCreacion,f.numeroFactura,f.valorFactura,f.valorPagado,f.valorDeuda FROM" +
+        " FacturaVenta f WHERE f.idCliente=:id"
+    )
+    List<Object[]> datosFacturaVentaCliente(@Param("id") Long id);
 
     @Query("SELECT c FROM Cliente c WHERE c.id =:id")
     Cliente clientePorId(@Param("id") Long id);

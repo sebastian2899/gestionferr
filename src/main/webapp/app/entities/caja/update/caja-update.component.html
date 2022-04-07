@@ -5,6 +5,7 @@
 
       <div>
         <jhi-alert-error></jhi-alert-error>
+        <jhi-alert></jhi-alert>
         <div class="row mb-4">
           <!-- <div class="col-md-6 " [hidden]="editForm.get('id')!.value == null">
             <label class="form-label" jhiTranslate="global.field.id" for="field_id">ID</label>
@@ -95,15 +96,33 @@
         </button>
 
         <button
-          type="submit"
+          type="button"
           id="save-entity"
           data-cy="entityCreateSaveButton"
-          [disabled]="editForm.invalid || isSaving || mensajePrecioMayor"
+          (click)="validarCreacionCaja()"
+          [disabled]="editForm.invalid || isSaving || editForm.get(['valorVentaDia'])!.value === 0"
           class="btn btn-outline-primary"
         >
           <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
         </button>
       </div>
     </form>
+    <div *ngIf="editForm.get(['valorVentaDia'])!.value === 0" class="mt-2 alert alert-warning" role="alert">
+      <p class="mb-0" style="text-align: center">Para guardar una caja se debe haber creado una venta previa.</p>
+    </div>
   </div>
 </div>
+
+<ng-template #mensajeValidacionCaja>
+  <div class="modal-header">
+    <h4 class="modal-title" style="color: red">ATENCION</h4>
+  </div>
+  <div class="modal-body">
+    <div>
+      <p style="color: black">No se puede crear mas de una caja diaria.</p>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <span><button class="btn btn-outline-primary" (click)="previousStateModal()">Volver</button></span>
+  </div>
+</ng-template>

@@ -52,7 +52,7 @@ export class FacturaVentaComponent implements OnInit {
   generearReporteMensual(): void {
     this.facturaVentaService.generarReporteMensual().subscribe(
       (res: any) => {
-        const file = new Blob([res], { type: 'aplication.pdf' });
+        const file = new Blob([res], { type: 'application/pdf' });
         const fileURL = URL.createObjectURL(file);
         window.open(fileURL);
       },
@@ -60,7 +60,7 @@ export class FacturaVentaComponent implements OnInit {
       () => {
         this.alert.addAlert({
           type: 'danger',
-          message: 'Error al generar el reporte',
+          message: 'Error al generar el reporte de caja',
         });
       }
     );

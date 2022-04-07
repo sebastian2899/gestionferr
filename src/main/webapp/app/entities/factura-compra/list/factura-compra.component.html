@@ -14,7 +14,7 @@
           Opciones
         </button>
         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-          <li><a class="dropdown-item" href="#">Generar Reporte (PDF)</a></li>
+          <li><a class="dropdown-item" (click)="generarReporteFacturaCompra()">Generar Reporte Mensual(PDF)</a></li>
           <li><a class="dropdown-item" [routerLink]="['/factura-compra/registro-factura-compra']">Consultar Factura Compras Mensual</a></li>
         </ul>
       </div>

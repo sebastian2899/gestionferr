@@ -15,11 +15,16 @@ export type EntityResponseTypeFactura = HttpResponse<IFacturaCompra[]>;
 @Injectable({ providedIn: 'root' })
 export class ProveedorService {
   protected resourceUrl = this.applicationConfigService.getEndpointFor('api/proveedors');
+  protected proveedoresFiltroUrl = this.applicationConfigService.getEndpointFor('api/proveedores-filtros');
 
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
   create(proveedor: IProveedor): Observable<EntityResponseType> {
     return this.http.post<IProveedor>(this.resourceUrl, proveedor, { observe: 'response' });
+  }
+
+  proveedoresFiltro(proveedor: IProveedor): Observable<EntityArrayResponseType> {
+    return this.http.post<IProveedor[]>(this.proveedoresFiltroUrl, proveedor, { observe: 'response' });
   }
 
   update(proveedor: IProveedor): Observable<EntityResponseType> {

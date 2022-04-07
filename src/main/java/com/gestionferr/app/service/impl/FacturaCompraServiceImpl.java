@@ -1,16 +1,33 @@
 package com.gestionferr.app.service.impl;
 
 import com.gestionferr.app.config.Constants;
+import com.gestionferr.app.domain.Abono;
 import com.gestionferr.app.domain.FacturaCompra;
 import com.gestionferr.app.domain.ItemFacturaCompra;
+import com.gestionferr.app.domain.Proveedor;
 import com.gestionferr.app.repository.FacturaCompraRepository;
 import com.gestionferr.app.repository.ItemFacturaCompraRepository;
 import com.gestionferr.app.service.FacturaCompraService;
 import com.gestionferr.app.service.dto.FacturaCompraDTO;
 import com.gestionferr.app.service.dto.RegistroFacturaCompraDTO;
 import com.gestionferr.app.service.mapper.FacturaCompraMapper;
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Chunk;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.Font.FontFamily;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.time.Instant;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -20,6 +37,7 @@ import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -265,5 +283,166 @@ public class FacturaCompraServiceImpl implements FacturaCompraService {
         }
 
         return resp;
+    }
+
+    @Override
+    public byte[] facturaCompraReport() {
+        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+        Document document = null;
+        String nombreDocumento = null;
+
+        Calendar fIni = Calendar.getInstance();
+        fIni.add(Calendar.MONTH, -1);
+
+        Instant fechaIni = fIni.toInstant();
+        Instant fechaFin = Instant.now();
+
+        List<FacturaCompra> facturaCompraFechas = facturaCompraRepository.facturaCompraReport(fechaIni, fechaFin);
+
+        try {
+            document = new Document();
+            nombreDocumento = "Reporte PDF FacturaCompra" + ".pdf";
+            FileOutputStream fileOutputStream = new FileOutputStream(nombreDocumento);
+            PdfWriter.getInstance(document, fileOutputStream);
+            document.open();
+
+            Date fi = Date.from(fechaIni);
+            Date fn = Date.from(fechaFin);
+
+            String fIn = format.format(fi);
+            String ffn = format.format(fn);
+
+            Paragraph titulo = new Paragraph("Reporte Factura Compra PDF Mensual");
+            titulo.setAlignment(1);
+
+            document.add(titulo);
+            document.add(Chunk.NEWLINE);
+
+            Paragraph f1 = new Paragraph("Desde la fecha: " + fIn);
+            Paragraph f2 = new Paragraph("Hasta la fecha: " + ffn);
+            f1.setAlignment(2);
+            f2.setAlignment(2);
+            document.add(f1);
+            document.add(f2);
+            document.add(Chunk.NEWLINE);
+
+            Proveedor proveedor = null;
+            for (FacturaCompra factura : facturaCompraFechas) {
+                if (factura.getIdProovedor() != null) {
+                    proveedor = new Proveedor();
+                    List<String[]> infoProveedor = facturaCompraRepository.proveedorFactura(factura.getIdProovedor());
+                    for (String[] dato : infoProveedor) {
+                        proveedor.setNombre(dato[0]);
+                        proveedor.setNumeroContacto(dato[1]);
+                        proveedor.setNumeroCC(dato[2]);
+                    }
+
+                    PdfPTable tableProv = new PdfPTable(3);
+                    tableProv.setWidthPercentage(100);
+                    PdfPCell nombre = new PdfPCell(new Phrase("Nombre"));
+                    nombre.setBackgroundColor(BaseColor.ORANGE);
+                    PdfPCell numeroContact = new PdfPCell(new Phrase("Numero Contacto"));
+                    numeroContact.setBackgroundColor(BaseColor.ORANGE);
+                    PdfPCell NumeroCC = new PdfPCell(new Phrase("Numero Documento"));
+                    NumeroCC.setBackgroundColor(BaseColor.ORANGE);
+
+                    tableProv.addCell(nombre);
+                    tableProv.addCell(numeroContact);
+                    tableProv.addCell(NumeroCC);
+
+                    PdfPCell nombreProv = new PdfPCell(new Phrase(proveedor.getNombre()));
+                    PdfPCell numeroContactProv = new PdfPCell(new Phrase(proveedor.getNumeroContacto()));
+                    PdfPCell NumeroCCProv = new PdfPCell(new Phrase(proveedor.getNumeroCC()));
+
+                    tableProv.addCell(nombreProv);
+                    tableProv.addCell(numeroContactProv);
+                    tableProv.addCell(NumeroCCProv);
+
+                    document.add(tableProv);
+                }
+
+                PdfPTable tableFact = new PdfPTable(6);
+                tableFact.setWidthPercentage(100);
+
+                PdfPCell numeroFact = new PdfPCell(new Phrase("Numero Factura"));
+                numeroFact.setBackgroundColor(BaseColor.ORANGE);
+                PdfPCell fechaCreacion = new PdfPCell(new Phrase("Fecha Creacion"));
+                fechaCreacion.setBackgroundColor(BaseColor.ORANGE);
+                PdfPCell totalFactura = new PdfPCell(new Phrase("Total Factura"));
+                totalFactura.setBackgroundColor(BaseColor.ORANGE);
+                PdfPCell totalPagado = new PdfPCell(new Phrase("Total Pagado"));
+                totalPagado.setBackgroundColor(BaseColor.ORANGE);
+                PdfPCell deuda = new PdfPCell(new Phrase("Deuda"));
+                deuda.setBackgroundColor(BaseColor.ORANGE);
+                PdfPCell estado = new PdfPCell(new Phrase("Estado"));
+                estado.setBackgroundColor(BaseColor.ORANGE);
+
+                tableFact.addCell(numeroFact);
+                tableFact.addCell(fechaCreacion);
+                tableFact.addCell(totalFactura);
+                tableFact.addCell(totalPagado);
+                tableFact.addCell(deuda);
+                tableFact.addCell(estado);
+
+                PdfPCell numeroFactura = new PdfPCell(new Phrase(factura.getNumeroFactura()));
+                Date fe = Date.from(factura.getFechaCreacion());
+                String fecha = format.format(fe);
+                PdfPCell fechaCrea = new PdfPCell(new Phrase(fecha));
+                PdfPCell totalFact = new PdfPCell(new Phrase(factura.getValorFactura().toString()));
+                PdfPCell totalPag = new PdfPCell(new Phrase(factura.getValorPagado().toString()));
+                PdfPCell deud = new PdfPCell(new Phrase(factura.getValorDeuda().toString()));
+                PdfPCell estad = new PdfPCell(new Phrase(factura.getEstado()));
+
+                tableFact.addCell(numeroFactura);
+                tableFact.addCell(fechaCrea);
+                tableFact.addCell(totalFact);
+                tableFact.addCell(totalPag);
+                tableFact.addCell(deud);
+                tableFact.addCell(estad);
+
+                document.add(tableFact);
+
+                List<Abono> abonosPorFactura = facturaCompraRepository.abonoFacturaCompra(factura.getId());
+
+                if (abonosPorFactura != null && abonosPorFactura.size() > 0) {
+                    PdfPTable tablaAbono = new PdfPTable(2);
+                    tablaAbono.setWidthPercentage(100);
+
+                    Font white = new Font(FontFamily.HELVETICA, 12, Font.NORMAL, BaseColor.WHITE);
+                    Chunk fechaAbn = new Chunk("Fecha del abono", white);
+                    Chunk valorAbn = new Chunk("Valor abonado", white);
+
+                    PdfPCell fechaAbono = new PdfPCell(new Paragraph(fechaAbn));
+                    fechaAbono.setBackgroundColor(BaseColor.BLUE);
+                    PdfPCell valorAbono = new PdfPCell(new Phrase(valorAbn));
+                    valorAbono.setBackgroundColor(BaseColor.BLUE);
+
+                    tablaAbono.addCell(fechaAbono);
+                    tablaAbono.addCell(valorAbono);
+
+                    for (Abono abono : abonosPorFactura) {
+                        Date fechaAbonoDate = Date.from(abono.getFechaCreacion());
+                        String fechaAbonoFormat = format.format(fechaAbonoDate);
+
+                        PdfPCell fechaA = new PdfPCell(new Phrase(fechaAbonoFormat));
+                        PdfPCell ValorA = new PdfPCell(new Phrase(abono.getValorAbono().toString()));
+
+                        tablaAbono.addCell(fechaA);
+                        tablaAbono.addCell(ValorA);
+                    }
+
+                    document.add(tablaAbono);
+                }
+
+                document.add(Chunk.NEWLINE);
+            }
+
+            document.close();
+            return FileUtils.readFileToByteArray(new File(nombreDocumento));
+        } catch (Exception e) {
+            e.printStackTrace();
+            e.getMessage();
+            return null;
+        }
     }
 }

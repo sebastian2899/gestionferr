@@ -4,6 +4,7 @@ import com.gestionferr.app.repository.EgresoRepository;
 import com.gestionferr.app.service.EgresoService;
 import com.gestionferr.app.service.dto.EgresoDTO;
 import com.gestionferr.app.web.rest.errors.BadRequestAlertException;
+import java.math.BigDecimal;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -12,8 +13,17 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.ResponseUtil;
 
@@ -141,6 +151,12 @@ public class EgresoResource {
         return egresoService.findAll();
     }
 
+    @GetMapping("/egresos-fecha/{fecha}")
+    public List<EgresoDTO> getAllEgresos(@PathVariable String fecha) {
+        log.debug("REST request to get all Egresos per date");
+        return egresoService.egresosFecha(fecha);
+    }
+
     /**
      * {@code GET  /egresos/:id} : get the "id" egreso.
      *
@@ -152,6 +168,26 @@ public class EgresoResource {
         log.debug("REST request to get Egreso : {}", id);
         Optional<EgresoDTO> egresoDTO = egresoService.findOne(id);
         return ResponseUtil.wrapOrNotFound(egresoDTO);
+    }
+
+    @GetMapping("/egreso-valor-diario")
+    public ResponseEntity<BigDecimal> valorEgresoDiario() throws URISyntaxException {
+        log.debug("REST request to get daily value of egreso");
+
+        BigDecimal valorDiario = egresoService.valorDiarioEgreso();
+
+        /*
+         * return ResponseEntity.created(new
+         * URI("/egreso-valor-diario/"+valorDiario)).body(valorDiario);
+         */
+
+        return new ResponseEntity<BigDecimal>(valorDiario, HttpStatus.ACCEPTED);
+    }
+
+    @GetMapping("egreso-diarios")
+    public List<EgresoDTO> DailyEgreso() {
+        log.debug("REST request to get dayli egresos");
+        return egresoService.egresoDiario();
     }
 
     /**

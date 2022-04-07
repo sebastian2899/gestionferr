@@ -22,6 +22,7 @@ export class FacturaCompraService {
   protected registroFacturaCompraUrl = this.applicationConfigService.getEndpointFor('api/factura-compra-mes');
   protected facturasPorFechaUrl = this.applicationConfigService.getEndpointFor('api/facturas-compra-fecha');
   protected validarFacturaCompraUrl = this.applicationConfigService.getEndpointFor('api/factura-compra-validar-numero');
+  protected generaReporteMensualUrl = this.applicationConfigService.getEndpointFor('api/factura-compra-reporte');
 
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
@@ -30,6 +31,11 @@ export class FacturaCompraService {
     return this.http
       .post<IFacturaCompra>(this.resourceUrl, copy, { observe: 'response' })
       .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
+  }
+
+  generarReporteMensual(): Observable<any> {
+    const httpOption = { responseType: 'arrayBuffer' as 'json' };
+    return this.http.get<any>(this.generaReporteMensualUrl, httpOption);
   }
 
   validarFacturaCompra(numeroFactura: string): Observable<BooleanResponseType> {

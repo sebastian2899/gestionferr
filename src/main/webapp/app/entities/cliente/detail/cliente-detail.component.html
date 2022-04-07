@@ -12,25 +12,25 @@
       <jhi-alert></jhi-alert>
 
       <dl class="row-md jh-entity-details">
-        <dt><span jhiTranslate="gestionferrApp.cliente.nombre">Nombre</span></dt>
+        <dt><span class="titulo-entidades" jhiTranslate="gestionferrApp.cliente.nombre">Nombre</span></dt>
         <dd>
           <span>{{ cliente.nombre }}</span>
         </dd>
-        <dt><span jhiTranslate="gestionferrApp.cliente.numeroContacto">Numero Contacto</span></dt>
+        <dt><span class="titulo-entidades" jhiTranslate="gestionferrApp.cliente.numeroContacto">Numero Contacto</span></dt>
         <dd>
           <span>{{ cliente.numeroContacto }}</span>
         </dd>
-        <dt><span jhiTranslate="gestionferrApp.cliente.email">Email</span></dt>
+        <dt><span class="titulo-entidades" jhiTranslate="gestionferrApp.cliente.email">Email</span></dt>
         <dd>
           <span>{{ cliente.email }}</span>
         </dd>
-        <dt><span jhiTranslate="gestionferrApp.cliente.tipoIdentificacion">Tipo Identificacion</span></dt>
+        <dt><span class="titulo-entidades" jhiTranslate="gestionferrApp.cliente.tipoIdentificacion">Tipo Identificacion</span></dt>
         <dd>
           <span jhiTranslate="{{ 'gestionferrApp.TipoIdentificacionEnum.' + cliente.tipoIdentificacion }}">{{
             cliente.tipoIdentificacion
           }}</span>
         </dd>
-        <dt><span jhiTranslate="gestionferrApp.cliente.numeroCC">Numero CC</span></dt>
+        <dt><span class="titulo-entidades" jhiTranslate="gestionferrApp.cliente.numeroCC">Numero CC</span></dt>
         <dd>
           <span>{{ cliente.numeroCC }}</span>
         </dd>
@@ -51,21 +51,25 @@
           <thead>
             <tr>
               <th scope="row"></th>
-              <th scope="col">Numero Factura</th>
-              <th scope="col">Valor Factura</th>
-              <th scope="col">Fecha Factura</th>
-              <th scope="col">Valor Pagado</th>
-              <th scope="col">Deuda</th>
+              <th scope="col" class="titulo-entidades">Numero Factura</th>
+              <th scope="col" class="titulo-entidades">Valor Factura</th>
+              <th scope="col" class="titulo-entidades">Fecha Factura</th>
+              <th scope="col" class="titulo-entidades">Valor Pagado</th>
+              <th scope="col" class="titulo-entidades">Deuda</th>
+              <th scope="col" class="titulo-entidades">Acciones</th>
             </tr>
           </thead>
           <tbody>
             <tr *ngFor="let factura of cliente.facturasCliente">
               <th scope="row"></th>
-              <td>{{ factura.numeroFactura | currency }}</td>
+              <td>{{ factura.numeroFactura }}</td>
               <td>{{ factura.valorFactura }}</td>
-              <td>{{ factura.fechaCreacion | formatMediumDatetime }}</td>
+              <td>{{ factura.fechaCreacion }}</td>
               <td>{{ factura.valorPagado | currency }}</td>
               <td>{{ factura.valorDeuda }}</td>
+              <td>
+                <button [routerLink]="['/factura-venta', factura.idFacturaVenta, 'view']" class="btn-sm btn btn-info">Detalle</button>
+              </td>
             </tr>
           </tbody>
         </table>

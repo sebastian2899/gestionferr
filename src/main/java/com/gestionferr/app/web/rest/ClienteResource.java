@@ -3,9 +3,11 @@ package com.gestionferr.app.web.rest;
 import com.gestionferr.app.repository.ClienteRepository;
 import com.gestionferr.app.service.ClienteService;
 import com.gestionferr.app.service.dto.ClienteDTO;
+import com.gestionferr.app.service.dto.ClienteFacturaDatosDTO;
 import com.gestionferr.app.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.text.ParseException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -13,7 +15,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.ResponseUtil;
 
@@ -152,9 +162,10 @@ public class ClienteResource {
      *
      * @param id the id of the clienteDTO to retrieve.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the clienteDTO, or with status {@code 404 (Not Found)}.
+     * @throws ParseException
      */
     @GetMapping("/clientes/{id}")
-    public ResponseEntity<ClienteDTO> getCliente(@PathVariable Long id) {
+    public ResponseEntity<ClienteDTO> getCliente(@PathVariable Long id) throws ParseException {
         log.debug("REST request to get Cliente : {}", id);
         ClienteDTO clienteDTO = clienteService.findOne(id);
         return ResponseEntity.ok().body(clienteDTO);

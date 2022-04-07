@@ -1,6 +1,7 @@
 package com.gestionferr.app.service;
 
 import com.gestionferr.app.service.dto.EgresoDTO;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -45,4 +46,10 @@ public interface EgresoService {
      * @param id the id of the entity.
      */
     void delete(Long id);
+
+    BigDecimal valorDiarioEgreso();
+
+    List<EgresoDTO> egresoDiario();
+
+    List<EgresoDTO> egresosFecha(String fecha);
 }

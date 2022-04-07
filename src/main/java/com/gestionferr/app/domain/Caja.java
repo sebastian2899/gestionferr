@@ -40,7 +40,15 @@ public class Caja implements Serializable {
     @Column(name = "diferencia", precision = 21, scale = 2)
     private BigDecimal diferencia;
 
-    // jhipster-needle-entity-add-field - JHipster will add fields here
+    /*
+     * @Column(name = "user") private User user;
+     *
+     * // jhipster-needle-entity-add-field - JHipster will add fields here
+     *
+     * public User getUser() { return user; }
+     *
+     * public void setUser(User user) { this.user = user; }
+     */
 
     public Long getId() {
         return this.id;

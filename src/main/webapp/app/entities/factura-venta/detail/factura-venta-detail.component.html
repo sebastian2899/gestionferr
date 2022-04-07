@@ -1,7 +1,9 @@
 <div class="d-flex justify-content-center">
   <div class="col-8">
     <div *ngIf="facturaVenta">
-      <h2 data-cy="facturaVentaDetailsHeading"><span jhiTranslate="gestionferrApp.facturaVenta.detail.title">Factura Venta</span></h2>
+      <h2 class="titulo-entidades" data-cy="facturaVentaDetailsHeading">
+        <span jhiTranslate="gestionferrApp.facturaVenta.detail.title">Factura Venta</span>
+      </h2>
 
       <hr />
 
@@ -10,31 +12,31 @@
       <jhi-alert></jhi-alert>
 
       <dl class="row-md jh-entity-details">
-        <dt><span jhiTranslate="gestionferrApp.facturaVenta.numeroFactura">Numero Factura</span></dt>
+        <dt><span class="titulo-entidades" jhiTranslate="gestionferrApp.facturaVenta.numeroFactura">Numero Factura</span></dt>
         <dd>
           <span>{{ facturaVenta.numeroFactura }}</span>
         </dd>
-        <dt><span jhiTranslate="gestionferrApp.facturaVenta.fechaCreacion">Fecha Creacion</span></dt>
+        <dt><span class="titulo-entidades" jhiTranslate="gestionferrApp.facturaVenta.fechaCreacion">Fecha Creacion</span></dt>
         <dd>
           <span>{{ facturaVenta.fechaCreacion | formatMediumDatetime }}</span>
         </dd>
-        <dt><span jhiTranslate="gestionferrApp.facturaVenta.infoCliente">Info Cliente</span></dt>
+        <dt><span class="titulo-entidades" jhiTranslate="gestionferrApp.facturaVenta.infoCliente">Info Cliente</span></dt>
         <dd>
           <span>{{ facturaVenta.infoCliente }}</span>
         </dd>
-        <dt><span jhiTranslate="gestionferrApp.facturaVenta.valorFactura">Valor Factura</span></dt>
+        <dt><span class="titulo-entidades" jhiTranslate="gestionferrApp.facturaVenta.valorFactura">Valor Factura</span></dt>
         <dd>
           <span>{{ facturaVenta.valorFactura }}</span>
         </dd>
-        <dt><span jhiTranslate="gestionferrApp.facturaVenta.valorPagado">Valor Pagado</span></dt>
+        <dt><span class="titulo-entidades" jhiTranslate="gestionferrApp.facturaVenta.valorPagado">Valor Pagado</span></dt>
         <dd>
           <span>{{ facturaVenta.valorPagado }}</span>
         </dd>
-        <dt><span jhiTranslate="gestionferrApp.facturaVenta.valorDeuda">Valor Deuda</span></dt>
+        <dt><span class="titulo-entidades" jhiTranslate="gestionferrApp.facturaVenta.valorDeuda">Valor Deuda</span></dt>
         <dd>
           <span>{{ facturaVenta.valorDeuda }}</span>
         </dd>
-        <dt><span jhiTranslate="gestionferrApp.facturaVenta.tipoFactura">Tipo Factura</span></dt>
+        <dt><span class="titulo-entidades" jhiTranslate="gestionferrApp.facturaVenta.tipoFactura">Tipo Factura</span></dt>
         <dd>
           <span jhiTranslate="{{ 'gestionferrApp.TipoFacturaEnum.' + facturaVenta.tipoFactura }}">{{ facturaVenta.tipoFactura }}</span>
         </dd>
@@ -56,9 +58,9 @@
           <thead class="thead-black">
             <tr>
               <th scope="col"></th>
-              <th scope="col">Producto</th>
-              <th scope="col">Cantidad</th>
-              <th scope="col">Precio</th>
+              <th scope="col" class="titulo-entidades">Producto</th>
+              <th scope="col" class="titulo-entidades">Cantidad</th>
+              <th scope="col" class="titulo-entidades">Precio</th>
             </tr>
           </thead>
           <tbody style="background-color: rgb(243, 244, 245)">

@@ -1,6 +1,7 @@
 package com.gestionferr.app.service;
 
 import com.gestionferr.app.service.dto.ClienteDTO;
+import java.text.ParseException;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,8 +37,9 @@ public interface ClienteService {
      *
      * @param id the id of the entity.
      * @return the entity.
+     * @throws ParseException
      */
-    ClienteDTO findOne(Long id);
+    ClienteDTO findOne(Long id) throws ParseException;
 
     /**
      * Delete the "id" cliente.

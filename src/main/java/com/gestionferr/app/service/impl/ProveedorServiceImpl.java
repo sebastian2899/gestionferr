@@ -1,6 +1,6 @@
 package com.gestionferr.app.service.impl;
 
-import com.gestionferr.app.domain.FacturaCompra;
+import com.gestionferr.app.config.Constants;
 import com.gestionferr.app.domain.Proveedor;
 import com.gestionferr.app.repository.ProveedorRepository;
 import com.gestionferr.app.service.ProveedorService;
@@ -13,10 +13,15 @@ import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -34,6 +39,9 @@ public class ProveedorServiceImpl implements ProveedorService {
     private final ProveedorRepository proveedorRepository;
 
     private final ProveedorMapper proveedorMapper;
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     public ProveedorServiceImpl(ProveedorRepository proveedorRepository, ProveedorMapper proveedorMapper) {
         this.proveedorRepository = proveedorRepository;
@@ -106,5 +114,45 @@ public class ProveedorServiceImpl implements ProveedorService {
     public void delete(Long id) {
         log.debug("Request to delete Proveedor : {}", id);
         proveedorRepository.deleteById(id);
+    }
+
+    @Override
+    public List<ProveedorDTO> proveedorFiltros(ProveedorDTO proveedor) {
+        log.debug("Request to get proveedores per filters");
+
+        StringBuilder sb = new StringBuilder();
+        Map<String, Object> filtros = new HashMap<String, Object>();
+
+        //PROVEEDORES BASE
+        sb.append(Constants.PROVEEDOR_BASE);
+
+        if (proveedor.getNombre() != null && !proveedor.getNombre().isEmpty()) {
+            sb.append(Constants.PROVEEDOR_NOMBRE);
+            filtros.put("nombre", "%" + proveedor.getNombre().toUpperCase() + "%");
+        }
+
+        if (proveedor.getNumeroContacto() != null && !proveedor.getNumeroContacto().isEmpty()) {
+            sb.append(Constants.PROVEEDOR_NUMERO_CONTACTO);
+            filtros.put("numeroContacto", "%" + proveedor.getNumeroContacto().toUpperCase() + "%");
+        }
+
+        if (proveedor.getNumeroCC() != null && !proveedor.getNumeroCC().isEmpty()) {
+            sb.append(Constants.PROVEEDOR_NUMERO_IDENT);
+            filtros.put("numeroIdent", "%" + proveedor.getNumeroCC().toUpperCase() + "%");
+        }
+
+        if (proveedor.getTipoProveedor() != null) {
+            sb.append(Constants.PROOVEDOR_TIPO_PROVEEDOR);
+            filtros.put("tipoProveedor", proveedor.getTipoProveedor());
+        }
+
+        Query q = entityManager.createQuery(sb.toString());
+        for (Map.Entry<String, Object> filtro : filtros.entrySet()) {
+            q.setParameter(filtro.getKey(), filtro.getValue());
+        }
+
+        List<Proveedor> proveedores = q.getResultList();
+
+        return proveedores.stream().map(proveedorMapper::toDto).collect(Collectors.toCollection(LinkedList::new));
     }
 }

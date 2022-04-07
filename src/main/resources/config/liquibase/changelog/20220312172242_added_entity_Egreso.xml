@@ -23,6 +23,9 @@
             <column name="valor_egreso" type="decimal(21,2)">
                 <constraints nullable="true" />
             </column>
+             <column name="estado_editar" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
         <dropDefaultValue tableName="egreso" columnName="fecha_creacion" columnDataType="${datetimeType}"/>
@@ -38,7 +41,7 @@
           This can be customized by adding or removing 'faker' in the 'spring.liquibase.contexts'
           Spring Boot configuration key.
     -->
-    <changeSet id="20220312172242-1-data" author="jhipster" context="faker">
+<!--     <changeSet id="20220312172242-1-data" author="jhipster" context="faker">
         <loadData
                   file="config/liquibase/fake-data/egreso.csv"
                   separator=";"
@@ -48,7 +51,7 @@
             <column name="fecha_creacion" type="date"/>
             <column name="descripcion" type="string"/>
             <column name="valor_egreso" type="numeric"/>
-            <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
+            jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here
         </loadData>
     </changeSet>
-</databaseChangeLog>
+ --></databaseChangeLog>

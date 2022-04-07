@@ -1,6 +1,7 @@
 package com.gestionferr.app.domain;
 
 import com.gestionferr.app.domain.enumeration.TipoIdentificacionEnum;
+import com.gestionferr.app.service.dto.ClienteFacturaDatosDTO;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Column;
@@ -49,7 +50,7 @@ public class Cliente implements Serializable {
     private String numeroCC;
 
     @Transient
-    private List<FacturaVenta> facturasCliente;
+    private List<ClienteFacturaDatosDTO> facturasCliente;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -57,11 +58,11 @@ public class Cliente implements Serializable {
         return this.id;
     }
 
-    public List<FacturaVenta> getFacturasCliente() {
+    public List<ClienteFacturaDatosDTO> getFacturasCliente() {
         return facturasCliente;
     }
 
-    public void setFacturasCliente(List<FacturaVenta> facturasCliente) {
+    public void setFacturasCliente(List<ClienteFacturaDatosDTO> facturasCliente) {
         this.facturasCliente = facturasCliente;
     }
 

@@ -61,6 +61,12 @@ public class ProveedorResource {
             .body(result);
     }
 
+    @PostMapping("proveedores-filtros")
+    public List<ProveedorDTO> proveedoresFiltro(@RequestBody ProveedorDTO proveedor) {
+        log.debug("REST request to get proveedores per filters");
+        return proveedorService.proveedorFiltros(proveedor);
+    }
+
     /**
      * {@code PUT  /proveedors/:id} : Updates an existing proveedor.
      *

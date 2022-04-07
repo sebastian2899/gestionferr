@@ -64,6 +64,14 @@ export class FacturaCompraComponent implements OnInit {
     });
   }
 
+  generarReporteFacturaCompra(): void {
+    this.facturaCompraService.generarReporteMensual().subscribe((res: any) => {
+      const file = new Blob([res], { type: 'application/pdf' });
+      const url = URL.createObjectURL(file);
+      window.open(url);
+    });
+  }
+
   facturasPorFecha(): void {
     if (this.fecha) {
       this.facturaCompraService.facturasCompraPorFecha(this.fecha.toString()).subscribe({

@@ -1,9 +1,9 @@
 <div>
   <h2 id="page-heading" data-cy="ProveedorHeading">
-    <span jhiTranslate="gestionferrApp.proveedor.home.title">Proveedors</span>
+    <span class="titulo-entidades">Proveedores</span>
 
     <div class="d-flex justify-content-end">
-      <button class="btn btn-info me-2" (click)="loadAll()" [disabled]="isLoading">
+      <button class="btn btn-outline-primary me-2" (click)="loadAll()" [disabled]="isLoading">
         <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
         <span jhiTranslate="gestionferrApp.proveedor.home.refreshListLabel">Refresh List</span>
       </button>
@@ -11,7 +11,7 @@
       <button
         id="jh-create-entity"
         data-cy="entityCreateButton"
-        class="btn btn-primary jh-create-entity create-proveedor"
+        class="btn btn-outline-primary jh-create-entity create-proveedor"
         [routerLink]="['/proveedor/new']"
       >
         <fa-icon icon="plus"></fa-icon>
@@ -19,6 +19,52 @@
       </button>
     </div>
   </h2>
+
+  <div class="row d-flex justify-content-around mb-5 mt-4">
+    <div class="col-md-3">
+      <label for="nombre" class="form-label">Nombre</label>
+      <input
+        type="text"
+        (keyup)="proveedoresFiltro()"
+        [(ngModel)]="nombre"
+        class="form-control"
+        placeholder="Filtrar por nombre"
+        name="nombre"
+      />
+    </div>
+    <div class="col-md-3">
+      <label for="nombre" class="form-label">Numero Contacto</label>
+      <input
+        type="text"
+        (keyup)="proveedoresFiltro()"
+        [(ngModel)]="numeroContacto"
+        class="form-control"
+        placeholder="Numero contacto"
+        name="nombre"
+      />
+    </div>
+
+    <div class="col-md-3">
+      <label for="nombre" class="form-label">Numero Identificacion</label>
+      <input
+        type="text"
+        (keyup)="proveedoresFiltro()"
+        [(ngModel)]="numeroCC"
+        class="form-control"
+        placeholder="Numero identificacion"
+        name="nombre"
+      />
+    </div>
+
+    <div class="col-md-3">
+      <label class="form-label" jhiTranslate="gestionferrApp.proveedor.tipoProveedor" for="tipoProveedor">Tipo Proveedor</label>
+      <select [(ngModel)]="tipoProveedor2" class="form-select" name="tipoProveedor" id="field_tipoProveedor" (click)="proveedoresFiltro()">
+        <option *ngFor="let tipoProveedorEnum of tipoProveedor">
+          {{ 'gestionferrApp.TipoProveedorEnum.' + tipoProveedorEnum | translate }}
+        </option>
+      </select>
+    </div>
+  </div>
 
   <jhi-alert-error></jhi-alert-error>
 

@@ -58,4 +58,6 @@ public interface CajaService {
     CajaFechasDTO valoresCajaPorFechas(String fechaInicio, String fechaFin);
 
     byte[] reporteCaja();
+
+    boolean validarCajaDiaria();
 }

@@ -27,13 +27,13 @@ public class ClienteDTO implements Serializable {
 
     private String numeroCC;
 
-    private List<FacturaVentaDTO> facturasCliente;
+    private List<ClienteFacturaDatosDTO> facturasCliente;
 
-    public List<FacturaVentaDTO> getFacturasCliente() {
+    public List<ClienteFacturaDatosDTO> getFacturasCliente() {
         return facturasCliente;
     }
 
-    public void setFacturasCliente(List<FacturaVentaDTO> facturasCliente) {
+    public void setFacturasCliente(List<ClienteFacturaDatosDTO> facturasCliente) {
         this.facturasCliente = facturasCliente;
     }
 

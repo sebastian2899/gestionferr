@@ -32,4 +32,7 @@ public interface CajaRepository extends JpaRepository<Caja, Long> {
 
     @Query("SELECT c FROM Caja c WHERE c.fechaCreacion BETWEEN :fechaInicio AND :fechaFin")
     List<Caja> cajaPorFechasReport(@Param("fechaInicio") Instant fechaInicio, @Param("fechaFin") Instant fechaFin);
+
+    @Query("SELECT c.fechaCreacion FROM Caja c WHERE TO_CHAR(c.fechaCreacion, 'dd/MM/yyyy') = :fecha")
+    Instant validarCreacionCajaDiaria(@Param("fecha") String fecha);
 }

@@ -42,11 +42,10 @@ export class CajaComponent implements OnInit {
   generarReporteCaja(): void {
     this.cajaService.reporteCaja().subscribe(
       (res: any) => {
-        const file = new Blob([res], { type: 'aplication.pdf' });
+        const file = new Blob([res], { type: 'application/pdf' });
         const Url = URL.createObjectURL(file);
         window.open(Url);
       },
-
       () => {
         this.alertService.addAlert({
           type: 'danger',

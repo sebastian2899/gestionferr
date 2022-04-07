@@ -5,6 +5,7 @@ export interface IEgreso {
   fechaCreacion?: dayjs.Dayjs | null;
   descripcion?: string | null;
   valorEgreso?: number | null;
+  estadoEditar?: string | null;
 }
 
 export class Egreso implements IEgreso {
@@ -12,7 +13,8 @@ export class Egreso implements IEgreso {
     public id?: number,
     public fechaCreacion?: dayjs.Dayjs | null,
     public descripcion?: string | null,
-    public valorEgreso?: number | null
+    public valorEgreso?: number | null,
+    public estadoEditar?: string | null
   ) {}
 }
 

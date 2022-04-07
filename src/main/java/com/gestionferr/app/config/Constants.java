@@ -86,5 +86,12 @@ public final class Constants {
     public static final String CLIENTE_FILTRO_NOMBRE = " AND UPPER(c.nombre) LIKE :nombre";
     public static final String CLIENTE_FILTRO_NUMCC = " AND UPPER(c.numeroCC) LIKE :numeroCC";
 
+    //PROVEEDRES
+    public static final String PROVEEDOR_BASE = "SELECT p FROM Proveedor p WHERE p.id IS NOT NULL";
+    public static final String PROVEEDOR_NOMBRE = " AND UPPER(p.nombre) LIKE :nombre";
+    public static final String PROVEEDOR_NUMERO_CONTACTO = " AND UPPER(p.numeroContacto) LIKE :numeroContacto";
+    public static final String PROVEEDOR_NUMERO_IDENT = " AND UPPER(p.numeroCC) LIKE :numeroIdent";
+    public static final String PROOVEDOR_TIPO_PROVEEDOR = " AND p.tipoProveedor = :tipoProveedor";
+
     private Constants() {}
 }

@@ -2,19 +2,30 @@ package com.gestionferr.app.service.impl;
 
 import com.gestionferr.app.config.Constants;
 import com.gestionferr.app.domain.Caja;
+import com.gestionferr.app.domain.User;
 import com.gestionferr.app.domain.enumeration.TipoEstadoEnum;
 import com.gestionferr.app.repository.CajaRepository;
+import com.gestionferr.app.repository.UserRepository;
+import com.gestionferr.app.security.SecurityUtils;
 import com.gestionferr.app.service.CajaService;
+import com.gestionferr.app.service.UserService;
 import com.gestionferr.app.service.dto.CajaDTO;
 import com.gestionferr.app.service.dto.CajaFechasDTO;
 import com.gestionferr.app.service.mapper.CajaMapper;
+import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.Font.FontFamily;
 import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
@@ -47,19 +58,33 @@ public class CajaServiceImpl implements CajaService {
 
     private final CajaMapper cajaMapper;
 
+    private final UserRepository userRepository;
+
+    private final UserService userService;
+
     @PersistenceContext
     private EntityManager entityManager;
 
-    public CajaServiceImpl(CajaRepository cajaRepository, CajaMapper cajaMapper) {
+    public CajaServiceImpl(UserService userService, UserRepository userRepository, CajaRepository cajaRepository, CajaMapper cajaMapper) {
         this.cajaRepository = cajaRepository;
         this.cajaMapper = cajaMapper;
+        this.userRepository = userRepository;
+        this.userService = userService;
     }
 
     @Override
     public CajaDTO save(CajaDTO cajaDTO) {
         log.debug("Request to save Caja : {}", cajaDTO);
         Caja caja = cajaMapper.toEntity(cajaDTO);
+
+        /*
+         * User user = new User(); Optional<String> us =
+         * SecurityUtils.getCurrentUserLogin(); user =
+         * userRepository.findOneByLogin(us.get()).get(); Long id =
+         * userService.getUserWithAuthorities().get().getId();
+         */
         caja = cajaRepository.save(caja);
+
         return cajaMapper.toDto(caja);
     }
 
@@ -220,21 +245,96 @@ public class CajaServiceImpl implements CajaService {
             Date fechaFinDate = Date.from(fechaFin);
             String fechaFinString = format.format(fechaFinDate);
 
-            Paragraph titulo = new Paragraph("Reporte PDF Caja Por Fechas");
+            Paragraph titulo = new Paragraph("Reporte PDF Caja Mensual");
             titulo.setAlignment(1);
 
             document.add(titulo);
+            Font blue = new Font(FontFamily.HELVETICA, 12, Font.NORMAL, BaseColor.BLUE);
 
-            Paragraph fecha1 = new Paragraph(fechaInicioString);
-            Paragraph fecha2 = new Paragraph(fechaFinString);
+            Chunk fechanIni = new Chunk(fechaInicioString, blue);
+            Chunk fechanFin = new Chunk(fechaFinString, blue);
 
-            document.add(Chunk.NEWLINE);
+            Paragraph fecha1 = new Paragraph(fechanIni);
+            Paragraph fecha2 = new Paragraph(fechanFin);
 
             fecha1.setAlignment(2);
             fecha2.setAlignment(2);
 
+            document.add(Chunk.NEWLINE);
             document.add(fecha1);
             document.add(fecha2);
+
+            BigDecimal valorTotalCaja = BigDecimal.ZERO;
+            BigDecimal valorTotalRegistrado = BigDecimal.ZERO;
+            BigDecimal valorTotalDiferencia = BigDecimal.ZERO;
+
+            for (Caja caja : cajasPorFecha) {
+                PdfPTable table = new PdfPTable(5);
+                table.setWidthPercentage(100);
+
+                PdfPCell fechaCreacion = new PdfPCell(new Phrase("Fecha Creacion Caja"));
+                fechaCreacion.setBackgroundColor(BaseColor.ORANGE);
+
+                PdfPCell valorTotalDia = new PdfPCell(new Phrase("Valor Total Dia"));
+                valorTotalDia.setBackgroundColor(BaseColor.ORANGE);
+
+                PdfPCell valorRegistradoDia = new PdfPCell(new Phrase("Valor Registrado Dia"));
+                valorRegistradoDia.setBackgroundColor(BaseColor.ORANGE);
+
+                PdfPCell diferencia = new PdfPCell(new Phrase("Diferencia"));
+                diferencia.setBackgroundColor(BaseColor.ORANGE);
+
+                PdfPCell estado = new PdfPCell(new Phrase("Estado"));
+                estado.setBackgroundColor(BaseColor.ORANGE);
+
+                table.addCell(fechaCreacion);
+                table.addCell(valorTotalDia);
+                table.addCell(valorRegistradoDia);
+                table.addCell(diferencia);
+                table.addCell(estado);
+
+                document.add(Chunk.NEWLINE);
+
+                Date date = Date.from(caja.getFechaCreacion());
+                String fecha = format.format(date);
+
+                PdfPCell fech = new PdfPCell(new Phrase(fecha));
+                PdfPCell valToDia = new PdfPCell(new Phrase(caja.getValorVentaDia().toString()));
+                PdfPCell valRegD = new PdfPCell(new Phrase(caja.getValorRegistradoDia().toString()));
+                PdfPCell Dif = new PdfPCell(new Phrase(caja.getDiferencia().toString()));
+                PdfPCell Estado = new PdfPCell(new Phrase(caja.getEstado().toString()));
+                Estado.setBackgroundColor(BaseColor.PINK);
+
+                table.addCell(fech);
+                table.addCell(valToDia);
+                table.addCell(valRegD);
+                table.addCell(Dif);
+                table.addCell(Estado);
+
+                document.add(table);
+                valorTotalCaja = valorTotalCaja.add(caja.getValorVentaDia());
+                valorTotalRegistrado = valorTotalRegistrado.add(caja.getValorRegistradoDia());
+                valorTotalDiferencia = valorTotalDiferencia.add(caja.getDiferencia());
+            }
+
+            document.add(Chunk.NEWLINE);
+            DecimalFormat formater = new DecimalFormat("###,###.##");
+
+            Chunk valorTotal = new Chunk(formater.format(valorTotalCaja).toString(), blue);
+            Paragraph valorTo = new Paragraph("Valor Total Dia Cajas Mesual: " + valorTotal);
+            valorTo.setAlignment(2);
+
+            Chunk valorTotalReg = new Chunk(formater.format(valorTotalRegistrado), blue);
+            Paragraph valorTotalRegistr = new Paragraph("Valor Total registrado Cajas Mesual: " + valorTotalReg);
+            valorTotalRegistr.setAlignment(2);
+
+            Chunk valorTotalDife = new Chunk(formater.format(valorTotalDiferencia), blue);
+            Paragraph valorTotalDif = new Paragraph("Valor Total Diferencia Cajas Mesual: " + valorTotalDife);
+            valorTotalDif.setAlignment(2);
+
+            document.add(valorTo);
+            document.add(valorTotalRegistr);
+            document.add(valorTotalDif);
 
             document.close();
 
@@ -243,5 +343,24 @@ public class CajaServiceImpl implements CajaService {
             e.printStackTrace();
             return null;
         }
+    }
+
+    @Override
+    public boolean validarCajaDiaria() {
+        log.debug("Request to validate creation of daily caja");
+        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+        Date date = new Date();
+
+        boolean resp = false;
+
+        String fecha = format.format(date);
+
+        Instant cajaExisist = cajaRepository.validarCreacionCajaDiaria(fecha);
+
+        if (cajaExisist != null) {
+            resp = true;
+        }
+
+        return resp;
     }
 }

@@ -1,13 +1,14 @@
 package com.gestionferr.app.repository;
 
+import com.gestionferr.app.domain.Abono;
 import com.gestionferr.app.domain.FacturaCompra;
 import com.gestionferr.app.domain.ItemFacturaCompra;
+import java.time.Instant;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.bind.annotation.PathVariable;
 
 /**
  * Spring Data SQL repository for the FacturaCompra entity.
@@ -35,4 +36,13 @@ public interface FacturaCompraRepository extends JpaRepository<FacturaCompra, Lo
 
     @Query("SELECT COUNT(*) FROM FacturaCompra f WHERE f.numeroFactura = :numeroFactura")
     int validarNumeroFactura(@Param("numeroFactura") String numeroFactura);
+
+    @Query("SELECT f FROM FacturaCompra f WHERE f.fechaCreacion BETWEEN :fechaInicio AND :fechaFin")
+    List<FacturaCompra> facturaCompraReport(@Param("fechaInicio") Instant fechaInicio, @Param("fechaFin") Instant fechaFin);
+
+    @Query("SELECT p.nombre,p.numeroContacto,p.numeroCC FROM Proveedor p WHERE p.id=:id")
+    List<String[]> proveedorFactura(@Param("id") Long id);
+
+    @Query("SELECT  a FROM Abono a WHERE a.idFactura =:idFactura AND a.tipoFactura = 'Factura Compra'")
+    List<Abono> abonoFacturaCompra(@Param("idFactura") Long idFactura);
 }

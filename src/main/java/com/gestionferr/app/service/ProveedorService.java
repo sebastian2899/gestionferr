@@ -48,4 +48,6 @@ public interface ProveedorService {
      * @param id the id of the entity.
      */
     void delete(Long id);
+
+    List<ProveedorDTO> proveedorFiltros(ProveedorDTO proveedor);
 }

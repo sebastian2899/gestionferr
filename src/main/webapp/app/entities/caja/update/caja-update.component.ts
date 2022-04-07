@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
@@ -11,12 +11,16 @@ import { DATE_TIME_FORMAT } from 'app/config/input.constants';
 import { ICaja, Caja } from '../caja.model';
 import { CajaService } from '../service/caja.service';
 import { TipoEstadoEnum } from 'app/entities/enumerations/tipo-estado-enum.model';
+import { AlertService } from 'app/core/util/alert.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'jhi-caja-update',
   templateUrl: './caja-update.component.html',
 })
 export class CajaUpdateComponent implements OnInit {
+  @ViewChild('mensajeValidacionCaja', { static: true }) content: ElementRef | undefined;
+
   isSaving = false;
   tipoEstadoEnumValues = Object.keys(TipoEstadoEnum);
   valorCajaDia?: number | null;
@@ -31,7 +35,13 @@ export class CajaUpdateComponent implements OnInit {
     diferencia: [],
   });
 
-  constructor(protected cajaService: CajaService, protected activatedRoute: ActivatedRoute, protected fb: FormBuilder) {}
+  constructor(
+    protected cajaService: CajaService,
+    protected activatedRoute: ActivatedRoute,
+    protected fb: FormBuilder,
+    protected alerService: AlertService,
+    protected modal: NgbModal
+  ) {}
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ caja }) => {
@@ -58,6 +68,8 @@ export class CajaUpdateComponent implements OnInit {
           this.editForm.get(['valorVentaDia'])?.setValue(this.valorCajaDia);
           this.editForm.get(['estado'])?.setValue('DEUDA');
           this.editForm.get(['diferencia'])?.setValue(this.valorCajaDia);
+        } else {
+          this.editForm.get(['valorVentaDia'])?.setValue(0);
         }
       },
       error: () => {
@@ -82,6 +94,29 @@ export class CajaUpdateComponent implements OnInit {
         this.mensajePrecioMayor = true;
       }
     }
+  }
+
+  validarCreacionCaja(): void {
+    this.cajaService.validarCreacionCaja().subscribe({
+      next: (res: HttpResponse<boolean>) => {
+        const boolean = res.body;
+        if (boolean) {
+          this.modal.open(this.content);
+        } else {
+          this.save();
+        }
+      },
+      error: () => {
+        this.alerService.addAlert({
+          type: 'danger',
+          message: 'Error al validar la caja',
+        });
+      },
+    });
+  }
+
+  previousStateModal(): void {
+    this.modal.dismissAll();
   }
 
   save(): void {

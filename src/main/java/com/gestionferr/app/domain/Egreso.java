@@ -32,10 +32,21 @@ public class Egreso implements Serializable {
     @Column(name = "valor_egreso", precision = 21, scale = 2)
     private BigDecimal valorEgreso;
 
+    @Column(name = "estado_editar")
+    private String estadoEditar;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
     public Long getId() {
         return this.id;
+    }
+
+    public String getEstadoEditar() {
+        return estadoEditar;
+    }
+
+    public void setEstadoEditar(String estadoEditar) {
+        this.estadoEditar = estadoEditar;
     }
 
     public Egreso id(Long id) {

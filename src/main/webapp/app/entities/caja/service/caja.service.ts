@@ -15,6 +15,7 @@ export type EntityArrayResponseType = HttpResponse<ICaja[]>;
 export type NumberType = HttpResponse<number>;
 export type CajaFechasType = HttpResponse<ICajaFechas>;
 export type CajaByteType = HttpResponse<any>;
+export type BooleanType = HttpResponse<boolean>;
 
 @Injectable({ providedIn: 'root' })
 export class CajaService {
@@ -24,6 +25,7 @@ export class CajaService {
   protected cajasPorFechaUrl = this.applicationConfigService.getEndpointFor('api/cajas-por-fecha');
   protected cajasValoresPorFechaUrl = this.applicationConfigService.getEndpointFor('api/cajas-valores-meses');
   protected cajasReporteUrl = this.applicationConfigService.getEndpointFor('api/cajas-reporte');
+  protected validarCreacionCajaUrl = this.applicationConfigService.getEndpointFor('api/cajas-validar-creacion');
 
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
@@ -38,6 +40,10 @@ export class CajaService {
     return this.http
       .get<ICaja[]>(`${this.cajasPorEstadoUrl}/${estado}`, { observe: 'response' })
       .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
+  }
+
+  validarCreacionCaja(): Observable<BooleanType> {
+    return this.http.get<boolean>(this.validarCreacionCajaUrl, { observe: 'response' });
   }
 
   reporteCaja(): Observable<any> {

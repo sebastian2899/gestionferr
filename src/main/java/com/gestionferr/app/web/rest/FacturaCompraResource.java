@@ -164,13 +164,21 @@ public class FacturaCompraResource {
         return ResponseEntity.ok().body(facturaCompraDTO);
     }
 
-    @GetMapping("factura-compra-mes/{fechaInicio}/{fechaFin}")
+    @GetMapping("/factura-compra-mes/{fechaInicio}/{fechaFin}")
     public ResponseEntity<RegistroFacturaCompraDTO> registroFacturaMes(@PathVariable String fechaInicio, @PathVariable String fechaFin) {
         log.debug("REST Request to get values of facturaCompra per dates");
 
         RegistroFacturaCompraDTO registroMes = facturaCompraService.valoresFacturaCompraMes(fechaInicio, fechaFin);
 
         return new ResponseEntity<RegistroFacturaCompraDTO>(registroMes, HttpStatus.OK);
+    }
+
+    @GetMapping("/factura-compra-reporte")
+    public ResponseEntity<byte[]> generarReporteFacturaCompra() {
+        log.debug("REST request to generate montly report of facutra compra");
+        byte[] reporte = facturaCompraService.facturaCompraReport();
+
+        return new ResponseEntity<byte[]>(reporte, HttpStatus.CREATED);
     }
 
     @GetMapping("/factura-compra-validar-numero/{numeroFactura}")

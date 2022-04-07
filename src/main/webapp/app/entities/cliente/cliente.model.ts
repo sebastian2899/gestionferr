@@ -1,5 +1,5 @@
 import { TipoIdentificacionEnum } from 'app/entities/enumerations/tipo-identificacion-enum.model';
-import { IFacturaVenta } from '../factura-venta/factura-venta.model';
+import { IClienteFactura } from './facturasCliente';
 
 export interface ICliente {
   id?: number;
@@ -8,7 +8,7 @@ export interface ICliente {
   email?: string | null;
   tipoIdentificacion?: TipoIdentificacionEnum | null;
   numeroCC?: string | null;
-  facturasCliente?: IFacturaVenta[] | null;
+  facturasCliente?: IClienteFactura[] | null;
 }
 
 export class Cliente implements ICliente {
@@ -19,7 +19,7 @@ export class Cliente implements ICliente {
     public email?: string | null,
     public tipoIdentificacion?: TipoIdentificacionEnum | null,
     public numeroCC?: string | null,
-    public facturasCliente?: IFacturaVenta[] | null
+    public facturasCliente?: IClienteFactura[] | null
   ) {}
 }
 

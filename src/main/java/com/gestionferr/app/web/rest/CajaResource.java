@@ -197,6 +197,13 @@ public class CajaResource {
         return cajaService.cajasPorFiltro(estado);
     }
 
+    @GetMapping("/cajas-validar-creacion")
+    public boolean validarCreacionCaja() {
+        log.debug("REST request to validate creation of daily caja");
+        boolean resp = cajaService.validarCajaDiaria();
+        return resp;
+    }
+
     /**
      * {@code GET  /cajas/:id} : get the "id" caja.
      *

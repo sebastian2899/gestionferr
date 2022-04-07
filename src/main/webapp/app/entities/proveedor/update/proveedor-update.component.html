@@ -1,25 +1,30 @@
 <div class="d-flex justify-content-center">
-  <div class="col-8">
+  <div class="col-5">
     <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
-      <h2 id="jhi-proveedor-heading" data-cy="ProveedorCreateUpdateHeading" jhiTranslate="gestionferrApp.proveedor.home.createOrEditLabel">
+      <h2
+        class="titulo-entidades mb-3"
+        id="jhi-proveedor-heading"
+        data-cy="ProveedorCreateUpdateHeading"
+        jhiTranslate="gestionferrApp.proveedor.home.createOrEditLabel"
+      >
         Create or edit a Proveedor
       </h2>
 
       <div>
         <jhi-alert-error></jhi-alert-error>
 
-        <div class="row mb-3" [hidden]="editForm.get('id')!.value == null">
-          <label class="form-label" jhiTranslate="global.field.id" for="field_id">ID</label>
+        <div class="row" [hidden]="editForm.get('id')!.value == null">
+          <label class="form-label titulo-entidades" jhiTranslate="global.field.id" for="field_id">ID</label>
           <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
         </div>
 
         <div class="row mb-3">
-          <label class="form-label" jhiTranslate="gestionferrApp.proveedor.nombre" for="field_nombre">Nombre</label>
+          <label class="form-label titulo-entidades" jhiTranslate="gestionferrApp.proveedor.nombre" for="field_nombre">Nombre</label>
           <input type="text" class="form-control" name="nombre" id="field_nombre" data-cy="nombre" formControlName="nombre" />
         </div>
 
         <div class="row mb-3">
-          <label class="form-label" jhiTranslate="gestionferrApp.proveedor.numeroContacto" for="field_numeroContacto"
+          <label class="form-label titulo-entidades" jhiTranslate="gestionferrApp.proveedor.numeroContacto" for="field_numeroContacto"
             >Numero Contacto</label
           >
           <input
@@ -33,16 +38,19 @@
         </div>
 
         <div class="row mb-3">
-          <label class="form-label" jhiTranslate="gestionferrApp.proveedor.email" for="field_email">Email</label>
+          <label class="form-label titulo-entidades" jhiTranslate="gestionferrApp.proveedor.email" for="field_email">Email</label>
           <input type="text" class="form-control" name="email" id="field_email" data-cy="email" formControlName="email" />
         </div>
 
         <div class="row mb-3">
-          <label class="form-label" jhiTranslate="gestionferrApp.proveedor.tipoIdentificacion" for="field_tipoIdentificacion"
+          <label
+            class="form-label titulo-entidades"
+            jhiTranslate="gestionferrApp.proveedor.tipoIdentificacion"
+            for="field_tipoIdentificacion"
             >Tipo Identificacion</label
           >
           <select
-            class="form-control"
+            class="form-control titulo-entidades"
             name="tipoIdentificacion"
             formControlName="tipoIdentificacion"
             id="field_tipoIdentificacion"
@@ -56,12 +64,14 @@
         </div>
 
         <div class="row mb-3">
-          <label class="form-label" jhiTranslate="gestionferrApp.proveedor.numeroCC" for="field_numeroCC">Numero CC</label>
+          <label class="form-label titulo-entidades" jhiTranslate="gestionferrApp.proveedor.numeroCC" for="field_numeroCC">Numero CC</label>
           <input type="text" class="form-control" name="numeroCC" id="field_numeroCC" data-cy="numeroCC" formControlName="numeroCC" />
         </div>
 
         <div class="row mb-3">
-          <label class="form-label" jhiTranslate="gestionferrApp.proveedor.tipoProveedor" for="field_tipoProveedor">Tipo Proveedor</label>
+          <label class="form-label titulo-entidades" jhiTranslate="gestionferrApp.proveedor.tipoProveedor" for="field_tipoProveedor"
+            >Tipo Proveedor</label
+          >
           <select
             class="form-control"
             name="tipoProveedor"
@@ -77,8 +87,14 @@
         </div>
       </div>
 
-      <div>
-        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+      <div class="d-flex justify-content-center">
+        <button
+          type="button"
+          id="cancel-save"
+          data-cy="entityCreateCancelButton"
+          class="btn btn-outline-dark me-2"
+          (click)="previousState()"
+        >
           <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
         </button>
 
@@ -87,7 +103,7 @@
           id="save-entity"
           data-cy="entityCreateSaveButton"
           [disabled]="editForm.invalid || isSaving"
-          class="btn btn-primary"
+          class="btn btn-outline-primary"
         >
           <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
         </button>

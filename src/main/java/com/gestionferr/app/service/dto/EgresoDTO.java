@@ -10,6 +10,11 @@ import java.util.Objects;
  */
 public class EgresoDTO implements Serializable {
 
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
+
     private Long id;
 
     private Instant fechaCreacion;
@@ -17,6 +22,16 @@ public class EgresoDTO implements Serializable {
     private String descripcion;
 
     private BigDecimal valorEgreso;
+
+    private String estadoEditar;
+
+    public String getEstadoEditar() {
+        return estadoEditar;
+    }
+
+    public void setEstadoEditar(String estadoEditar) {
+        this.estadoEditar = estadoEditar;
+    }
 
     public Long getId() {
         return id;

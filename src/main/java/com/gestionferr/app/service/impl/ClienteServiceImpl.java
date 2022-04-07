@@ -2,11 +2,17 @@ package com.gestionferr.app.service.impl;
 
 import com.gestionferr.app.config.Constants;
 import com.gestionferr.app.domain.Cliente;
-import com.gestionferr.app.domain.FacturaVenta;
 import com.gestionferr.app.repository.ClienteRepository;
 import com.gestionferr.app.service.ClienteService;
 import com.gestionferr.app.service.dto.ClienteDTO;
+import com.gestionferr.app.service.dto.ClienteFacturaDatosDTO;
 import com.gestionferr.app.service.mapper.ClienteMapper;
+import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -77,13 +83,36 @@ public class ClienteServiceImpl implements ClienteService {
     public ClienteDTO findOne(Long id) {
         log.debug("Request to get Cliente : {}", id);
         Cliente cliente = clienteRepository.clientePorId(id);
-        cliente.setFacturasCliente(facturasPorCliente(id));
-
+        try {
+            cliente.setFacturasCliente(facturasPorCliente(id));
+        } catch (ParseException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         return clienteMapper.toDto(cliente);
     }
 
-    private List<FacturaVenta> facturasPorCliente(Long id) {
-        List<FacturaVenta> facturasCliente = clienteRepository.facturasPorCliente(id);
+    private List<ClienteFacturaDatosDTO> facturasPorCliente(Long id) throws ParseException {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+
+        List<Object[]> facturasClienteObj = clienteRepository.datosFacturaVentaCliente(id);
+        ClienteFacturaDatosDTO clienteFacturas = null;
+        List<ClienteFacturaDatosDTO> facturasCliente = new ArrayList<>();
+
+        for (Object[] factura : facturasClienteObj) {
+            Instant fecha = format.parse(factura[1].toString()).toInstant();
+            Date date = Date.from(fecha);
+            String fechaCreacion = format.format(date);
+            clienteFacturas = new ClienteFacturaDatosDTO();
+            clienteFacturas.setIdFacturaVenta(Long.parseLong(factura[0].toString()));
+            clienteFacturas.setFechaCreacion(fechaCreacion);
+            clienteFacturas.setNumeroFactura(factura[2].toString());
+            clienteFacturas.setValorFactura(new BigDecimal(factura[3].toString()));
+            clienteFacturas.setValorPagado(new BigDecimal(factura[4].toString()));
+            clienteFacturas.setValorDeuda(new BigDecimal(factura[5].toString()));
+
+            facturasCliente.add(clienteFacturas);
+        }
 
         return facturasCliente;
     }

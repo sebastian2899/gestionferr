@@ -1,9 +1,13 @@
 <div>
-  <h2 id="page-heading" data-cy="EgresoHeading">
+  <h2 class="titulo-entidades" id="page-heading" data-cy="EgresoHeading">
     <span jhiTranslate="gestionferrApp.egreso.home.title">Egresos</span>
 
+    <div *ngIf="valorDiario" class="valor-egreso-size d-flex justify-content-center">
+      <span>Valor egresos diarios {{ valorDiario | currency }}</span>
+    </div>
+
     <div class="d-flex justify-content-end">
-      <button class="btn btn-info me-2" (click)="loadAll()" [disabled]="isLoading">
+      <button class="btn btn-outline-info me-2" (click)="loadAll()" [disabled]="isLoading">
         <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
         <span jhiTranslate="gestionferrApp.egreso.home.refreshListLabel">Refresh List</span>
       </button>
@@ -11,7 +15,7 @@
       <button
         id="jh-create-entity"
         data-cy="entityCreateButton"
-        class="btn btn-primary jh-create-entity create-egreso"
+        class="btn btn-outline-info jh-create-entity create-egreso"
         [routerLink]="['/egreso/new']"
       >
         <fa-icon icon="plus"></fa-icon>
@@ -19,6 +23,19 @@
       </button>
     </div>
   </h2>
+
+  <div style="margin-left: 26px" class="d-flex justify-content-start mb-2">
+    <button class="btn btn-outline-primary me-2" (click)="consultarEgresoDiario()">Egresos Diarios</button>
+    <button (click)="loadAll()" class="btn btn-outline-primary">Egresos Generales</button>
+    <div class="d-flex ms-5">
+      <label for="fecha" class="form-label titulo-entidades" style="margin-left: 150px"></label>
+      <input type="datetime-local" [(ngModel)]="fecha" class="form-control" name="" id="" />
+      <button class="ms-2 btn btn-outline-primary" (click)="consultarEgresosfecha()">
+        <mat-icon class="icon-config" style="font-size: 25px">search</mat-icon>
+      </button>
+      <button class="ms-2 btn btn-outline-primary" (click)="loadAll()"><mat-icon>refresh</mat-icon></button>
+    </div>
+  </div>
 
   <jhi-alert-error></jhi-alert-error>
 
@@ -28,11 +45,10 @@
     <span jhiTranslate="gestionferrApp.egreso.home.notFound">No egresos found</span>
   </div>
 
-  <div class="table-responsive" id="entities" *ngIf="egresos && egresos.length > 0">
+  <div class="table-responsive p-4" id="entities" *ngIf="egresos && egresos.length > 0">
     <table class="table table-striped" aria-describedby="page-heading">
       <thead>
         <tr>
-          <th scope="col"><span jhiTranslate="global.field.id">ID</span></th>
           <th scope="col"><span jhiTranslate="gestionferrApp.egreso.fechaCreacion">Fecha Creacion</span></th>
           <th scope="col"><span jhiTranslate="gestionferrApp.egreso.descripcion">Descripcion</span></th>
           <th scope="col"><span jhiTranslate="gestionferrApp.egreso.valorEgreso">Valor Egreso</span></th>
@@ -42,12 +58,39 @@
       <tbody>
         <tr *ngFor="let egreso of egresos; trackBy: trackId" data-cy="entityTable">
           <td>
-            <a [routerLink]="['/egreso', egreso.id, 'view']">{{ egreso.id }}</a>
+            <div class="dropdown">
+              <button
+                class="menu-config btn-primary dropdown-toggle"
+                type="button"
+                id="dropdownMenuButton1"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <mat-icon>more_vert</mat-icon>
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                <li>
+                  <button [routerLink]="['/egreso', egreso.id, 'view']" class="menu-config btn-primary">
+                    <mat-icon class="icon-config">preview</mat-icon>Ver
+                  </button>
+                </li>
+                <li *ngIf="egreso.estadoEditar === 'editable'">
+                  <button [routerLink]="['/egreso', egreso.id, 'edit']" class="menu-config btn-primary">
+                    <mat-icon class="icon-config">edit</mat-icon>Editar
+                  </button>
+                </li>
+                <li>
+                  <button (click)="delete(egreso)" class="boton-eliminar btn-primary">
+                    <mat-icon class="icon-config-eliminar">delete</mat-icon>Borrar
+                  </button>
+                </li>
+              </ul>
+            </div>
           </td>
           <td>{{ egreso.fechaCreacion | formatMediumDatetime }}</td>
           <td>{{ egreso.descripcion }}</td>
           <td>{{ egreso.valorEgreso }}</td>
-          <td class="text-end">
+          <!-- <td class="text-end">
             <div class="btn-group">
               <button type="submit" [routerLink]="['/egreso', egreso.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
                 <fa-icon icon="eye"></fa-icon>
@@ -64,7 +107,7 @@
                 <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
               </button>
             </div>
-          </td>
+          </td> -->
         </tr>
       </tbody>
     </table>
